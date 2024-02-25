@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
+#include "ResourceManager.h"
 
 #pragma region TextComponent
 dae::TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font> font)
@@ -50,3 +51,26 @@ void dae::TextComponent::SetText(const std::string& text)
 	m_needsUpdate = true;
 }
 #pragma endregion TextComponent
+
+#pragma region TextureComponent
+dae::TextureComponent::TextureComponent(const std::string& filename)
+{
+	SetTexture(filename);
+}
+
+void dae::TextureComponent::Update()
+{
+	// no need to update currently
+}
+
+void dae::TextureComponent::Render(const Transform& transform) const
+{
+	const auto& pos = transform.GetPosition();
+	Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+}
+
+void dae::TextureComponent::SetTexture(const std::string& filename)
+{
+	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
+}
+#pragma endregion TextureComponent

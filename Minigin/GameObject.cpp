@@ -11,21 +11,13 @@ dae::GameObject::~GameObject() = default;
 void dae::GameObject::Update()
 {
 	for (auto pComponent : m_Components) 
-		pComponent->Update();
+		if (pComponent != nullptr) pComponent->Update();
 }
 
 void dae::GameObject::Render() const
 {
-	//const auto& pos = m_transform.GetPosition();
-	//Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
-
 	for (auto pComponent : m_Components)
-		pComponent->Render(m_transform); // if component has a rendering section, it will render using game object transform
-}
-
-void dae::GameObject::SetTexture(const std::string& filename)
-{
-	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
+		if (pComponent != nullptr) pComponent->Render(m_transform); // if component has a rendering section, it will render using game object transform
 }
 
 void dae::GameObject::SetPosition(float x, float y)
@@ -56,6 +48,6 @@ std::shared_ptr<dae::Component> dae::GameObject::GetComponent(size_t componentIn
 void dae::GameObject::PrintComponents() const
 {
 	std::cout << "Components within game object: \n";
-	for (auto pComponent : m_Components)
-		std::cout << pComponent->GetName() << "\n";
+	for (size_t index{ }; index < m_Components.size(); ++index)
+		if (m_Components[index] != nullptr) std::cout << "[" << index << "] " << m_Components[index]->GetName() << "\n";
 }
