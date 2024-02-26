@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+//#include "Timer.h" // todo: fix timer stuff after fixed component and game object problems from feedback (change run function back to what is in discord)
 
 SDL_Window* g_window{};
 
@@ -83,8 +84,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
-	// todo: this update loop could use some work.
 	bool doContinue = true;
+
 	while (doContinue)
 	{
 		doContinue = input.ProcessInput();

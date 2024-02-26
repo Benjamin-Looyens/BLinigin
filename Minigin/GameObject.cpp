@@ -14,6 +14,11 @@ void dae::GameObject::Update()
 		if (pComponent != nullptr) pComponent->Update();
 }
 
+void dae::GameObject::FixedUpdate()
+{
+
+}
+
 void dae::GameObject::Render() const
 {
 	for (auto pComponent : m_Components)
