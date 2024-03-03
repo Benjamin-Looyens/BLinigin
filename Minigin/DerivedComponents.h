@@ -18,7 +18,7 @@ namespace dae {
 
 		void SetText(const std::string& text);
 
-		TextComponent(const std::string& text, std::shared_ptr<Font> font);
+		TextComponent(const dae::GameObject * parent, const std::string& text, std::shared_ptr<Font> font);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -41,7 +41,7 @@ namespace dae {
 
 		void SetTexture(const std::string& filename);
 
-		TextureComponent(const std::string& filename);
+		TextureComponent(const dae::GameObject* parent, const std::string& filename);
 		virtual ~TextureComponent() = default;
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent(TextureComponent&& other) = delete;

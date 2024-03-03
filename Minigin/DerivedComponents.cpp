@@ -8,8 +8,8 @@
 #include "ResourceManager.h"
 
 #pragma region TextComponent
-dae::TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font> font)
-	: m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr) 
+dae::TextComponent::TextComponent(const dae::GameObject * parent, const std::string& text, std::shared_ptr<Font> font)
+	: Component(parent), m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
 {
 	m_ComponentName = "TextComponent";
 }
@@ -53,7 +53,8 @@ void dae::TextComponent::SetText(const std::string& text)
 #pragma endregion TextComponent
 
 #pragma region TextureComponent
-dae::TextureComponent::TextureComponent(const std::string& filename)
+dae::TextureComponent::TextureComponent(const dae::GameObject* parent, const std::string& filename)
+	: Component(parent)
 {
 	SetTexture(filename);
 }

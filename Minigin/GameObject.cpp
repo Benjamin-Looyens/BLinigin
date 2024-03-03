@@ -19,6 +19,14 @@ void dae::GameObject::FixedUpdate()
 
 }
 
+void dae::GameObject::LateUpdate()
+{
+	// TODO : implement late update (destroyed, dirty, etc)
+	for (auto& pComponent : m_Components)
+		if (pComponent->IsRemoved()) 
+			m_Components.erase(std::remove(m_Components.begin(), m_Components.end(), pComponent), m_Components.end());
+}
+
 void dae::GameObject::Render() const
 {
 	for (auto pComponent : m_Components)
