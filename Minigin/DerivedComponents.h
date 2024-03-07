@@ -26,10 +26,10 @@ namespace dae {
 		TextComponent& operator=(TextComponent&& other) = delete;
 
 	private:
-		bool m_needsUpdate;
-		std::string m_text;
-		std::shared_ptr<Font> m_font;
-		std::shared_ptr<Texture2D> m_textTexture;
+		bool m_NeedsUpdate;
+		std::string m_Text;
+		std::shared_ptr<Font> m_pFont;
+		std::shared_ptr<Texture2D> m_pTextTexture;
 	};
 
 	// Texture Component
@@ -48,7 +48,7 @@ namespace dae {
 		TextureComponent& operator=(TextureComponent&& other) = delete;
 
 	private:
-		std::shared_ptr<Texture2D> m_Texture;
+		std::shared_ptr<Texture2D> m_pTexture;
 	};
 }
 

@@ -29,15 +29,15 @@ namespace dae
 
 		void Destroy() { m_Destroyed = true; };
 
-		Transform GetTransform() const { return m_transform; };
+		Transform GetTransform() const { return m_Transform; };
 
 #pragma region TemplateFunctions
 		template<DerivedComponent ComponentType, typename... TArgs>
-		void AddComponent(const TArgs&... args) { m_Components.emplace_back(std::make_unique<ComponentType>(this, args...)); };
+		void AddComponent(const TArgs&... args) { m_pComponents.emplace_back(std::make_unique<ComponentType>(this, args...)); };
 
 		template<DerivedComponent ComponentType>
 		ComponentType* GetComponent() {
-			for (auto&& rrComponent : m_Components) {
+			for (auto&& rrComponent : m_pComponents) {
 				ComponentType* pTypeCasted{ dynamic_cast<ComponentType*>(rrComponent.get()) };
 				
 				if (pTypeCasted) return pTypeCasted;
@@ -66,10 +66,9 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		Transform m_transform{ };
+		Transform m_Transform{ };
 
-		//std::vector <std::shared_ptr<Component>> m_Components;
-		std::vector <std::unique_ptr<Component>> m_Components;
+		std::vector <std::unique_ptr<Component>> m_pComponents;
 
 		bool m_Destroyed{ false };
 	};
