@@ -6,6 +6,7 @@
 #include "Font.h"
 #include "Texture2D.h"
 #include "ResourceManager.h"
+#include "GameObject.h"
 
 #pragma region TextComponent
 dae::TextComponent::TextComponent(const dae::GameObject * parent, const std::string& text, std::shared_ptr<Font> font)
@@ -35,8 +36,10 @@ void dae::TextComponent::Update()
 	}
 }
 
-void dae::TextComponent::Render(const Transform& transform) const
+void dae::TextComponent::Render() const
 {
+	const auto& transform = m_pParent->GetTransform();
+
 	if (m_textTexture != nullptr)
 	{
 		const auto& pos = transform.GetPosition();
@@ -57,15 +60,12 @@ dae::TextureComponent::TextureComponent(const dae::GameObject* parent, const std
 	: Component(parent)
 {
 	SetTexture(filename);
+	m_ComponentName = "TextureComponent";
 }
 
-void dae::TextureComponent::Update()
+void dae::TextureComponent::Render() const
 {
-	// no need to update currently
-}
-
-void dae::TextureComponent::Render(const Transform& transform) const
-{
+	const auto& transform = m_pParent->GetTransform();
 	const auto& pos = transform.GetPosition();
 	Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
 }

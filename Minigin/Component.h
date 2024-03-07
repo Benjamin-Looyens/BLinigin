@@ -9,15 +9,17 @@ namespace dae {
 	class Component
 	{
 	public:
-		virtual void Update() = 0;
-		virtual void Render(const Transform& transform) const = 0;
+		virtual void Update() {};
+		virtual void LateUpdate() {};
+		virtual void Render() const {};
 		std::string GetName() const { return m_ComponentName; };
 
 		void Remove() { m_Removed = true; };
 		bool IsRemoved() { return m_Removed; };
+		const GameObject* GetParent() const { return m_pParent; };
 
 		//Component() = default;
-		Component(const GameObject* parent) { m_Parent = parent; }; // HACK : Maybe try to use not raw pointer
+		Component(const GameObject* parent) { m_pParent = parent; }; // HACK : Maybe try to use not raw pointer
 		virtual ~Component() {};
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;
@@ -29,8 +31,7 @@ namespace dae {
 	
 		bool m_Removed{ false };
 
-	private:
-		const GameObject* m_Parent;
+		const GameObject* m_pParent;
 	};
 
 }

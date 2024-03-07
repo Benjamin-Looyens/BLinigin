@@ -14,7 +14,7 @@ namespace dae {
 	{
 	public:
 		void Update() override;
-		void Render(const Transform& transform) const override;
+		void Render() const override;
 
 		void SetText(const std::string& text);
 
@@ -36,8 +36,7 @@ namespace dae {
 	class TextureComponent : public Component
 	{
 	public:
-		void Update() override;
-		void Render(const Transform& transform) const override;
+		void Render() const override;
 
 		void SetTexture(const std::string& filename);
 

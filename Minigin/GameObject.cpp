@@ -10,7 +10,7 @@ dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update()
 {
-	for (auto pComponent : m_Components) 
+	for (auto& pComponent : m_Components) 
 		if (pComponent != nullptr) pComponent->Update();
 }
 
@@ -22,15 +22,22 @@ void dae::GameObject::FixedUpdate()
 void dae::GameObject::LateUpdate()
 {
 	// TODO : implement late update (destroyed, dirty, etc)
-	for (auto& pComponent : m_Components)
-		if (pComponent->IsRemoved()) 
+	for (auto& pComponent : m_Components) {
+		if (pComponent == nullptr) continue;
+		
+		if (pComponent->IsRemoved()) {
 			m_Components.erase(std::remove(m_Components.begin(), m_Components.end(), pComponent), m_Components.end());
+		}
+		else {
+			pComponent->LateUpdate();
+		}
+	}
 }
 
 void dae::GameObject::Render() const
 {
-	for (auto pComponent : m_Components)
-		if (pComponent != nullptr) pComponent->Render(m_transform); // if component has a rendering section, it will render using game object transform
+	for (auto& pComponent : m_Components)
+		if (pComponent != nullptr) pComponent->Render(); // if component has a rendering section, it will render using game object transform
 }
 
 void dae::GameObject::SetPosition(float x, float y)
@@ -38,24 +45,19 @@ void dae::GameObject::SetPosition(float x, float y)
 	m_transform.SetPosition(x, y, 0.0f);
 }
 
-void dae::GameObject::AddComponent(std::shared_ptr<Component> newComponent)
-{
-	m_Components.push_back(newComponent);
-	
-	//auto size{ m_Components.size() };
-	//
-	//m_Components.resize(size + 1);
-	//m_Components[size] = newComponent;
-}
+//void dae::GameObject::AddComponent(std::unique_ptr<Component> newComponent)
+//{
+//	m_Components.push_back(newComponent);
+//	
+//	//auto size{ m_Components.size() };
+//	//
+//	//m_Components.resize(size + 1);
+//	//m_Components[size] = newComponent;
+//}
 
 void dae::GameObject::RemoveComponent(size_t componentIndex)
 {
-	m_Components[componentIndex].reset();
-}
-
-std::shared_ptr<dae::Component> dae::GameObject::GetComponent(size_t componentIndex)
-{
-	return m_Components[componentIndex];
+	m_Components[componentIndex]->Remove();
 }
 
 void dae::GameObject::PrintComponents() const

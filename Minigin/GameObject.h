@@ -2,11 +2,17 @@
 #include <memory>
 #include "Transform.h"
 #include <vector>
+#include <iostream>
+#include <algorithm>
 
 namespace dae
 {
 	class Texture2D;
 	class Component;
+
+	// TODO : Potentially differentiate more the concept and template setup here
+	template<typename ComponentType>
+	concept DerivedComponent = requires(ComponentType component) { std::derived_from<ComponentType, Component>; };
 
 	class GameObject final
 	{
@@ -18,12 +24,39 @@ namespace dae
 
 		void SetPosition(float x, float y);
 
-		void AddComponent(std::shared_ptr<Component> newComponent);
 		void RemoveComponent(size_t componentIndex);
-		std::shared_ptr<Component> GetComponent(size_t componentIndex);
 		void PrintComponents() const; // for debug
 
 		void Destroy() { m_Destroyed = true; };
+
+		Transform GetTransform() const { return m_transform; };
+
+#pragma region TemplateFunctions
+		template<DerivedComponent ComponentType, typename... TArgs>
+		void AddComponent(const TArgs&... args) { m_Components.emplace_back(std::make_unique<ComponentType>(this, args...)); };
+
+		template<DerivedComponent ComponentType>
+		ComponentType* GetComponent() {
+			for (auto&& rrComponent : m_Components) {
+				ComponentType* pTypeCasted{ dynamic_cast<ComponentType*>(rrComponent.get()) };
+				
+				if (pTypeCasted) return pTypeCasted;
+			}
+			
+			return nullptr;
+		}
+
+		template<DerivedComponent ComponentType>
+		void RemoveComponent() {
+			ComponentType* pComponent{ GetComponent<ComponentType>() };
+
+			if (pComponent) pComponent->Remove();
+			else std::cerr << "GameObject does not contain specified component type (" << typeid(ComponentType).name() << ").\n";
+		};
+
+		template<DerivedComponent ComponentType>
+		bool HasComponent() { return GetComponent<ComponentType>() != nullptr; }
+#pragma endregion TemplateFunctions
 
 		GameObject() = default;
 		~GameObject();
@@ -35,7 +68,8 @@ namespace dae
 	private:
 		Transform m_transform{ };
 
-		std::vector <std::shared_ptr<Component>> m_Components;
+		//std::vector <std::shared_ptr<Component>> m_Components;
+		std::vector <std::unique_ptr<Component>> m_Components;
 
 		bool m_Destroyed{ false };
 	};
