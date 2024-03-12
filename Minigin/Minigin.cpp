@@ -9,10 +9,10 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-// TODO : fix timer stuff after fixed component and game object problems from feedback (change run function back to what is in discord)
 #include "Timer.h" 
+#include <thread>
 
-#include <iostream>
+//#include <iostream>
 
 SDL_Window* g_window{};
 
@@ -91,18 +91,31 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& timer = Timer::GetInstance();
 
 	bool doContinue = true;
+	float lag{ };
 
-	while (doContinue)
-	{
+	// TODO : Implement proper game loop
+	while (doContinue) {
+		const auto currentTime{ std::chrono::high_resolution_clock::now() };
+		//const auto& prevTime{ timer.GetPrevFrame() };
+		//const float& deltaTime{timer.GetDeltaTime()};
+		const float& fixedTimeStep{ timer.GetFixedTimeStep() };
+
+		lag += timer.GetDeltaTime();
+
 		doContinue = input.ProcessInput();
 		
+		while (lag >= fixedTimeStep) {
+			lag -= fixedTimeStep;
+			sceneManager.FixedUpdate();
+		}
 		timer.Update();
 		
 		sceneManager.Update();
 		sceneManager.LateUpdate();
+
 		renderer.Render();
 
-		//std::cout << "DeltaTime: " << timer.GetDeltaTime() << "\n";
-		//std::cout << "FPS: " << timer.GetFPS() << "\n";
+		//const auto sleep_time = currentTime + std::chrono::milliseconds(16) - std::chrono::high_resolution_clock::now(); // 30fps : 33.3ms | 60fps : 16.6ms | 90fps : 11.1ms | 120fps : 8.3ms
+		//std::this_thread::sleep_for(sleep_time);
 	}
 }

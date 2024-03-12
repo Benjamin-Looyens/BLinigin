@@ -10,7 +10,7 @@ namespace dae
 	class Texture2D;
 	class Component;
 
-	// TODO : Potentially differentiate more the concept and template setup here
+	// TODO : Potentially refactor the concept and template setup here
 	template<typename ComponentType>
 	concept DerivedComponent = requires(ComponentType component) { std::derived_from<ComponentType, Component>; };
 
@@ -28,6 +28,7 @@ namespace dae
 		void PrintComponents() const; // for debug
 
 		void Destroy() { m_Destroyed = true; };
+		bool IsDestroyed() { return m_Destroyed; };
 
 		Transform GetTransform() const { return m_Transform; };
 

@@ -16,7 +16,9 @@ namespace dae {
 		float GetDeltaTime() const { return m_DeltaTime; };
 		// TODO : Figure out whether the following are necessary
 		//float GetDeltaValue() const { return m_TimeScale * m_DeltaTime; }; 
-		//float GetFixedDelta() const { return 1.0f / 60.0f * m_TimeScale; };
+		float GetFixedTimeStep() const { return 1.0f / 60.0f * m_TimeScale; };
+
+		std::chrono::high_resolution_clock::time_point GetPrevFrame() const { return m_PrevFrame; };
 
 		float GetFPS() const;
 

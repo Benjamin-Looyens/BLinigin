@@ -48,6 +48,19 @@ void dae::Scene::LateUpdate()
 	{
 		object->LateUpdate();
 	}
+
+	// TODO : Move Removal System to own function most likely
+	const size_t curSize{ m_pObjects.size() };
+
+	for (size_t index{ }; index < curSize; ++index) {
+		const size_t trueIndex{ (curSize - index) - 1 };
+		auto& pObject = m_pObjects[trueIndex];
+
+		if (pObject->IsDestroyed()) {
+			std::cout << "Component " << trueIndex << " removed.\n";
+			m_pObjects.erase(std::remove(m_pObjects.begin(), m_pObjects.end(), pObject), m_pObjects.end());
+		}
+	}
 }
 
 void Scene::Render() const
