@@ -50,5 +50,22 @@ namespace dae {
 	private:
 		std::shared_ptr<Texture2D> m_pTexture;
 	};
+
+	// FPS Component
+	class FPSComponent : public Component
+	{
+	public:
+		void Update() override;
+
+		FPSComponent(const dae::GameObject* parent);
+		virtual ~FPSComponent() = default;
+		FPSComponent(const FPSComponent& other) = delete;
+		FPSComponent(FPSComponent&& other) = delete;
+		FPSComponent& operator=(const FPSComponent& other) = delete;
+		FPSComponent& operator=(FPSComponent&& other) = delete;
+
+	private:
+		dae::TextComponent* m_pTextLocation; // non-owning reference to parent's text component (if it has one)
+	};
 }
 

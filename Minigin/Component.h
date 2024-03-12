@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <assert.h>
 
 namespace dae {
 	class Transform;
@@ -19,7 +20,10 @@ namespace dae {
 		const GameObject* GetParent() const { return m_pParent; };
 
 		//Component() = default;
-		Component(const GameObject* parent) { m_pParent = parent; }; // HACK : Maybe try to use not raw pointer
+		Component(const GameObject* pParent) { 
+			m_pParent = pParent;
+			assert(pParent && "Component was created with parent = nullptr (parent does not exist).");
+		};
 		virtual ~Component() {};
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;

@@ -43,14 +43,6 @@ void dae::Renderer::Render() const
 
 	SceneManager::GetInstance().Render();
 
-	// ImGUI
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(); // not using window pointer ???????????????
-	ImGui::NewFrame();
-	ImGui::ShowDemoWindow();
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 	// SDL
 	SDL_RenderPresent(m_pRenderer);
 }

@@ -28,7 +28,7 @@ void Scene::RemoveAll()
 
 void Scene::Update()
 {
-	for(auto& object : m_pObjects)
+	for (auto& object : m_pObjects)
 	{
 		object->Update();
 	}

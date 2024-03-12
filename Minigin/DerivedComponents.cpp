@@ -9,8 +9,8 @@
 #include "GameObject.h"
 
 #pragma region TextComponent
-dae::TextComponent::TextComponent(const dae::GameObject * parent, const std::string& text, std::shared_ptr<Font> font)
-	: Component(parent), m_NeedsUpdate(true), m_Text(text), m_pFont(std::move(font)), m_pTextTexture(nullptr)
+dae::TextComponent::TextComponent(const dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font)
+	: Component(pParent), m_NeedsUpdate(true), m_Text(text), m_pFont(std::move(font)), m_pTextTexture(nullptr)
 {
 	m_ComponentName = "TextComponent";
 }
@@ -56,8 +56,8 @@ void dae::TextComponent::SetText(const std::string& text)
 #pragma endregion TextComponent
 
 #pragma region TextureComponent
-dae::TextureComponent::TextureComponent(const dae::GameObject* parent, const std::string& filename)
-	: Component(parent)
+dae::TextureComponent::TextureComponent(const dae::GameObject* pParent, const std::string& filename)
+	: Component(pParent)
 {
 	SetTexture(filename);
 	m_ComponentName = "TextureComponent";
@@ -75,3 +75,24 @@ void dae::TextureComponent::SetTexture(const std::string& filename)
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 #pragma endregion TextureComponent
+
+#pragma region FPSComponent
+dae::FPSComponent::FPSComponent(const dae::GameObject* pParent) 
+	: Component(pParent)
+{
+	m_pTextLocation = pParent->GetComponent<dae::TextComponent>();
+	if (!m_pTextLocation) {
+		std::cerr << "Parent for added FPSComponent does not contain TextComponent! (has no place to output fps data to!)\n";
+		Remove(); // Mark self as removed as no TextComponent was found
+	}
+}
+
+void dae::FPSComponent::Update()
+{
+	if (m_pTextLocation) {
+		std::string fpsText{ "This sure is an fps component :)" };
+
+		m_pTextLocation->SetText(fpsText);
+	}
+}
+#pragma endregion FPSComponent

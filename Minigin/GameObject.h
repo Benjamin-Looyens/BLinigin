@@ -36,7 +36,7 @@ namespace dae
 		void AddComponent(const TArgs&... args) { m_pComponents.emplace_back(std::make_unique<ComponentType>(this, args...)); };
 
 		template<DerivedComponent ComponentType>
-		ComponentType* GetComponent() {
+		ComponentType* GetComponent() const {
 			for (auto&& rrComponent : m_pComponents) {
 				ComponentType* pTypeCasted{ dynamic_cast<ComponentType*>(rrComponent.get()) };
 				
