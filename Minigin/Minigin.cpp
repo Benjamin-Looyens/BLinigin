@@ -10,8 +10,9 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "Timer.h" 
-#include <thread>
+#include <algorithm>
 
+//#include <thread>
 //#include <iostream>
 
 SDL_Window* g_window{};
@@ -93,14 +94,13 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	bool doContinue = true;
 	float lag{ };
 
-	// TODO : Implement proper game loop
 	while (doContinue) {
 		const auto currentTime{ std::chrono::high_resolution_clock::now() };
 		//const auto& prevTime{ timer.GetPrevFrame() };
-		//const float& deltaTime{timer.GetDeltaTime()};
-		const float& fixedTimeStep{ timer.GetFixedTimeStep() };
+		const float deltaTime{ std::clamp(timer.GetDeltaTime(), 0.0f, 1.0f) }; // clamp to max 1.0f in case lag spike
+		const float fixedTimeStep{ timer.GetFixedTimeStep() };
 
-		lag += timer.GetDeltaTime();
+		lag += deltaTime;
 
 		doContinue = input.ProcessInput();
 		

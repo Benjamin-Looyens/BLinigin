@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "Timer.h"
 #include <sstream>
+#include <algorithm>
 
 #pragma region TextComponent
 dae::TextComponent::TextComponent(const dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font)
@@ -87,16 +88,21 @@ dae::FPSComponent::FPSComponent(const dae::GameObject* pParent, float displayUpd
 		std::cerr << "Parent for added FPSComponent does not contain TextComponent! (has no place to output fps data to!)\n";
 		Remove(); // Mark self as removed as no TextComponent was found
 	}
+
+	m_Counter = m_CounterInterval; // Max out immediately to allow immediate update to FPS data
 }
 
 void dae::FPSComponent::Update()
 {
 	m_Counter += Timer::GetInstance().GetDeltaTime();
 
-	if (m_pTextLocation && m_Counter >= 0.3f) {
+	if (m_pTextLocation && m_Counter >= m_CounterInterval) {
+		//const float fps{ std::clamp(Timer::GetInstance().GetFPS(), 0.0f, g_MaxFPS) }; // Not currently using g_MaxFPS
+		const float fps{ Timer::GetInstance().GetFPS() };
+		
 		std::stringstream fpsString;
-		fpsString << std::fixed << "FPS: " << std::setprecision(2) << Timer::GetInstance().GetFPS();
-
+		fpsString << std::fixed << std::setprecision(1) << "FPS: " << fps;
+	
 		m_pTextLocation->SetText(fpsString.str());
 		m_Counter = 0.0f;
 	}

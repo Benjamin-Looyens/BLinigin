@@ -21,7 +21,6 @@ void dae::GameObject::FixedUpdate()
 
 void dae::GameObject::LateUpdate()
 {
-	// TODO : implement late update (destroyed, dirty, etc)
 	for (auto& pComponent : m_pComponents) {
 		if (pComponent == nullptr) continue;
 		pComponent->LateUpdate();
