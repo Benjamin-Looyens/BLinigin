@@ -10,7 +10,9 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 // TODO : fix timer stuff after fixed component and game object problems from feedback (change run function back to what is in discord)
-//#include "Timer.h" 
+#include "Timer.h" 
+
+#include <iostream>
 
 SDL_Window* g_window{};
 
@@ -67,6 +69,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	Timer::GetInstance().Init();
 }
 
 dae::Minigin::~Minigin()
@@ -84,14 +88,21 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& timer = Timer::GetInstance();
 
 	bool doContinue = true;
 
 	while (doContinue)
 	{
 		doContinue = input.ProcessInput();
+		
+		timer.Update();
+		
 		sceneManager.Update();
 		sceneManager.LateUpdate();
 		renderer.Render();
+
+		//std::cout << "DeltaTime: " << timer.GetDeltaTime() << "\n";
+		//std::cout << "FPS: " << timer.GetFPS() << "\n";
 	}
 }

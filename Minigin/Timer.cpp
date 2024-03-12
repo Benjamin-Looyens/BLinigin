@@ -1,28 +1,30 @@
 #include "Timer.h"
 #include <chrono>
+#include <deque>
+#include <numeric>
+#include <algorithm>
 
-using hires_clock = std::chrono::high_resolution_clock;
+void dae::Timer::Init()
+{
+	m_PrevFrame = std::chrono::high_resolution_clock::now();
+}
 
-//hires_clock::time_point g_Before = hires_clock::now();
-//float g_DeltaTime = -1.0f;
-//
-//float g_TimeScale = 1.0f;
-//
-//void dae::Timer::Update()
-//{
-//    auto now = hires_clock::now();
-//
-//    g_DeltaTime = std::chrono::duration<float, std::milli>(now - g_Before).count();
-//
-//    g_Before = now;
-//}
-//
-//float dae::Timer::DeltaTime()
-//{
-//    return g_DeltaTime * g_TimeScale;
-//}
-//
-//void dae::Timer::SetTimeScale(float timeScale)
-//{
-//    g_TimeScale = timeScale;
-//}
+void dae::Timer::Update()
+{
+	auto curFrame = std::chrono::high_resolution_clock::now();
+
+	m_DeltaTime = std::chrono::duration<float, std::ratio<1>>(curFrame - m_PrevFrame).count();
+
+    m_DeltaTimeDeque.push_front(m_DeltaTime);
+    while (m_DeltaTimeDeque.size() > m_FPSAveragingCount) m_DeltaTimeDeque.pop_back();
+
+	m_PrevFrame = curFrame;
+}
+
+float dae::Timer::GetFPS() const
+{   
+    const float sum{ std::accumulate(m_DeltaTimeDeque.begin(), m_DeltaTimeDeque.end(), 0.f) };
+    const float averagedFPS{ 1.0f / (sum / m_DeltaTimeDeque.size()) };
+    
+    return averagedFPS;
+}

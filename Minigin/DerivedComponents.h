@@ -57,7 +57,7 @@ namespace dae {
 	public:
 		void Update() override;
 
-		FPSComponent(const dae::GameObject* parent);
+		FPSComponent(const dae::GameObject* parent, float displayUpdateInterval = 0.25f);
 		virtual ~FPSComponent() = default;
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) = delete;
@@ -66,6 +66,9 @@ namespace dae {
 
 	private:
 		dae::TextComponent* m_pTextLocation; // non-owning reference to parent's text component (if it has one)
+		
+		float m_CounterInterval;
+		float m_Counter{};
 	};
 }
 

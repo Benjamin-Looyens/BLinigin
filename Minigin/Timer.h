@@ -1,25 +1,32 @@
 #pragma once
 #include "Singleton.h"
+#include <chrono>
+#include <deque>
 
 namespace dae {
 	class Timer final : public Singleton<Timer> 
 	{
 	public:
-		// TODO : Define necessities & finish Timer class
+		void Init();
+		void Update();
+		
+		void SetScale(float newScale) { m_TimeScale = newScale; };
+		void SetFPSAveragingCount(unsigned int newCount) { m_FPSAveragingCount = newCount; };
+
+		float GetDeltaTime() const { return m_DeltaTime; };
+		// TODO : Figure out whether the following are necessary
+		//float GetDeltaValue() const { return m_TimeScale * m_DeltaTime; }; 
+		//float GetFixedDelta() const { return 1.0f / 60.0f * m_TimeScale; };
+
+		float GetFPS() const;
 
 	private:
+		float m_TimeScale = 1.0f;
+		float m_DeltaTime = 1.0f;
 
+		std::chrono::high_resolution_clock::time_point m_PrevFrame;
+
+		unsigned int m_FPSAveragingCount{ 200 };
+		std::deque<float> m_DeltaTimeDeque{};
 	};
-	
-	/*namespace Timer {
-		
-
-		
-		void Update();
-
-		float DeltaTime();
-		float FixedTimeStop() { return 1.0f / 60.0f; };
-		
-		void SetTimeScale(float newTimeScale = 1.0f);
-	}*/
 }

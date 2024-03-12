@@ -7,6 +7,8 @@
 #include "Texture2D.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
+#include "Timer.h"
+#include <sstream>
 
 #pragma region TextComponent
 dae::TextComponent::TextComponent(const dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font)
@@ -77,8 +79,8 @@ void dae::TextureComponent::SetTexture(const std::string& filename)
 #pragma endregion TextureComponent
 
 #pragma region FPSComponent
-dae::FPSComponent::FPSComponent(const dae::GameObject* pParent) 
-	: Component(pParent)
+dae::FPSComponent::FPSComponent(const dae::GameObject* pParent, float displayUpdateInterval)
+	: Component(pParent), m_CounterInterval{ displayUpdateInterval }
 {
 	m_pTextLocation = pParent->GetComponent<dae::TextComponent>();
 	if (!m_pTextLocation) {
@@ -89,10 +91,14 @@ dae::FPSComponent::FPSComponent(const dae::GameObject* pParent)
 
 void dae::FPSComponent::Update()
 {
-	if (m_pTextLocation) {
-		std::string fpsText{ "This sure is an fps component :)" };
+	m_Counter += Timer::GetInstance().GetDeltaTime();
 
-		m_pTextLocation->SetText(fpsText);
+	if (m_pTextLocation && m_Counter >= 0.3f) {
+		std::stringstream fpsString;
+		fpsString << std::fixed << "FPS: " << std::setprecision(2) << Timer::GetInstance().GetFPS();
+
+		m_pTextLocation->SetText(fpsString.str());
+		m_Counter = 0.0f;
 	}
 }
 #pragma endregion FPSComponent
