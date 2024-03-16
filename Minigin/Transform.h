@@ -6,7 +6,7 @@ namespace dae
 	class Transform final
 	{
 	public:
-		const glm::vec3& GetLocalTranslation() const { return m_Translation; }
+		const glm::vec3& GetTranslation() const { return m_Translation; }
 
 		void SetTranslation(float x, float y, float z);
 		void SetTranslation(glm::vec3 newPos) { m_Translation = newPos; };

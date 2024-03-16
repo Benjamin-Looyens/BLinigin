@@ -23,8 +23,8 @@ namespace dae
 		void Render() const;
 
 		void SetTransform(const Transform& newTransform) { m_LocalTransform = newTransform; };
-		void SetTranslation(float x, float y, float z = 0.0f) { m_LocalTransform.SetTranslation(x, y, z); };
-		void SetTranslation(const glm::vec3& newTranslate) { m_LocalTransform.SetTranslation(newTranslate); };
+		void SetLocalTranslation(const float x, const float y, const float z = 0.0f);
+		void SetLocalTranslation(const glm::vec3& newTranslate) { SetLocalTranslation(newTranslate.x, newTranslate.y, newTranslate.z); };
 
 		Transform GetLocalTransform() const { return m_LocalTransform; };
 		glm::vec3 GetTranslation() const { return m_LocalTransform.GetTranslation(); };
@@ -84,13 +84,11 @@ namespace dae
 		Transform m_WorldTransform{ };
 
 		bool m_PositionDirty{ false };
-		bool m_RotationDirty{ false };
-		bool m_ScaleDirty{ false };
 
 		GameObject* m_pParentObject;
 
 		std::vector<std::unique_ptr<Component>>	 m_pComponents;
-		std::vector<std::shared_ptr<GameObject>> m_pChildObjects; // HACK : should I use shared_ptr ?
+		std::vector<std::shared_ptr<GameObject>> m_pChildObjects;
 
 		bool m_UseParentWorld{ true };
 

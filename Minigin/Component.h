@@ -20,7 +20,7 @@ namespace dae {
 		const GameObject* GetParent() const { return m_pParent; };
 
 		//Component() = default;
-		Component(const GameObject* pParent) { 
+		Component(GameObject* pParent) { 
 			m_pParent = pParent;
 			assert(pParent && "Component was created with parent = nullptr (parent does not exist).");
 		};
@@ -35,7 +35,7 @@ namespace dae {
 	
 		bool m_Removed{ false };
 
-		const GameObject* m_pParent;
+		GameObject* m_pParent;
 	};
 
 }

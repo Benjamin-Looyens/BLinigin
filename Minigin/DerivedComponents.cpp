@@ -12,7 +12,7 @@
 #include <algorithm>
 
 #pragma region TextComponent
-dae::TextComponent::TextComponent(const dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font)
+dae::TextComponent::TextComponent(dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font)
 	: Component(pParent), m_NeedsUpdate(true), m_Text(text), m_pFont(std::move(font)), m_pTextTexture(nullptr)
 {
 	m_ComponentName = "TextComponent";
@@ -41,11 +41,11 @@ void dae::TextComponent::Update()
 
 void dae::TextComponent::Render() const
 {
-	const auto& transform = m_pParent->GetLocalTransform();
+	//const auto& transform = m_pParent->GetWorldPosition();
 
 	if (m_pTextTexture != nullptr)
 	{
-		const auto& pos = transform.GetTranslation();
+		const auto& pos = m_pParent->GetWorldPosition();
 		Renderer::GetInstance().RenderTexture(*m_pTextTexture, pos.x, pos.y);
 	}
 }
@@ -59,7 +59,7 @@ void dae::TextComponent::SetText(const std::string& text)
 #pragma endregion TextComponent
 
 #pragma region TextureComponent
-dae::TextureComponent::TextureComponent(const dae::GameObject* pParent, const std::string& filename)
+dae::TextureComponent::TextureComponent(dae::GameObject* pParent, const std::string& filename)
 	: Component(pParent)
 {
 	SetTexture(filename);
@@ -68,8 +68,8 @@ dae::TextureComponent::TextureComponent(const dae::GameObject* pParent, const st
 
 void dae::TextureComponent::Render() const
 {
-	const auto& transform = m_pParent->GetLocalTransform();
-	const auto& pos = transform.GetTranslation();
+	//const auto& transform = m_pParent->GetLocalTransform();
+	const auto& pos = m_pParent->GetWorldPosition();
 	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 }
 
@@ -80,7 +80,7 @@ void dae::TextureComponent::SetTexture(const std::string& filename)
 #pragma endregion TextureComponent
 
 #pragma region FPSComponent
-dae::FPSComponent::FPSComponent(const dae::GameObject* pParent, float displayUpdateInterval)
+dae::FPSComponent::FPSComponent(dae::GameObject* pParent, float displayUpdateInterval)
 	: Component(pParent), m_CounterInterval{ displayUpdateInterval }
 {
 	m_pTextLocation = pParent->GetComponent<dae::TextComponent>();

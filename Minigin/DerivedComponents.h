@@ -18,7 +18,7 @@ namespace dae {
 
 		void SetText(const std::string& text);
 
-		TextComponent(const dae::GameObject * parent, const std::string& text, std::shared_ptr<Font> font);
+		TextComponent(dae::GameObject * parent, const std::string& text, std::shared_ptr<Font> font);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -40,7 +40,7 @@ namespace dae {
 
 		void SetTexture(const std::string& filename);
 
-		TextureComponent(const dae::GameObject* parent, const std::string& filename);
+		TextureComponent(dae::GameObject* parent, const std::string& filename);
 		virtual ~TextureComponent() = default;
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent(TextureComponent&& other) = delete;
@@ -57,7 +57,7 @@ namespace dae {
 	public:
 		void Update() override;
 
-		FPSComponent(const dae::GameObject* parent, float displayUpdateInterval = 0.25f);
+		FPSComponent(dae::GameObject* parent, float displayUpdateInterval = 0.25f);
 		virtual ~FPSComponent() = default;
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) = delete;

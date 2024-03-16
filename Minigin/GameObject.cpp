@@ -31,7 +31,7 @@ void dae::GameObject::LateUpdate()
 		pComponent->LateUpdate();
 	}
 
-	// TODO : Move Removal System to own function most likely
+	// Remove components marked for remove
 	const size_t curSize{ m_pComponents.size() };
 
 	for (size_t index{ }; index < curSize; ++index) {
@@ -51,6 +51,13 @@ void dae::GameObject::Render() const
 		if (pComponent != nullptr) pComponent->Render(); // if component has a rendering section, it will render using game object transform
 }
 
+void dae::GameObject::SetLocalTranslation(const float x, const float y, const float z)
+{
+	m_LocalTransform.SetTranslation(x, y, z);
+	
+	m_PositionDirty = true;
+}
+
 glm::vec3 dae::GameObject::GetWorldPosition()
 {
 	if (m_PositionDirty) UpdateWorldPosition();
@@ -61,11 +68,10 @@ glm::vec3 dae::GameObject::GetWorldPosition()
 void dae::GameObject::UpdateWorldPosition()
 {
 	if (m_PositionDirty) {
-		auto& worldPos = m_WorldTransform.GetTranslation();
 		auto& localPos = m_LocalTransform.GetTranslation();
 
 		if (m_pParentObject == nullptr) m_WorldTransform.SetTranslation(localPos);
-		else m_WorldTransform.SetTranslation(worldPos + localPos);
+		else m_WorldTransform.SetTranslation(m_pParentObject->GetWorldPosition() + localPos);
 	}
 
 	m_PositionDirty = false;
@@ -89,7 +95,6 @@ void dae::GameObject::PrintComponents() const
 	}
 }
 
-// TODO : Test AddChild() (only base adding, no transforming position data)
 void dae::GameObject::AddChild(std::shared_ptr<GameObject>& pNewChild)
 {
 	if (pNewChild == nullptr) {
@@ -101,9 +106,8 @@ void dae::GameObject::AddChild(std::shared_ptr<GameObject>& pNewChild)
 		return;
 	}
 	
-	// TODO : Implement rest of AddChild() (position tranformation data)
 	// Dirty pattern (position, scale, rotation)
-	
+	m_PositionDirty = true;
 
 	// Remove from prior parent
 	if (pNewChild->m_pParentObject)
@@ -116,7 +120,6 @@ void dae::GameObject::AddChild(std::shared_ptr<GameObject>& pNewChild)
 	std::cout << "Child object has been added.\n";
 }
 
-// TODO : Test RemoveChild() (only base removing, no transforming position data)
 void dae::GameObject::RemoveChild(std::shared_ptr<GameObject>& pChildToRemove)
 {
 	if (pChildToRemove == nullptr) {
@@ -124,8 +127,6 @@ void dae::GameObject::RemoveChild(std::shared_ptr<GameObject>& pChildToRemove)
 		return;
 	}
 
-	// TODO : Implement rest of RemoveChild() (Position transformation data)
-	
 	std::cout << "child use count: " << pChildToRemove.use_count() << "\n";
 
 	// Check it *is* one of the children
@@ -135,7 +136,8 @@ void dae::GameObject::RemoveChild(std::shared_ptr<GameObject>& pChildToRemove)
 	}
 
 	// Update position (keep pos)
-	
+	pChildToRemove->SetLocalTranslation(pChildToRemove->GetWorldPosition());
+	pChildToRemove->m_PositionDirty = true;
 
 	// Remove from children vector
 	m_pChildObjects.erase(std::remove(begin(m_pChildObjects), end(m_pChildObjects), pChildToRemove));
@@ -146,7 +148,7 @@ void dae::GameObject::RemoveChild(std::shared_ptr<GameObject>& pChildToRemove)
 	std::cout << "Child object has been removed.\n";
 }
 
-// TODO : Test ValidParent()
+// TODO : Test ValidParent() further cause it may be inconsistent with other functions
 bool dae::GameObject::ValidParent(GameObject* pParent)
 {
 	if (this == pParent) return false;
