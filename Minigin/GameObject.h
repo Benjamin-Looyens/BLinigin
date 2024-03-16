@@ -22,7 +22,12 @@ namespace dae
 		void LateUpdate();
 		void Render() const;
 
-		void SetPosition(float x, float y);
+		void SetTransform(const Transform& newTransform) { m_LocalTransform = newTransform; };
+		void SetTranslation(float x, float y, float z = 0.0f) { m_LocalTransform.SetTranslation(x, y, z); };
+		void SetTranslation(const glm::vec3& newTranslate) { m_LocalTransform.SetTranslation(newTranslate); };
+
+		Transform GetLocalTransform() const { return m_LocalTransform; };
+		glm::vec3 GetLocalTranslation() const { return m_LocalTransform.GetLocalTranslation(); };
 
 		void RemoveComponent(size_t componentIndex);
 		void PrintComponents() const; // for debug
@@ -30,7 +35,7 @@ namespace dae
 		void Destroy() { m_Destroyed = true; };
 		bool IsDestroyed() { return m_Destroyed; };
 
-		Transform GetTransform() const { return m_Transform; };
+		void SetUseParentWorld(const bool newUse) { m_UseParentWorld = newUse; };
 
 #pragma region TemplateFunctions
 		template<DerivedComponent ComponentType, typename... TArgs>
@@ -59,7 +64,14 @@ namespace dae
 		bool HasComponent() { return GetComponent<ComponentType>() != nullptr; }
 #pragma endregion TemplateFunctions
 
-		GameObject() = default;
+#pragma region ChildObjectFunctions
+		void AddChild(std::shared_ptr<GameObject>& pNewChild);
+		void RemoveChild(std::shared_ptr<GameObject>& pChildToRemove);
+		bool ValidParent(GameObject* pParent);
+		int GetChildCount() { return static_cast<int>(m_pChildObjects.size()); };
+#pragma endregion ChildObjectFunctions
+
+		GameObject(GameObject* pParent = nullptr);
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -67,9 +79,19 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		Transform m_Transform{ };
+		Transform m_LocalTransform{ };
+		Transform m_WorldTransform{ };
 
-		std::vector <std::unique_ptr<Component>> m_pComponents;
+		bool m_TranslationDirty{ false };
+		bool m_RotationDirty{ false };
+		bool m_ScaleDirty{ false };
+
+		GameObject* m_pParentObject;
+
+		std::vector<std::unique_ptr<Component>>	 m_pComponents;
+		std::vector<std::shared_ptr<GameObject>> m_pChildObjects; // HACK : should I use shared_ptr ?
+
+		bool m_UseParentWorld{ true };
 
 		bool m_Destroyed{ false };
 	};

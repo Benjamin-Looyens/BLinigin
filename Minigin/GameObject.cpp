@@ -5,6 +5,11 @@
 #include "Component.h"
 #include "DerivedComponents.h"
 #include <iostream>
+#include <algorithm>
+
+dae::GameObject::GameObject(GameObject* pParentObject)
+	: m_pParentObject{ pParentObject }
+{}
 
 dae::GameObject::~GameObject() = default;
 
@@ -46,11 +51,6 @@ void dae::GameObject::Render() const
 		if (pComponent != nullptr) pComponent->Render(); // if component has a rendering section, it will render using game object transform
 }
 
-void dae::GameObject::SetPosition(float x, float y)
-{
-	m_Transform.SetPosition(x, y, 0.0f);
-}
-
 void dae::GameObject::RemoveComponent(size_t componentIndex)
 {
 	m_pComponents[componentIndex]->Remove();
@@ -67,4 +67,83 @@ void dae::GameObject::PrintComponents() const
 	else {
 		std::cout << "None\n";
 	}
+}
+
+// TODO : Test AddChild() (only base adding, no transforming position data)
+void dae::GameObject::AddChild(std::shared_ptr<GameObject>& pNewChild)
+{
+	if (pNewChild == nullptr) {
+		std::cerr << "Child that is being attempted to add is nullptr!\n";
+		return;
+	}
+	if (!pNewChild->ValidParent(this)) {
+		std::cerr << "Child that is being attempted to add is not valid!\n";
+		return;
+	}
+	
+	// TODO : Implement rest of AddChild() (position tranformation data)
+	// Dirty pattern (position, scale, rotation)
+	
+
+	// Remove from prior parent
+	if (pNewChild->m_pParentObject)
+		pNewChild->m_pParentObject->m_pChildObjects.erase(std::remove(m_pChildObjects.begin(), m_pChildObjects.end(), pNewChild), m_pChildObjects.end());
+	
+	// newChild is not owning of self, thus is allowed to be a child
+	m_pChildObjects.push_back(pNewChild);
+	pNewChild->m_pParentObject = this;
+
+	std::cout << "Child object has been added.\n";
+}
+
+// TODO : Test RemoveChild() (only base removing, no transforming position data)
+void dae::GameObject::RemoveChild(std::shared_ptr<GameObject>& pChildToRemove)
+{
+	if (pChildToRemove == nullptr) {
+		std::cerr << "Child that is being attempted to remove is nullptr!\n";
+		return;
+	}
+
+	// TODO : Implement rest of RemoveChild() (Position transformation data)
+	
+	std::cout << "child use count: " << pChildToRemove.use_count() << "\n";
+
+	// Check it *is* one of the children
+	if (std::find(begin(m_pChildObjects), end(m_pChildObjects), pChildToRemove) == end(m_pChildObjects)) {
+		std::cerr << "Child that is being attempted to be removed is not within the child vector!\n";
+		return;
+	}
+
+	// Update position (keep pos)
+	
+
+	// Remove from children vector
+	m_pChildObjects.erase(std::remove(begin(m_pChildObjects), end(m_pChildObjects), pChildToRemove));
+
+	// Remove self as parent
+	pChildToRemove->m_pParentObject = nullptr;
+
+	std::cout << "Child object has been removed.\n";
+}
+
+// TODO : Test ValidParent()
+bool dae::GameObject::ValidParent(GameObject* pParent)
+{
+	if (this == pParent) return false;
+
+	auto pParentShared = std::make_shared<GameObject>(pParent); // I dont like this but cant think of any other way to do it 
+
+	// Check within current child objects
+ 	bool withinChildVector{ std::find(begin(m_pChildObjects), end(m_pChildObjects), pParentShared) != end(m_pChildObjects) };
+	if (withinChildVector) return false;
+
+	// Recursively check all the child objects to make sure original parent is not within the children objects
+	bool validSoFar{ true }; 
+	for (const auto& pChild : m_pChildObjects) {
+		if (!validSoFar) break;
+
+		validSoFar = pChild->ValidParent(pParent);
+	}
+
+	return validSoFar;
 }

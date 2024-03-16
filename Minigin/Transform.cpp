@@ -1,8 +1,8 @@
 #include "Transform.h"
 
-void dae::Transform::SetPosition(const float x, const float y, const float z)
+void dae::Transform::SetTranslation(const float x, const float y, const float z)
 {
-	m_Position.x = x;
-	m_Position.y = y;
-	m_Position.z = z;
+	m_Translation.x = x;
+	m_Translation.y = y;
+	m_Translation.z = z;
 }

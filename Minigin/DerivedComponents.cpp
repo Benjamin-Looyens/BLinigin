@@ -41,11 +41,11 @@ void dae::TextComponent::Update()
 
 void dae::TextComponent::Render() const
 {
-	const auto& transform = m_pParent->GetTransform();
+	const auto& transform = m_pParent->GetLocalTransform();
 
 	if (m_pTextTexture != nullptr)
 	{
-		const auto& pos = transform.GetPosition();
+		const auto& pos = transform.GetLocalTranslation();
 		Renderer::GetInstance().RenderTexture(*m_pTextTexture, pos.x, pos.y);
 	}
 }
@@ -68,8 +68,8 @@ dae::TextureComponent::TextureComponent(const dae::GameObject* pParent, const st
 
 void dae::TextureComponent::Render() const
 {
-	const auto& transform = m_pParent->GetTransform();
-	const auto& pos = transform.GetPosition();
+	const auto& transform = m_pParent->GetLocalTransform();
+	const auto& pos = transform.GetLocalTranslation();
 	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 }
 

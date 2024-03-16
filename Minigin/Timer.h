@@ -21,8 +21,8 @@ namespace dae {
 		float GetFPS() const;
 
 	private:
-		float m_TimeScale = 1.0f;
-		float m_DeltaTime = 1.0f;
+		float m_TimeScale{ 1.0f };
+		float m_DeltaTime{ 1.0f };
 
 		std::chrono::high_resolution_clock::time_point m_PrevFrame;
 
