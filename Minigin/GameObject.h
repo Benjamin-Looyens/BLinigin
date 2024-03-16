@@ -27,7 +27,10 @@ namespace dae
 		void SetTranslation(const glm::vec3& newTranslate) { m_LocalTransform.SetTranslation(newTranslate); };
 
 		Transform GetLocalTransform() const { return m_LocalTransform; };
-		glm::vec3 GetLocalTranslation() const { return m_LocalTransform.GetLocalTranslation(); };
+		glm::vec3 GetTranslation() const { return m_LocalTransform.GetTranslation(); };
+
+		glm::vec3 GetWorldPosition();
+		void UpdateWorldPosition();
 
 		void RemoveComponent(size_t componentIndex);
 		void PrintComponents() const; // for debug
@@ -64,12 +67,10 @@ namespace dae
 		bool HasComponent() { return GetComponent<ComponentType>() != nullptr; }
 #pragma endregion TemplateFunctions
 
-#pragma region ChildObjectFunctions
 		void AddChild(std::shared_ptr<GameObject>& pNewChild);
 		void RemoveChild(std::shared_ptr<GameObject>& pChildToRemove);
 		bool ValidParent(GameObject* pParent);
 		int GetChildCount() { return static_cast<int>(m_pChildObjects.size()); };
-#pragma endregion ChildObjectFunctions
 
 		GameObject(GameObject* pParent = nullptr);
 		~GameObject();
@@ -82,7 +83,7 @@ namespace dae
 		Transform m_LocalTransform{ };
 		Transform m_WorldTransform{ };
 
-		bool m_TranslationDirty{ false };
+		bool m_PositionDirty{ false };
 		bool m_RotationDirty{ false };
 		bool m_ScaleDirty{ false };
 

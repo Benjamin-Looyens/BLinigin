@@ -51,6 +51,26 @@ void dae::GameObject::Render() const
 		if (pComponent != nullptr) pComponent->Render(); // if component has a rendering section, it will render using game object transform
 }
 
+glm::vec3 dae::GameObject::GetWorldPosition()
+{
+	if (m_PositionDirty) UpdateWorldPosition();
+	
+	return m_WorldTransform.GetTranslation();
+}
+
+void dae::GameObject::UpdateWorldPosition()
+{
+	if (m_PositionDirty) {
+		auto& worldPos = m_WorldTransform.GetTranslation();
+		auto& localPos = m_LocalTransform.GetTranslation();
+
+		if (m_pParentObject == nullptr) m_WorldTransform.SetTranslation(localPos);
+		else m_WorldTransform.SetTranslation(worldPos + localPos);
+	}
+
+	m_PositionDirty = false;
+}
+
 void dae::GameObject::RemoveComponent(size_t componentIndex)
 {
 	m_pComponents[componentIndex]->Remove();
