@@ -1,5 +1,10 @@
 #pragma once
-namespace dae {
+#include "SDL.h"
+#include <vector>
+
+
+namespace dae 
+{
 	class Command 
 	{
 	public:

@@ -1,0 +1,5 @@
+#pragma once
+#define BL_GAMEPAD_DPAD_UP 0
+#define BL_GAMEPAD_DPAD_LEFT 1
+#define BL_GAMEPAD_DPAD_RIGHT 3
+#define BL_GAMEPAD_DPAD_DOWN 4

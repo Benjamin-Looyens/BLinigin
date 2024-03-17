@@ -1,5 +1,35 @@
 #pragma once
-class DerivedCommands
-{
-};
+#include "Command.h"
+#include "glm/vec3.hpp"
 
+namespace dae
+{
+	class GameObject;
+
+	class GameObjectCommand : public Command
+	{
+	public:
+		GameObjectCommand(GameObject* pGameObject);
+		virtual ~GameObjectCommand() = default;
+
+	protected:
+		GameObject* GetGameObject() const { return m_pGameObject; };
+	
+	private:
+		GameObject* m_pGameObject;
+	};
+
+	class MoveCommand : public GameObjectCommand
+	{
+	public:
+		void Execute() override;
+
+		MoveCommand(GameObject* pGameObject, glm::vec3 movDirection, float movSpeedPerSecond = 50.0f);
+
+	private:
+		float m_Speed;
+		glm::vec3 m_MoveDirection;
+	};
+
+	
+}
