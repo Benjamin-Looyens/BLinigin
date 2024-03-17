@@ -56,6 +56,9 @@ void dae::GameObject::SetLocalTranslation(const float x, const float y, const fl
 	m_LocalTransform.SetTranslation(x, y, z);
 	
 	m_PositionDirty = true;
+
+	for (auto& childObject : m_pChildObjects) 
+		childObject->SetPositionDirty();
 }
 
 glm::vec3 dae::GameObject::GetWorldPosition()
@@ -127,8 +130,6 @@ void dae::GameObject::RemoveChild(std::shared_ptr<GameObject>& pChildToRemove)
 		return;
 	}
 
-	std::cout << "child use count: " << pChildToRemove.use_count() << "\n";
-
 	// Check it *is* one of the children
 	if (std::find(begin(m_pChildObjects), end(m_pChildObjects), pChildToRemove) == end(m_pChildObjects)) {
 		std::cerr << "Child that is being attempted to be removed is not within the child vector!\n";
@@ -168,4 +169,19 @@ bool dae::GameObject::ValidParent(GameObject* pParent)
 	}
 
 	return validSoFar;
+}
+
+void dae::GameObject::SeperateFromParent()
+{
+	if (m_pParentObject == nullptr) {
+		std::cerr << "No parent to seperate from.\n";
+		return;
+	}
+
+	// HACK : This really doesn't seem good but I dont really use this function so for now ignore
+	for (auto& object : m_pParentObject->m_pChildObjects) {
+		if (object.get() == this) {
+			m_pParentObject->RemoveChild(object);
+		}
+	}
 }

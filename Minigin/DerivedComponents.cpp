@@ -108,3 +108,22 @@ void dae::FPSComponent::Update()
 	}
 }
 #pragma endregion FPSComponent
+
+#pragma region WaveMovementYComponent
+dae::WaveMovementYComponent::WaveMovementYComponent(GameObject* pParent, float waveHeight, float waveSpeed)
+	: Component(pParent), m_WaveHeight{ waveHeight }, m_WaveSpeed{ waveSpeed }
+{
+	m_Origin = pParent->GetLocalPosition();
+}
+
+void dae::WaveMovementYComponent::Update()
+{
+	m_WaveTime += Timer::GetInstance().GetDeltaTime() * m_WaveSpeed;
+
+	glm::vec3 wavePos{ m_Origin };
+
+	wavePos.y += m_WaveHeight * (std::sinf(m_WaveTime));
+
+	m_pParent->SetLocalTranslation(wavePos);
+}
+#pragma endregion WaveMovementYComponent

@@ -18,7 +18,7 @@ namespace dae {
 
 		void SetText(const std::string& text);
 
-		TextComponent(dae::GameObject * parent, const std::string& text, std::shared_ptr<Font> font);
+		TextComponent(dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -40,7 +40,7 @@ namespace dae {
 
 		void SetTexture(const std::string& filename);
 
-		TextureComponent(dae::GameObject* parent, const std::string& filename);
+		TextureComponent(dae::GameObject* pParent, const std::string& filename);
 		virtual ~TextureComponent() = default;
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent(TextureComponent&& other) = delete;
@@ -57,7 +57,7 @@ namespace dae {
 	public:
 		void Update() override;
 
-		FPSComponent(dae::GameObject* parent, float displayUpdateInterval = 0.25f);
+		FPSComponent(dae::GameObject* pParent, float displayUpdateInterval = 0.25f);
 		virtual ~FPSComponent() = default;
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) = delete;
@@ -69,6 +69,27 @@ namespace dae {
 		
 		float m_CounterInterval;
 		float m_Counter{};
+	};
+
+	class WaveMovementYComponent : public Component
+	{
+	public:
+		void Update() override;
+
+		WaveMovementYComponent(GameObject* pParent, float waveHeight = 10.0f, float waveSpeed = 1.0f);
+		virtual ~WaveMovementYComponent() = default;
+		WaveMovementYComponent(const WaveMovementYComponent& other) = delete;
+		WaveMovementYComponent(const WaveMovementYComponent&& other) = delete;
+		WaveMovementYComponent& operator=(const WaveMovementYComponent& other) = delete;
+		WaveMovementYComponent& operator=(const WaveMovementYComponent&& other) = delete;
+	
+	private:
+		glm::vec3 m_Origin;
+
+		float m_WaveHeight;
+		float m_WaveSpeed;
+
+		float m_WaveTime{ 0.0f }; 
 	};
 }
 

@@ -27,7 +27,7 @@ namespace dae
 		void SetLocalTranslation(const glm::vec3& newTranslate) { SetLocalTranslation(newTranslate.x, newTranslate.y, newTranslate.z); };
 
 		Transform GetLocalTransform() const { return m_LocalTransform; };
-		glm::vec3 GetTranslation() const { return m_LocalTransform.GetTranslation(); };
+		glm::vec3 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
 
 		glm::vec3 GetWorldPosition();
 		void UpdateWorldPosition();
@@ -39,6 +39,8 @@ namespace dae
 		bool IsDestroyed() { return m_Destroyed; };
 
 		void SetUseParentWorld(const bool newUse) { m_UseParentWorld = newUse; };
+
+		GameObject* GetChildAtIndex(size_t index) { if (m_pChildObjects.size() <= index) return nullptr; return m_pChildObjects[index].get(); };
 
 #pragma region TemplateFunctions
 		template<DerivedComponent ComponentType, typename... TArgs>
@@ -70,6 +72,7 @@ namespace dae
 		void AddChild(std::shared_ptr<GameObject>& pNewChild);
 		void RemoveChild(std::shared_ptr<GameObject>& pChildToRemove);
 		bool ValidParent(GameObject* pParent);
+		void SeperateFromParent();
 		int GetChildCount() { return static_cast<int>(m_pChildObjects.size()); };
 
 		GameObject(GameObject* pParent = nullptr);
@@ -80,6 +83,8 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
+		void SetPositionDirty() { m_PositionDirty = true; };
+
 		Transform m_LocalTransform{ };
 		Transform m_WorldTransform{ };
 
