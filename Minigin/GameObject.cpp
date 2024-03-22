@@ -13,6 +13,14 @@ dae::GameObject::GameObject(GameObject* pParentObject)
 
 dae::GameObject::~GameObject() = default;
 
+void dae::GameObject::SetPositionDirty()
+{
+	m_PositionDirty = true;
+
+	for (auto& childObject : m_pChildObjects)
+		childObject->SetPositionDirty();
+}
+
 void dae::GameObject::Update()
 {
 	for (auto& pComponent : m_pComponents) 
@@ -110,11 +118,15 @@ void dae::GameObject::AddChild(std::shared_ptr<GameObject>& pNewChild)
 	}
 	
 	// Dirty pattern (position, scale, rotation)
-	m_PositionDirty = true;
+	// TODO : Fix position update
+	
+	auto currentPos = GetWorldPosition();
+	auto newChildCurrentPos = pNewChild->GetWorldPosition();
+	pNewChild->SetLocalTranslation(newChildCurrentPos - currentPos);
 
 	// Remove from prior parent
-	if (pNewChild->m_pParentObject)
-		pNewChild->m_pParentObject->m_pChildObjects.erase(std::remove(m_pChildObjects.begin(), m_pChildObjects.end(), pNewChild), m_pChildObjects.end());
+	if (pNewChild->HasParent())
+		pNewChild->m_pParentObject->RemoveChild(pNewChild);
 	
 	// newChild is not owning of self, thus is allowed to be a child
 	m_pChildObjects.push_back(pNewChild);

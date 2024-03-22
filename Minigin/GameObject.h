@@ -73,7 +73,8 @@ namespace dae
 		void RemoveChild(std::shared_ptr<GameObject>& pChildToRemove);
 		bool ValidParent(GameObject* pParent);
 		void SeperateFromParent();
-		int GetChildCount() { return static_cast<int>(m_pChildObjects.size()); };
+		int GetChildCount() const { return static_cast<int>(m_pChildObjects.size()); };
+		bool HasParent() const { return (m_pParentObject != nullptr); };
 
 		GameObject(GameObject* pParent = nullptr);
 		~GameObject();
@@ -83,12 +84,12 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		void SetPositionDirty() { m_PositionDirty = true; };
+		void SetPositionDirty();
 
 		Transform m_LocalTransform{ };
 		Transform m_WorldTransform{ };
 
-		bool m_PositionDirty{ false };
+		bool m_PositionDirty{ true };
 
 		GameObject* m_pParentObject;
 

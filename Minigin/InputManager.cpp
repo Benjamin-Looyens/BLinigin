@@ -42,6 +42,7 @@ bool dae::InputManager::ProcessInput()
 		}
 	}
 
+	// TODO : Add system for button presses, releases and being held down
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
 			return false;
@@ -77,6 +78,9 @@ bool dae::InputManager::ProcessInput()
 			break;
 		case BL_KEYBOARD_D:
 			return SDL_SCANCODE_D;
+			break;
+		case BL_KEYBOARD_SPACE:
+			return SDL_SCANCODE_SPACE;
 			break;
 		}
 	}

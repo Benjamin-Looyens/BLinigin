@@ -24,3 +24,18 @@ void dae::MoveCommand::Execute()
 }
 #pragma endregion MoveCommand
 
+#pragma region ParentToggleCommand
+dae::ParentToggleCommand::ParentToggleCommand(std::shared_ptr<GameObject> pGameObject, std::shared_ptr<GameObject> pParentToToggle)
+	: m_pGameObject{ pGameObject }, m_pParentToToggle{ pParentToToggle }
+{}
+
+void dae::ParentToggleCommand::Execute()
+{
+	if (m_pGameObject->HasParent()) {
+		m_pParentToToggle->RemoveChild(m_pGameObject);
+	}
+	else {
+		m_pParentToToggle->AddChild(m_pGameObject);
+	}
+}
+#pragma endregion ParentToggleCommand

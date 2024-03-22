@@ -1,6 +1,7 @@
 #pragma once
 #include "Command.h"
 #include "glm/vec3.hpp"
+#include <memory>
 
 namespace dae
 {
@@ -31,5 +32,15 @@ namespace dae
 		glm::vec3 m_MoveDirection;
 	};
 
-	
+	class ParentToggleCommand : public Command
+	{
+	public:
+		void Execute() override;
+
+		ParentToggleCommand(std::shared_ptr<GameObject> pGameObject, std::shared_ptr<GameObject> pParentToToggle);
+
+	private:
+		std::shared_ptr<GameObject> m_pParentToToggle;
+		std::shared_ptr<GameObject> m_pGameObject;
+	};
 }
