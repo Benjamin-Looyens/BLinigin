@@ -23,7 +23,7 @@ void dae::Timer::Update()
 
 float dae::Timer::GetFPS() const
 {   
-    const float totalDeltaTime{ std::accumulate(m_DeltaTimeDeque.begin(), m_DeltaTimeDeque.end(), 0.f) };
+    const float totalDeltaTime{ std::accumulate(m_DeltaTimeDeque.begin(), m_DeltaTimeDeque.end(), 0.0f) };
     const float averagedFPS{ 1.0f / (totalDeltaTime / m_DeltaTimeDeque.size()) };
     
     return averagedFPS;

@@ -13,7 +13,7 @@ namespace dae
 	class Gamepad
 	{
 	public:
-		static int TranslateToUsedGamepadCode(int code) 
+		static int TranslateToUsedGamepadCode(const int& code)
 		{
 			switch (code) {
 			case BL_GAMEPAD_DPAD_UP:
@@ -31,7 +31,7 @@ namespace dae
 			}
 
 			std::cerr << "Gamepad code provided does not equate to any define!\n";
-			return code;
+			return -1;
 		}
 	};
 }

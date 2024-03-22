@@ -149,7 +149,6 @@ void dae::GameObject::RemoveChild(std::shared_ptr<GameObject>& pChildToRemove)
 	std::cout << "Child object has been removed.\n";
 }
 
-// TODO : Test ValidParent() further cause it may be inconsistent with other functions
 bool dae::GameObject::ValidParent(GameObject* pParent)
 {
 	if (this == pParent) return false;
@@ -178,7 +177,7 @@ void dae::GameObject::SeperateFromParent()
 		return;
 	}
 
-	// HACK : This really doesn't seem good but I dont really use this function so for now ignore
+	// HACK : This implementation is pretty scuffed
 	for (auto& object : m_pParentObject->m_pChildObjects) {
 		if (object.get() == this) {
 			m_pParentObject->RemoveChild(object);

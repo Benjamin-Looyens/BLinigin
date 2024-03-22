@@ -20,12 +20,24 @@ bool dae::InputManager::ProcessInput()
 
 	const Uint8* pStates = SDL_GetKeyboardState(nullptr);
 
+	// XInput Controller Input
+	XINPUT_STATE currentState{};
+	int controllerIndex{ };
+
+	// TODO : Some sort of system to make sure the controller does exist and stuff
+	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
+	XInputGetState(controllerIndex, &currentState);
+
 	// HACK : Please if you have time, find some other way to do this because good lord
-	// HOOOOOOOLY SHIT this is bad
-	for (size_t index{}; index < m_pCommands.size(); ++index) {
-		if (m_IsController[index] == false) {
-			if (pStates[static_cast<SDL_Scancode>(m_Codes[index])]) {
-				m_pCommands[index]->Execute();
+	for (size_t index{}; index < m_Commands.size(); ++index) {
+		if (m_Commands[index].isController) {
+			if (currentState.Gamepad.wButtons & m_Commands[index].commandCode) {
+				m_Commands[index].pCommand->Execute();
+			}
+		}
+		else {
+			if (pStates[static_cast<SDL_Scancode>(m_Commands[index].commandCode)]) {
+				m_Commands[index].pCommand->Execute();
 			}
 		}
 	}
@@ -38,47 +50,41 @@ bool dae::InputManager::ProcessInput()
 			//if (e.key.keysym.scancode == SDL_SCANCODE_H) std::cout << "H"; // Example
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
-			
+
 		}
 
 		// ImGUI
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 
-	// XInput Controller Input
-	XINPUT_STATE currentState{};
-	int controllerIndex{ };
-
-	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
-	auto result = XInputGetState(controllerIndex, &currentState);
-
-	if (result == ERROR_SUCCESS) {
-		// Controller Quit
-		if (currentState.Gamepad.wButtons & XINPUT_GAMEPAD_B) {
-			return false;
-		}
-
-		// HACK : Please if you have time, find some other way to do this because good lord
-		// HOOOOOOOLY SHIT this is bad
-		for (size_t index{}; index < m_pCommands.size(); ++index) {
-			if (m_IsController[index]) {
-				if (currentState.Gamepad.wButtons & m_Codes[index]) {
-					m_pCommands[index]->Execute();
-				}
-			}
-		}
-	}
-
 	return true;
 }
 
-void dae::InputManager::AddCommand(std::shared_ptr<Command> pCommand, int code, bool isController)
+ int dae::InputManager::TranslateCode(const int& code, bool& inputIsController_OUT)
 {
-	// Translate code to used gamepad code (XINPUT)
-	if (isController) 
-		code = Gamepad::TranslateToUsedGamepadCode(code);
+	if (code & BL_KEYBOARD_INPUT) {
+		inputIsController_OUT = false;
 
-	m_pCommands.push_back(pCommand);
-	m_Codes.push_back(code);
-	m_IsController.push_back(isController);
+		switch (code) {
+		case BL_KEYBOARD_W:
+			return SDL_SCANCODE_W;
+			break;
+		case BL_KEYBOARD_A:
+			return SDL_SCANCODE_A;
+			break;
+		case BL_KEYBOARD_S:
+			return SDL_SCANCODE_S;
+			break;
+		case BL_KEYBOARD_D:
+			return SDL_SCANCODE_D;
+			break;
+		}
+	}
+	else if (code & BL_GAMEPAD_INPUT) {
+		inputIsController_OUT = true;
+		return Gamepad::TranslateToUsedGamepadCode(code);
+	}
+
+	std::cerr << "No translated code was found!\n";
+	return -1;
 }

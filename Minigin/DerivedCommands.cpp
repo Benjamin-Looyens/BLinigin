@@ -10,7 +10,7 @@ dae::GameObjectCommand::GameObjectCommand(GameObject* pActor)
 
 #pragma region MoveCommand
 dae::MoveCommand::MoveCommand(GameObject* pGameObject, glm::vec3 movDirection, float movSpeedPerSecond)
-	: GameObjectCommand(pGameObject), m_MoveDirection{ movDirection }, m_Speed{ movSpeedPerSecond }
+	: GameObjectCommand(pGameObject), m_MoveDirection{ glm::normalize(movDirection) }, m_Speed{movSpeedPerSecond}
 {}
 
 void dae::MoveCommand::Execute()

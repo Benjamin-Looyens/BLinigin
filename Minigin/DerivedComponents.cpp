@@ -10,6 +10,7 @@
 #include "Timer.h"
 #include <sstream>
 #include <algorithm>
+#include <math.h>
 
 #pragma region TextComponent
 dae::TextComponent::TextComponent(dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font)
@@ -119,6 +120,8 @@ dae::WaveMovementYComponent::WaveMovementYComponent(GameObject* pParent, float w
 void dae::WaveMovementYComponent::Update()
 {
 	m_WaveTime += Timer::GetInstance().GetDeltaTime() * m_WaveSpeed;
+
+	m_WaveTime = static_cast<float>(std::fmod(m_WaveTime, M_PI * 2));
 
 	glm::vec3 wavePos{ m_Origin };
 
