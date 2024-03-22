@@ -10,10 +10,6 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "Timer.h" 
-#include <algorithm>
-
-//#include <thread>
-//#include <iostream>
 
 SDL_Window* g_window{};
 
@@ -108,6 +104,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			lag -= fixedTimeStep;
 			sceneManager.FixedUpdate();
 		}
+
 		timer.Update();
 		
 		sceneManager.Update();

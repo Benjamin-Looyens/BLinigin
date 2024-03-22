@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "Scene.h"
+#include "GameObject.h"
 
 void dae::SceneManager::Update()
 {
@@ -35,6 +36,10 @@ void dae::SceneManager::Render()
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
+	//m_pScenes.push_back(std::make_unique<Scene>(name));
+	//
+	//return *m_pScenes[m_pScenes.size() - 1];
+
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
 	m_pScenes.push_back(scene);
 	return *scene;
