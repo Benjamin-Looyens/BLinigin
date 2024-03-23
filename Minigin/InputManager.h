@@ -4,17 +4,27 @@
 #include <memory>
 //#include <utility>
 #include "DerivedCommands.h"
+#include "Gamepad.h"
 
 namespace dae
 {
 	class Command;
 	class GameObject;
+	class Gamepad;
+
+	enum class InputState
+	{
+		PRESSED_THIS_FRAME,
+		RELEASED_THIS_FRAME,
+		HELD
+	};
 
 	struct CommandData
 	{
 		std::unique_ptr<Command> pCommand;
 		int commandCode;
 		bool isController; // HACK : Can probably get rid of this and use custom Macro parser that has controller and keyboard both
+		InputState inputState = InputState::HELD;
 	};
 
 	template<typename CommandType>
@@ -26,6 +36,7 @@ namespace dae
 	{
 	public:
 		bool ProcessInput();
+		void AddGamepad();
 
 		template<DerivedCommand CommandType, typename... TArgs>
 		void AddCommand(int code, const TArgs&... args) 
@@ -40,8 +51,23 @@ namespace dae
 			);
 		};
 
+		template<DerivedCommand CommandType, typename... TArgs>
+		void AddCommand(int code, InputState inputState, const TArgs&... args)
+		{
+			bool inputTypeIsController{ false };
+			code = TranslateCode(code, inputTypeIsController);
+
+			m_Commands.emplace_back(
+				std::make_unique<CommandType>(args...),
+				code,
+				inputTypeIsController,
+				inputState
+			);
+		};
+
 	private:
 		std::vector<CommandData> m_Commands; 
+		std::vector<Gamepad> m_Gamepads;
 		
 		int TranslateCode(const int& code, bool& inputIsController_OUT);
 	};

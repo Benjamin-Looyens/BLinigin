@@ -118,8 +118,6 @@ void dae::GameObject::AddChild(std::shared_ptr<GameObject>& pNewChild)
 	}
 	
 	// Dirty pattern (position, scale, rotation)
-	// TODO : Fix position update
-	
 	auto currentPos = GetWorldPosition();
 	auto newChildCurrentPos = pNewChild->GetWorldPosition();
 	pNewChild->SetLocalTranslation(newChildCurrentPos - currentPos);

@@ -2,6 +2,7 @@
 #include "Command.h"
 #include "glm/vec3.hpp"
 #include <memory>
+#include <string>
 
 namespace dae
 {
@@ -42,5 +43,16 @@ namespace dae
 	private:
 		std::shared_ptr<GameObject> m_pParentToToggle;
 		std::shared_ptr<GameObject> m_pGameObject;
+	};
+
+	class PrintStringCommand : public Command
+	{
+	public:
+		void Execute() override;
+
+		PrintStringCommand(std::string stringToPrint);
+
+	private:
+		std::string m_StringToPrint;
 	};
 }

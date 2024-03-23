@@ -39,3 +39,14 @@ void dae::ParentToggleCommand::Execute()
 	}
 }
 #pragma endregion ParentToggleCommand
+
+#pragma region PrintStringCommand
+dae::PrintStringCommand::PrintStringCommand(std::string stringToPrint)
+	: m_StringToPrint{ stringToPrint }
+{}
+
+void dae::PrintStringCommand::Execute()
+{
+	std::cout << m_StringToPrint << "\n";
+}
+#pragma endregion PrintStringCommand

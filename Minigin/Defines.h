@@ -6,6 +6,10 @@
 #define BL_GAMEPAD_DPAD_LEFT	0x1002
 #define BL_GAMEPAD_DPAD_RIGHT	0x1003
 #define BL_GAMEPAD_DPAD_DOWN	0x1004
+#define BL_GAMEPAD_A			0x1005
+#define BL_GAMEPAD_B			0x1006
+#define BL_GAMEPAD_X			0x1007
+#define BL_GAMEPAD_Y			0x1008
 
 // Define Keyboard Macros
 #define BL_KEYBOARD_INPUT		0x0100

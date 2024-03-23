@@ -28,27 +28,69 @@ bool dae::InputManager::ProcessInput()
 	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
 	XInputGetState(controllerIndex, &currentState);
 
+
+	for (auto& gamepad : m_Gamepads) gamepad.UpdateControllerState();
+
 	// HACK : Please if you have time, find some other way to do this because good lord
 	for (size_t index{}; index < m_Commands.size(); ++index) {
 		if (m_Commands[index].isController) {
-			if (currentState.Gamepad.wButtons & m_Commands[index].commandCode) {
-				m_Commands[index].pCommand->Execute();
+			for (auto& gamepad : m_Gamepads) {
+				switch (m_Commands[index].inputState) {
+				case InputState::PRESSED_THIS_FRAME:
+					if (gamepad.ButtonPressedThisFrame(m_Commands[index].commandCode))
+						m_Commands[index].pCommand->Execute();
+					break;
+				case InputState::RELEASED_THIS_FRAME:
+					if (gamepad.ButtonReleasedThisFrame(m_Commands[index].commandCode))
+						m_Commands[index].pCommand->Execute();
+					break;
+				case InputState::HELD:
+					if (gamepad.ButtonHeld(m_Commands[index].commandCode))
+						m_Commands[index].pCommand->Execute();
+					break;
+				}
 			}
 		}
 		else {
-			if (pStates[static_cast<SDL_Scancode>(m_Commands[index].commandCode)]) {
-				m_Commands[index].pCommand->Execute();
+			switch (m_Commands[index].inputState) {
+			case InputState::HELD:
+				if (pStates[static_cast<SDL_Scancode>(m_Commands[index].commandCode)]) 
+					m_Commands[index].pCommand->Execute();
+				break;
 			}
 		}
 	}
 
-	// TODO : Add system for button presses, releases and being held down
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
 		if (e.type == SDL_KEYDOWN) {
 			//if (e.key.keysym.scancode == SDL_SCANCODE_H) std::cout << "H"; // Example
+
+			// TODO : Fix pressed this frame for Keyboard input
+			if (e.key.repeat == 0) {
+				for (auto& command : m_Commands) {
+					if (command.isController) continue;
+					switch (command.inputState) {
+					case InputState::PRESSED_THIS_FRAME:
+						if (e.key.keysym.scancode == command.commandCode)
+							command.pCommand->Execute();
+						break;
+					}
+				}
+			}
+		}
+		if (e.type == SDL_KEYUP) {
+			for (auto& command : m_Commands) {
+				if (command.isController) continue;
+				switch (command.inputState) {
+				case InputState::RELEASED_THIS_FRAME:
+					if (e.key.keysym.scancode == command.commandCode)
+						command.pCommand->Execute();
+					break;
+				}
+			}
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 
@@ -59,6 +101,11 @@ bool dae::InputManager::ProcessInput()
 	}
 
 	return true;
+}
+
+void dae::InputManager::AddGamepad()
+{
+	m_Gamepads.push_back(static_cast<int>(m_Gamepads.size()));
 }
 
  int dae::InputManager::TranslateCode(const int& code, bool& inputIsController_OUT)
