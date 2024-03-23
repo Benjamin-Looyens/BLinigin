@@ -7,6 +7,7 @@
 namespace dae
 {
 	class GameObject;
+	class Observer;
 
 	class GameObjectCommand : public Command
 	{
@@ -54,5 +55,16 @@ namespace dae
 
 	private:
 		std::string m_StringToPrint;
+	};
+
+	class NotifyObserverCommand : public Command
+	{
+	public:
+		void Execute() override;
+
+		NotifyObserverCommand(dae::Observer* pObserver);
+
+	private:
+		dae::Observer* m_pObserver;
 	};
 }

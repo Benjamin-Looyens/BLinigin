@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include <iostream>
 #include "Timer.h"
+#include "DerivedObservers.h"
+#include "Events.h"
 
 dae::GameObjectCommand::GameObjectCommand(GameObject* pActor)
 	: m_pGameObject{ pActor }
@@ -50,3 +52,14 @@ void dae::PrintStringCommand::Execute()
 	std::cout << m_StringToPrint << "\n";
 }
 #pragma endregion PrintStringCommand
+
+#pragma region NotifyObserverCommand
+dae::NotifyObserverCommand::NotifyObserverCommand(dae::Observer* pObserver)
+	: m_pObserver{ pObserver }
+{}
+
+void dae::NotifyObserverCommand::Execute()
+{
+	m_pObserver->OnNotify(nullptr, Event::PLAYER_DIED);
+}
+#pragma endregion NotifyObserverCommand

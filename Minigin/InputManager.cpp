@@ -68,7 +68,6 @@ bool dae::InputManager::ProcessInput()
 		if (e.type == SDL_KEYDOWN) {
 			//if (e.key.keysym.scancode == SDL_SCANCODE_H) std::cout << "H"; // Example
 
-			// TODO : Fix pressed this frame for Keyboard input
 			if (e.key.repeat == 0) {
 				for (auto& command : m_Commands) {
 					if (command.isController) continue;

@@ -23,7 +23,7 @@ namespace dae {
 	public:
 		LivesObserver(GameObject* pLivesCounterObject);
 
-		virtual void OnNotify(const GameObject* observedObject, Event& event) override;
+		virtual void OnNotify(const GameObject* observedObject, Event event) override;
 	};
 
 

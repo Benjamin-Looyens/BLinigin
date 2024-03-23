@@ -1,4 +1,5 @@
 #pragma once
+#include "Events.h"
 
 namespace dae
 {
@@ -10,7 +11,7 @@ namespace dae
 	public:
 		Observer() = default;
 		virtual ~Observer() {};
-		virtual void OnNotify(const GameObject* observedObject, Event& event) = 0;
+		virtual void OnNotify(const GameObject* observedObject, Event event) = 0;
 	};
 }
 
