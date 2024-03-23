@@ -11,6 +11,8 @@
 #include <sstream>
 #include <algorithm>
 #include <math.h>
+#include "DerivedObservers.h"
+#include "Events.h"
 
 #pragma region TextComponent
 dae::TextComponent::TextComponent(dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font)
@@ -130,3 +132,59 @@ void dae::WaveMovementYComponent::Update()
 	m_pParent->SetLocalTranslation(wavePos);
 }
 #pragma endregion WaveMovementYComponent
+
+#pragma region ObserverSubjectComponent
+dae::ObserverSubjectComponent::ObserverSubjectComponent(GameObject* pParent)
+	: Component(pParent)
+{}
+
+void dae::ObserverSubjectComponent::AddObserver(Observer* pObserverToAdd)
+{
+	m_pObservers.push_back(pObserverToAdd);
+}
+
+void dae::ObserverSubjectComponent::RemoveObserver(Observer* pObserverToRemove) 
+{
+	m_pObservers.erase(std::remove(m_pObservers.begin(), m_pObservers.end(), pObserverToRemove), m_pObservers.end());
+}
+
+void dae::ObserverSubjectComponent::NotifyObservers(Event& eventToNotify)
+{
+	for (auto& pObserver : m_pObservers) 
+		pObserver->OnNotify(m_pParent, eventToNotify);
+}
+#pragma endregion ObserverSubjectComponent
+
+#pragma region LivesCounterComponent
+dae::LivesCounterComponent::LivesCounterComponent(GameObject* pParent, unsigned int maxLives, unsigned int curLives)
+	: Component(pParent), m_MaxNumLives{ maxLives }, m_NumLives{ curLives }
+{
+	m_pTextLocation = pParent->GetComponent<dae::TextComponent>();
+	if (!m_pTextLocation) {
+		std::cerr << "Parent for added LivesCounterComponent does not contain TextComponent! (has no place to output lives counter to!)\n";
+		Remove(); // Mark self as removed as no TextComponent was found
+	}
+
+	if (m_NumLives > m_MaxNumLives) {
+		std::cerr << "Current lives is greater than maxlives! Setting maxlives equal to currentlives.\n";
+		m_MaxNumLives = m_NumLives;
+	}
+
+	UpdateDisplay();
+}
+
+void dae::LivesCounterComponent::LoseLife()
+{
+	m_NumLives--;
+
+	UpdateDisplay();
+}
+
+void dae::LivesCounterComponent::UpdateDisplay()
+{
+	std::stringstream livesString;
+	livesString << "Lives: " << m_NumLives << "/" << m_MaxNumLives;
+
+	m_pTextLocation->SetText(livesString.str());
+}
+#pragma endregion LivesCounterComponent

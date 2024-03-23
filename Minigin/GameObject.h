@@ -44,7 +44,11 @@ namespace dae
 
 #pragma region TemplateFunctions
 		template<DerivedComponent ComponentType, typename... TArgs>
-		void AddComponent(const TArgs&... args) { m_pComponents.emplace_back(std::make_unique<ComponentType>(this, args...)); };
+		ComponentType* AddComponent(const TArgs&... args) {
+			m_pComponents.emplace_back(std::make_unique<ComponentType>(this, args...));
+
+			return dynamic_cast<ComponentType*>(m_pComponents[m_pComponents.size() - 1].get());
+		};
 
 		template<DerivedComponent ComponentType>
 		ComponentType* GetComponent() const {

@@ -189,12 +189,15 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DerivedCommands.h" />
     <ClInclude Include="DerivedComponents.h" />
+    <ClInclude Include="DerivedObservers.h" />
+    <ClInclude Include="Events.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Gamepad.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Minigin.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -214,6 +217,7 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp" />
     <ClCompile Include="DerivedCommands.cpp" />
     <ClCompile Include="DerivedComponents.cpp" />
+    <ClCompile Include="DerivedObservers.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
