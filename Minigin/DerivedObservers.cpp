@@ -8,15 +8,16 @@ dae::LivesObserver::LivesObserver(GameObject* pLivesCounterObject)
 	: GameObjectObserver(pLivesCounterObject)
 {}
 
-void dae::LivesObserver::OnNotify(const GameObject* pObservedObject, Event event)
+void dae::LivesObserver::OnNotify(const GameObject* pSubjectObject, Event event)
 {
-	// TODO : fix the shit with pObservedObject (idk if i need it or not)
-	if (event == Event::PLAYER_DIED) {
+	pSubjectObject; // I SOMETIMES need pSubjectObject in an observer but not ALWAYS and warning level is not allowing me to not reference a parameter so uhhhhhhhhh
+
+	switch (event) {
+	case Event::PLAYER_DIED:
 		auto component = GetGameObject()->GetComponent<dae::LivesCounterComponent>();
 
 		component->LoseLife();
-		
-		if (pObservedObject) pObservedObject->HasParent();
+		break;
 	}
 }
 #pragma endregion LivesObserver

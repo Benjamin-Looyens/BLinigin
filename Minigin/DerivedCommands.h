@@ -57,12 +57,12 @@ namespace dae
 		std::string m_StringToPrint;
 	};
 
-	class NotifyObserverCommand : public Command
+	class NotifyObserverCommand : public GameObjectCommand
 	{
 	public:
 		void Execute() override;
 
-		NotifyObserverCommand(dae::Observer* pObserver);
+		NotifyObserverCommand(dae::GameObject* pGameObject, dae::Observer* pObserver);
 
 	private:
 		dae::Observer* m_pObserver;

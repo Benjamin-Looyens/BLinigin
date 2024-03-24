@@ -54,12 +54,12 @@ void dae::PrintStringCommand::Execute()
 #pragma endregion PrintStringCommand
 
 #pragma region NotifyObserverCommand
-dae::NotifyObserverCommand::NotifyObserverCommand(dae::Observer* pObserver)
-	: m_pObserver{ pObserver }
+dae::NotifyObserverCommand::NotifyObserverCommand(dae::GameObject* pGameObject, dae::Observer* pObserver)
+	: GameObjectCommand(pGameObject), m_pObserver{ pObserver }
 {}
 
 void dae::NotifyObserverCommand::Execute()
 {
-	m_pObserver->OnNotify(nullptr, Event::PLAYER_DIED);
+	m_pObserver->OnNotify(GetGameObject(), Event::PLAYER_DIED);
 }
 #pragma endregion NotifyObserverCommand
