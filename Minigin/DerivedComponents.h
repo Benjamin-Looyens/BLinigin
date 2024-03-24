@@ -101,15 +101,14 @@ namespace dae {
 		void AddObserver(Observer* pObserverToAdd);
 		void RemoveObserver(Observer* pObserverToRemove);
 
+		void NotifyObservers(Event& eventToNotify);
+
 		ObserverSubjectComponent(GameObject* pParent);
 		virtual ~ObserverSubjectComponent() = default;
 		ObserverSubjectComponent(const ObserverSubjectComponent& other) = delete;
 		ObserverSubjectComponent(const ObserverSubjectComponent&& other) = delete;
 		ObserverSubjectComponent& operator=(const ObserverSubjectComponent& other) = delete;
 		ObserverSubjectComponent& operator=(const ObserverSubjectComponent&& other) = delete;
-
-	protected:
-		void NotifyObservers(Event& eventToNotify);
 
 	private:
 		std::vector<Observer*> m_pObservers;
@@ -145,6 +144,59 @@ namespace dae {
 
 		unsigned int m_NumLives;
 		unsigned int m_MaxNumLives;
+	};
+
+	class LivesComponent : public Component
+	{
+	public:
+		void LoseLife();
+		void GainLife();
+
+		int GetLifeCount() { return m_NumLives; };
+
+		LivesComponent(GameObject* pParent, int lives);
+		virtual ~LivesComponent() = default;
+		LivesComponent(const LivesComponent& other) = delete;
+		LivesComponent(const LivesComponent&& other) = delete;
+		LivesComponent& operator=(const LivesComponent& other) = delete;
+		LivesComponent& operator=(const LivesComponent&& other) = delete;
+
+	private:
+		int m_NumLives;
+	};
+
+	class ScoreComponent : public Component
+	{
+	public:
+		int GetScore() const { return m_Score; };
+		void AddPoints(int pointsToAdd) { m_Score += pointsToAdd; };
+
+		ScoreComponent(GameObject* pParent) : Component(pParent) {};
+		virtual ~ScoreComponent() = default;
+		ScoreComponent(const ScoreComponent& other) = delete;
+		ScoreComponent(const ScoreComponent&& other) = delete;
+		ScoreComponent& operator=(const ScoreComponent& other) = delete;
+		ScoreComponent& operator=(const ScoreComponent&& other) = delete;
+
+	private:
+		int m_Score;
+	};
+
+	class DisplayDataComponent : public Component
+	{
+	public:
+		void UpdateDisplay(std::string dataStr);
+
+		DisplayDataComponent(GameObject* pParent, std::string dataPrefix, std::string startData = "");
+		virtual ~DisplayDataComponent() = default;
+		DisplayDataComponent(const DisplayDataComponent& other) = delete;
+		DisplayDataComponent(const DisplayDataComponent&& other) = delete;
+		DisplayDataComponent& operator=(const DisplayDataComponent& other) = delete;
+		DisplayDataComponent& operator=(const DisplayDataComponent&& other) = delete;
+
+	private:
+		dae::TextComponent* m_pTextLocation; // non-owning reference to parent's text component (if it has one)
+		std::string m_DataPrefix;
 	};
 }
 

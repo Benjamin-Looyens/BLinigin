@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include "DerivedObservers.h"
 #include "Events.h"
+#include "DerivedComponents.h"
 
 dae::GameObjectCommand::GameObjectCommand(GameObject* pActor)
 	: m_pGameObject{ pActor }
@@ -26,22 +27,6 @@ void dae::MoveCommand::Execute()
 }
 #pragma endregion MoveCommand
 
-#pragma region ParentToggleCommand
-dae::ParentToggleCommand::ParentToggleCommand(std::shared_ptr<GameObject> pGameObject, std::shared_ptr<GameObject> pParentToToggle)
-	: m_pGameObject{ pGameObject }, m_pParentToToggle{ pParentToToggle }
-{}
-
-void dae::ParentToggleCommand::Execute()
-{
-	if (m_pGameObject->HasParent()) {
-		m_pParentToToggle->RemoveChild(m_pGameObject);
-	}
-	else {
-		m_pParentToToggle->AddChild(m_pGameObject);
-	}
-}
-#pragma endregion ParentToggleCommand
-
 #pragma region PrintStringCommand
 dae::PrintStringCommand::PrintStringCommand(std::string stringToPrint)
 	: m_StringToPrint{ stringToPrint }
@@ -54,12 +39,15 @@ void dae::PrintStringCommand::Execute()
 #pragma endregion PrintStringCommand
 
 #pragma region NotifyObserverCommand
-dae::NotifyObserverCommand::NotifyObserverCommand(dae::GameObject* pGameObject, dae::Observer* pObserver)
-	: GameObjectCommand(pGameObject), m_pObserver{ pObserver }
+dae::NotifyObserverCommand::NotifyObserverCommand(dae::GameObject* pGameObject, dae::Event eventToNotify)
+	: GameObjectCommand(pGameObject), m_EventToNotify{ eventToNotify }
 {}
 
 void dae::NotifyObserverCommand::Execute()
 {
-	m_pObserver->OnNotify(GetGameObject(), Event::PLAYER_DIED);
+	auto pSubjectComp = GetGameObject()->GetComponent<dae::ObserverSubjectComponent>();
+
+	if (pSubjectComp)
+		pSubjectComp->NotifyObservers(m_EventToNotify);
 }
 #pragma endregion NotifyObserverCommand

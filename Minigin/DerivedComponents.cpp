@@ -164,13 +164,14 @@ dae::LivesCounterComponent::LivesCounterComponent(GameObject* pParent, unsigned 
 		std::cerr << "Parent for added LivesCounterComponent does not contain TextComponent! (has no place to output lives counter to!)\n";
 		Remove(); // Mark self as removed as no TextComponent was found
 	}
-
-	if (m_NumLives > m_MaxNumLives) {
-		std::cerr << "Current lives is greater than maxlives! Setting maxlives equal to currentlives.\n";
-		m_MaxNumLives = m_NumLives;
+	else {
+		if (m_NumLives > m_MaxNumLives) {
+			std::cerr << "Current lives is greater than maxlives! Setting maxlives equal to currentlives.\n";
+			m_MaxNumLives = m_NumLives;
+		}
+		
+		UpdateDisplay();
 	}
-
-	UpdateDisplay();
 }
 
 void dae::LivesCounterComponent::LoseLife()
@@ -188,3 +189,42 @@ void dae::LivesCounterComponent::UpdateDisplay()
 	m_pTextLocation->SetText(livesString.str());
 }
 #pragma endregion LivesCounterComponent
+
+#pragma region LivesComponent
+dae::LivesComponent::LivesComponent(GameObject* pParent, int lives)
+	: Component(pParent), m_NumLives{ lives }
+{}
+
+void dae::LivesComponent::GainLife()
+{
+	m_NumLives++;
+}
+
+void dae::LivesComponent::LoseLife()
+{
+	m_NumLives--;
+}
+#pragma endregion LivesComponent
+
+#pragma region DataDisplayComponent
+dae::DisplayDataComponent::DisplayDataComponent(GameObject* pParent, std::string dataPrefix, std::string startData)
+	: Component(pParent), m_DataPrefix{ dataPrefix }
+{
+	m_pTextLocation = pParent->GetComponent<dae::TextComponent>();
+	if (!m_pTextLocation) {
+		std::cerr << "Parent for added LivesCounterComponent does not contain TextComponent! (has no place to output lives counter to!)\n";
+		Remove(); // Mark self as removed as no TextComponent was found
+	}
+	else {
+		UpdateDisplay(startData);
+	}
+}
+
+void dae::DisplayDataComponent::UpdateDisplay(std::string dataStr)
+{
+	std::stringstream dataString;
+	dataString << m_DataPrefix << dataStr;
+
+	m_pTextLocation->SetText(dataString.str());
+}
+#pragma endregion DataDisplayComponent

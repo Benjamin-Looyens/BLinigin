@@ -3,6 +3,7 @@
 #include "glm/vec3.hpp"
 #include <memory>
 #include <string>
+#include "Events.h"
 
 namespace dae
 {
@@ -34,18 +35,6 @@ namespace dae
 		glm::vec3 m_MoveDirection;
 	};
 
-	class ParentToggleCommand : public Command
-	{
-	public:
-		void Execute() override;
-
-		ParentToggleCommand(std::shared_ptr<GameObject> pGameObject, std::shared_ptr<GameObject> pParentToToggle);
-
-	private:
-		std::shared_ptr<GameObject> m_pParentToToggle;
-		std::shared_ptr<GameObject> m_pGameObject;
-	};
-
 	class PrintStringCommand : public Command
 	{
 	public:
@@ -62,9 +51,9 @@ namespace dae
 	public:
 		void Execute() override;
 
-		NotifyObserverCommand(dae::GameObject* pGameObject, dae::Observer* pObserver);
+		NotifyObserverCommand(dae::GameObject* pGameObject, dae::Event eventToNotify);
 
 	private:
-		dae::Observer* m_pObserver;
+		dae::Event m_EventToNotify;
 	};
 }

@@ -13,13 +13,14 @@ namespace dae {
 		int playerIndex;
 		bool useController;
 		float movSpeed;
+		int startingLives;
 	};
 
 	class Player : public Prefab
 	{
 	public:
-		Player(glm::vec3& playerStartPos, glm::vec3& livesCounterPos, glm::vec3& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, bool& useController);
-		Player(glm::vec3&& playerStartPos, glm::vec3&& livesCounterPos, glm::vec3&& scoreCounterPos, std::string&& playerSpriteLocation, int&& playerIndex, float&& movSpeed, bool&& useController);
+		Player(glm::vec3& playerStartPos, glm::vec3& livesCounterPos, glm::vec3& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController);
+		Player(glm::vec3&& playerStartPos, glm::vec3&& livesCounterPos, glm::vec3&& scoreCounterPos, std::string&& playerSpriteLocation, int&& playerIndex, float&& movSpeed, int&& startingLives, bool&& useController);
 		Player(PlayerData& playerdata);
 
 		virtual void AddToScene(Scene* pSceneToAddTo) override;
@@ -37,6 +38,7 @@ namespace dae {
 		int m_PlayerIndex;
 		bool m_UseController;
 		float m_MovSpeed;
+		int m_StartingLives;
 	};
 }
 

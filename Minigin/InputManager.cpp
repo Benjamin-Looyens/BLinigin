@@ -128,6 +128,12 @@ void dae::InputManager::AddGamepad()
 		case BL_KEYBOARD_SPACE:
 			return SDL_SCANCODE_SPACE;
 			break;
+		case BL_KEYBOARD_E:
+			return SDL_SCANCODE_E;
+			break;
+		case BL_KEYBOARD_Q:
+			return SDL_SCANCODE_Q;
+			break;
 		}
 	}
 	else if (code & BL_GAMEPAD_INPUT) {

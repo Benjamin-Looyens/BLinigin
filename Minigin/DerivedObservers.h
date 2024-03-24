@@ -16,16 +16,33 @@ namespace dae {
 		GameObject* m_pStoredGameObject;
 	};
 
-
-
-	class LivesObserver : public GameObjectObserver
+	class DataDisplayObserver : public GameObjectObserver
 	{
 	public:
-		LivesObserver(GameObject* pLivesCounterObject);
+		DataDisplayObserver(GameObject* pDataContainingObject, GameObject* pDataDisplayObject) : GameObjectObserver(pDataContainingObject), m_pDisplayObject{ pDataDisplayObject } {};
 
-		virtual void OnNotify(const GameObject* subjectObject, Event event) override;
+	protected:
+		GameObject* GetDisplayObject() { return m_pDisplayObject; };
+
+	private:
+		GameObject* m_pDisplayObject;
 	};
 
 
+	class LivesObserver : public DataDisplayObserver
+	{
+	public:
+		LivesObserver(GameObject* pLivesCounterObject, GameObject* pDataDisplayObject);
+
+		virtual void OnNotify(const GameObject* pSubjectObject, Event event) override;
+	};
+
+	class ScoreObserver : public DataDisplayObserver
+	{
+	public:
+		ScoreObserver(GameObject* pScoreOwningObject, GameObject* pDataDisplayObject);
+
+		virtual void OnNotify(const GameObject* pSubjectObject, Event event) override;
+	};
 }
 

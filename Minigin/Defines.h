@@ -18,5 +18,7 @@
 #define BL_KEYBOARD_S			0x0103
 #define BL_KEYBOARD_D			0x0104
 #define BL_KEYBOARD_SPACE		0x0105
+#define BL_KEYBOARD_E			0x0106
+#define BL_KEYBOARD_Q			0x0107
 
 // Define Mouse Macros

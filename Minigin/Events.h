@@ -4,7 +4,7 @@ namespace dae {
 	enum class Event {
 		PLAYER_DIED,
 		PLAYER_SPAWNED,
-		ENEMY_DIED,
-		ENEMY_SPAWNED
+		BIG_ENEMY_DIED,
+		SMALL_ENEMY_DIED
 	};
 }
