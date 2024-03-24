@@ -106,7 +106,7 @@ void dae::GameObject::PrintComponents() const
 	}
 }
 
-void dae::GameObject::AddChild(std::shared_ptr<GameObject>& pNewChild)
+void dae::GameObject::AddChild(GameObject* pNewChild)
 {
 	if (pNewChild == nullptr) {
 		std::cerr << "Child that is being attempted to add is nullptr!\n";
@@ -133,7 +133,7 @@ void dae::GameObject::AddChild(std::shared_ptr<GameObject>& pNewChild)
 	std::cout << "Child object has been added.\n";
 }
 
-void dae::GameObject::RemoveChild(std::shared_ptr<GameObject>& pChildToRemove)
+void dae::GameObject::RemoveChild(GameObject* pChildToRemove)
 {
 	if (pChildToRemove == nullptr) {
 		std::cerr << "Child that is being attempted to remove is nullptr!\n";
@@ -163,10 +163,10 @@ bool dae::GameObject::ValidParent(GameObject* pParent)
 {
 	if (this == pParent) return false;
 
-	auto pParentShared = std::make_shared<GameObject>(pParent); // I dont like this but cant think of any other way to do it 
+	//auto pParentShared = std::make_shared<GameObject>(pParent); // I dont like this but cant think of any other way to do it 
 
 	// Check within current child objects
- 	bool withinChildVector{ std::find(begin(m_pChildObjects), end(m_pChildObjects), pParentShared) != end(m_pChildObjects) };
+ 	bool withinChildVector{ std::find(begin(m_pChildObjects), end(m_pChildObjects), pParent) != end(m_pChildObjects) };
 	if (withinChildVector) return false;
 
 	// Recursively check all the child objects to make sure original parent is not within the children objects
@@ -189,7 +189,7 @@ void dae::GameObject::SeperateFromParent()
 
 	// HACK : This implementation is pretty scuffed
 	for (auto& object : m_pParentObject->m_pChildObjects) {
-		if (object.get() == this) {
+		if (object == this) {
 			m_pParentObject->RemoveChild(object);
 		}
 	}

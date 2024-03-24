@@ -40,7 +40,7 @@ namespace dae
 
 		void SetUseParentWorld(const bool newUse) { m_UseParentWorld = newUse; };
 
-		GameObject* GetChildAtIndex(size_t index) { if (m_pChildObjects.size() <= index) return nullptr; return m_pChildObjects[index].get(); };
+		GameObject* GetChildAtIndex(size_t index) { if (m_pChildObjects.size() <= index) return nullptr; return m_pChildObjects[index]; };
 
 #pragma region TemplateFunctions
 		template<DerivedComponent ComponentType, typename... TArgs>
@@ -73,8 +73,8 @@ namespace dae
 		bool HasComponent() { return GetComponent<ComponentType>() != nullptr; }
 #pragma endregion TemplateFunctions
 
-		void AddChild(std::shared_ptr<GameObject>& pNewChild);
-		void RemoveChild(std::shared_ptr<GameObject>& pChildToRemove);
+		void AddChild(GameObject* pNewChild);
+		void RemoveChild(GameObject* pChildToRemove);
 		bool ValidParent(GameObject* pParent);
 		void SeperateFromParent();
 		int GetChildCount() const { return static_cast<int>(m_pChildObjects.size()); };
@@ -98,7 +98,7 @@ namespace dae
 		GameObject* m_pParentObject;
 
 		std::vector<std::unique_ptr<Component>>	 m_pComponents;
-		std::vector<std::shared_ptr<GameObject>> m_pChildObjects;
+		std::vector<GameObject*> m_pChildObjects;
 
 		bool m_UseParentWorld{ true };
 
