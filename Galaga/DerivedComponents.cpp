@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <math.h>
 #include "DerivedObservers.h"
-#include "Events.h"
+#include "DerivedEvents.h"
 
 #pragma region TextComponent
 dae::TextComponent::TextComponent(dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font)

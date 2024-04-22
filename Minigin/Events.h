@@ -1,10 +1,5 @@
 #pragma once
 
 namespace dae {
-	enum class Event {
-		PLAYER_DIED,
-		PLAYER_SPAWNED,
-		BIG_ENEMY_DIED,
-		SMALL_ENEMY_DIED
-	};
+	enum class Event; // Forward declaration for user to define their events
 }

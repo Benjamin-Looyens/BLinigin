@@ -1,7 +1,7 @@
 #include "DerivedObservers.h"
 #include "GameObject.h"
 #include "DerivedComponents.h"
-#include "Events.h"
+#include "DerivedEvents.h"
 #include <string>
 
 #pragma region LivesObserver

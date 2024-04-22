@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneManager.h"
-#include "DerivedObservers.h"
+//#include "DerivedObservers.h"
+#include "Observer.h"
 
 namespace dae
 {

@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Timer.h"
 #include "DerivedObservers.h"
-#include "Events.h"
+#include "DerivedEvents.h"
 #include "DerivedComponents.h"
 
 dae::GameObjectCommand::GameObjectCommand(GameObject* pActor)

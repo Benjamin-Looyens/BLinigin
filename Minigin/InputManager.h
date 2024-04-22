@@ -3,7 +3,8 @@
 #include <vector>
 #include <memory>
 //#include <utility>
-#include "DerivedCommands.h"
+#include "Command.h"
+//#include "DerivedCommands.h"
 #include "Gamepad.h"
 
 namespace dae

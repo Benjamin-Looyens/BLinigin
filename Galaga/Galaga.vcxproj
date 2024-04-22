@@ -151,7 +151,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DerivedCommands.cpp" />
+    <ClCompile Include="DerivedComponents.cpp" />
+    <ClCompile Include="DerivedObservers.cpp" />
     <ClCompile Include="Galaga.cpp" />
+    <ClCompile Include="Player.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DerivedCommands.h" />
+    <ClInclude Include="DerivedComponents.h" />
+    <ClInclude Include="DerivedEvents.h" />
+    <ClInclude Include="DerivedObservers.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

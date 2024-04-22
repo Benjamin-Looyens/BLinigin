@@ -9,7 +9,8 @@
 #include <Xinput.h>
 #pragma comment(lib, "xinput.lib")
 
-#include "DerivedCommands.h"
+#include "Command.h"
+//#include "DerivedCommands.h"
 #include "Defines.h"
 #include "Gamepad.h"
 

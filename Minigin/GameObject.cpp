@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "Component.h"
-#include "DerivedComponents.h"
+//#include "DerivedComponents.h"
 #include <iostream>
 #include <algorithm>
 
