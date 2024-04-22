@@ -9,12 +9,11 @@ dae::LivesObserver::LivesObserver(GameObject* pDataContainingObject, GameObject*
 	: DataDisplayObserver(pDataContainingObject, pDataDisplayObject)
 {}
 
-void dae::LivesObserver::OnNotify(const GameObject* pSubjectObject, Event event)
+void dae::LivesObserver::OnNotify(const GameObject*, Event event)
 {
-	pSubjectObject; // I SOMETIMES need pSubjectObject in an observer but not ALWAYS and warning level is not allowing me to not reference a parameter so uhhhhhhhhh
-
 	auto pLivesComp = GetGameObject()->GetComponent<dae::LivesComponent>();
 	auto pDataComp = GetDisplayObject()->GetComponent<dae::DisplayDataComponent>();
+	int prevLives = pLivesComp->GetLifeCount();
 
 	switch (event) {
 	case Event::PLAYER_DIED:
@@ -23,7 +22,8 @@ void dae::LivesObserver::OnNotify(const GameObject* pSubjectObject, Event event)
 		break;
 	}
 
-	pDataComp->UpdateDisplay(std::to_string(pLivesComp->GetLifeCount()));
+	if (prevLives != pLivesComp->GetLifeCount())
+		pDataComp->UpdateDisplay(std::to_string(pLivesComp->GetLifeCount()));
 }
 #pragma endregion LivesObserver
 
@@ -32,12 +32,11 @@ dae::ScoreObserver::ScoreObserver(GameObject* pScoreOwningObject, GameObject* pD
 	: DataDisplayObserver(pScoreOwningObject, pDataDisplayObject)
 {}
 
-void dae::ScoreObserver::OnNotify(const GameObject* pSubjectObject, Event event)
+void dae::ScoreObserver::OnNotify(const GameObject*, Event event)
 {
-	pSubjectObject; // I SOMETIMES need pSubjectObject in an observer but not ALWAYS and warning level is not allowing me to not reference a parameter so uhhhhhhhhh
-	
 	auto pScoreComp = GetGameObject()->GetComponent<dae::ScoreComponent>();
 	auto pDataComp = GetDisplayObject()->GetComponent<dae::DisplayDataComponent>();
+	int prevScore = pScoreComp->GetScore();
 
 	switch (event) {
 	case Event::BIG_ENEMY_DIED:
@@ -48,6 +47,7 @@ void dae::ScoreObserver::OnNotify(const GameObject* pSubjectObject, Event event)
 		break;
 	}
 
-	pDataComp->UpdateDisplay(std::to_string(pScoreComp->GetScore()));
+	if (prevScore != pScoreComp->GetScore())
+		pDataComp->UpdateDisplay(std::to_string(pScoreComp->GetScore()));
 }
 #pragma endregion ScoreObserver

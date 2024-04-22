@@ -125,27 +125,6 @@ namespace dae {
 		ObservingComponent& operator=(const ObservingComponent&& other) = delete;
 	};
 
-	class LivesCounterComponent : public Component
-	{
-	public:
-		void LoseLife();
-
-		LivesCounterComponent(GameObject* pParent, unsigned int maxLives, unsigned int curLives);
-		virtual ~LivesCounterComponent() = default;
-		LivesCounterComponent(const LivesCounterComponent& other) = delete;
-		LivesCounterComponent(const LivesCounterComponent&& other) = delete;
-		LivesCounterComponent& operator=(const LivesCounterComponent& other) = delete;
-		LivesCounterComponent& operator=(const LivesCounterComponent&& other) = delete;
-
-	private:
-		void UpdateDisplay();
-
-		dae::TextComponent* m_pTextLocation; // non-owning reference to parent's text component (if it has one)
-
-		unsigned int m_NumLives;
-		unsigned int m_MaxNumLives;
-	};
-
 	class LivesComponent : public Component
 	{
 	public:
@@ -179,7 +158,7 @@ namespace dae {
 		ScoreComponent& operator=(const ScoreComponent&& other) = delete;
 
 	private:
-		int m_Score;
+		int m_Score{ };
 	};
 
 	class DisplayDataComponent : public Component
