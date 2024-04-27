@@ -71,6 +71,7 @@ dae::TextureComponent::TextureComponent(dae::GameObject* pParent, const std::str
 
 void dae::TextureComponent::Render() const
 {
+	// TODO : add scaling & rotation compatibility
 	//const auto& transform = m_pParent->GetLocalTransform();
 	const auto& pos = m_pParent->GetWorldPosition();
 	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
