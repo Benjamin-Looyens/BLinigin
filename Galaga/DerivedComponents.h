@@ -11,6 +11,7 @@ namespace dae {
 	class Texture2D;
 	class Observer;
 	enum class Event;
+	class Observer;
 
 	// Text Component
 	class TextComponent : public Component
@@ -95,7 +96,7 @@ namespace dae {
 		float m_WaveTime{ 0.0f };
 	};
 
-	class ObserverSubjectComponent : public Component
+	class SubjectComponent : public Component
 	{
 	public:
 		void AddObserver(Observer* pObserverToAdd);
@@ -103,26 +104,40 @@ namespace dae {
 
 		void NotifyObservers(Event& eventToNotify);
 
-		ObserverSubjectComponent(GameObject* pParent);
-		virtual ~ObserverSubjectComponent() = default;
-		ObserverSubjectComponent(const ObserverSubjectComponent& other) = delete;
-		ObserverSubjectComponent(const ObserverSubjectComponent&& other) = delete;
-		ObserverSubjectComponent& operator=(const ObserverSubjectComponent& other) = delete;
-		ObserverSubjectComponent& operator=(const ObserverSubjectComponent&& other) = delete;
+		SubjectComponent(GameObject* pParent);
+		virtual ~SubjectComponent() = default;
+		SubjectComponent(const SubjectComponent& other) = delete;
+		SubjectComponent(const SubjectComponent&& other) = delete;
+		SubjectComponent& operator=(const SubjectComponent& other) = delete;
+		SubjectComponent& operator=(const SubjectComponent&& other) = delete;
 
 	private:
 		std::vector<Observer*> m_pObservers;
 	};
-
+	
+	template<typename ObserverType>
+	concept DerivedObserver = requires(ObserverType observer) { std::derived_from<ObserverType, Observer>; };
+	 
+	template<DerivedObserver ObserverType>
 	class ObservingComponent : public Component
 	{
 	public:
-		ObservingComponent(GameObject* pParent);
+		template<typename... TArgs>
+		ObservingComponent(GameObject* pParent, const TArgs&... args) : Component(pParent)
+		{
+			//m_pObserver = std::make_unique<ObserverType>(std::forward<TArgs>(args)...);
+			m_pInternalObserver = std::make_unique<ObserverType>(args...);
+		}
 		virtual ~ObservingComponent() = default;
 		ObservingComponent(const ObservingComponent& other) = delete;
 		ObservingComponent(const ObservingComponent&& other) = delete;
 		ObservingComponent& operator=(const ObservingComponent& other) = delete;
 		ObservingComponent& operator=(const ObservingComponent&& other) = delete;
+
+		ObserverType* GetRawPointer() const { return m_pInternalObserver.get(); };
+
+	private:
+		std::unique_ptr<ObserverType> m_pInternalObserver;
 	};
 
 	class LivesComponent : public Component

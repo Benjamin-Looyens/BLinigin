@@ -1,15 +1,10 @@
 #pragma once
 #include "SceneManager.h"
-//#include "DerivedObservers.h"
 #include "Observer.h"
 
 namespace dae
 {
 	class GameObject;
-	class Observer;
-
-	template<typename ObserverType>
-	concept DerivedObserver = requires(ObserverType observer) { std::derived_from<ObserverType, Observer>; };
 
 	class Scene final
 	{
@@ -25,13 +20,6 @@ namespace dae
 		GameObject* AddGameObject();
 		void RemoveObject(size_t objectIndex);
 		void RemoveObject(GameObject* pObject);
-
-		template<DerivedObserver ObserverType, typename... TArgs>
-		ObserverType* AddObserver(const TArgs&... args) {
-			m_pObservers.emplace_back(std::make_unique<ObserverType>(args...));
-
-			return dynamic_cast<ObserverType*>(m_pObservers[m_pObservers.size() - 1].get());
-		};
 
 		~Scene();
 		Scene(const Scene& other) = delete;

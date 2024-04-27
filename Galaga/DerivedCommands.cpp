@@ -45,7 +45,7 @@ dae::NotifyObserverCommand::NotifyObserverCommand(dae::GameObject* pGameObject, 
 
 void dae::NotifyObserverCommand::Execute()
 {
-	auto pSubjectComp = GetGameObject()->GetComponent<dae::ObserverSubjectComponent>();
+	auto pSubjectComp = GetGameObject()->GetComponent<dae::SubjectComponent>();
 
 	if (pSubjectComp)
 		pSubjectComp->NotifyObservers(m_EventToNotify);

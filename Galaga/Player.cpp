@@ -55,11 +55,11 @@ void dae::Player::AddToScene(Scene* pSceneToAddTo)
 	pLivesObject->SetLocalTranslation(m_LivesCounterPos);
 
 	// Observers
-	auto pSubject = pPlayer->AddComponent<dae::ObserverSubjectComponent>();
-	auto pScoreObserver = pSceneToAddTo->AddObserver<dae::ScoreObserver>(pPlayer, pScoreObject);
-	auto pLivesObserver = pSceneToAddTo->AddObserver<dae::LivesObserver>(pPlayer, pLivesObject); 
-	pSubject->AddObserver(pLivesObserver);
-	pSubject->AddObserver(pScoreObserver);
+	auto pSubject = pPlayer->AddComponent<dae::SubjectComponent>();
+	auto pScoreObserver = pScoreObject->AddComponent<dae::ObservingComponent<dae::ScoreObserver>>(pPlayer, pScoreObject);
+	auto pLifeObserver = pLivesObject->AddComponent<dae::ObservingComponent<dae::LivesObserver>>(pPlayer, pLivesObject);
+	pSubject->AddObserver(pLifeObserver->GetRawPointer());
+	pSubject->AddObserver(pScoreObserver->GetRawPointer());
 
 	// Input
 	auto& input = InputManager::GetInstance();
