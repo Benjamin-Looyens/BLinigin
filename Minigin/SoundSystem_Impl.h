@@ -11,12 +11,9 @@ namespace dae {
 	public:
 		void PlaySound(const sound_id id, const float volume) override;
 		void LoadSound(const sound_id id, const bool overwriteIfExists = false) override;
+		void LinkIDToFilePath(const sound_id id, const char* filePath) override { m_SoundFileLinks[id] = filePath; };
 	
 	private:
 		std::map<sound_id, Mix_Chunk*> m_LoadedSounds;
-
-		static std::string IDToStr(const sound_id id);
 	};
-
-
 }

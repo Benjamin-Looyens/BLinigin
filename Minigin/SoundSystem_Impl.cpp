@@ -10,9 +10,11 @@ void dae::SDL_SoundSystem::PlaySound(const sound_id id, const float volume)
 		sound = m_LoadedSounds[id]; // reload
 	}
 
-	std::cout << "Playing sound [" << id << "]...\n";
-    Mix_Volume(-1, static_cast<int>(static_cast<float>(MIX_MAX_VOLUME) * volume));
-    Mix_PlayChannel(-1, sound, 0);
+	if (sound) {
+		std::cout << "Playing sound [" << id << "]...\n";
+		Mix_Volume(-1, static_cast<int>(static_cast<float>(MIX_MAX_VOLUME) * volume));
+		Mix_PlayChannel(-1, sound, 0);
+	}
 }
 
 // WARNING: overwriting will cancel any currently playing sounds of the same id!
@@ -35,13 +37,14 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfEx
 	else {
 		std::cout << "Loading sound [" << id << "]...\n";
 
-		std::string soundStr{ IDToStr(id) };
-		if (soundStr.empty()) {
+		const char* sound_cstr{ m_SoundFileLinks[id] };
+
+		if (!sound_cstr) {
 			std::cerr << "No sound was found matching the id [" << id << "]!\n";
 			return;
 		}
 
-		sound = Mix_LoadWAV(soundStr.c_str());
+		sound = Mix_LoadWAV(sound_cstr);
 
 		if (!sound) {
 			std::cerr << "Failed to load sound! SDL_mixer Error: " << Mix_GetError() << "\n";
@@ -51,19 +54,4 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfEx
 			m_LoadedSounds[id] = sound;
 		}
 	}
-}
-
-// TODO : somehow make the following not defined in the library but reliant on engine user decision
-std::string dae::SDL_SoundSystem::IDToStr(const sound_id id)
-{
-	std::string str{};
-
-	switch (id)
-	{
-	case 0:
-		str = "../Data/Sound/01. Stage Intro.mp3";
-		break;
-	}
-
-	return str;
 }

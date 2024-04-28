@@ -12,6 +12,8 @@
 #include "ResourceManager.h"
 #include "Timer.h" 
 #include <algorithm>
+#include "ServiceLocator.h"
+#include "SoundSystem_Impl.h"
 
 SDL_Window* g_window{};
 
@@ -83,6 +85,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	ResourceManager::GetInstance().Init(dataPath);
 
 	Timer::GetInstance().Init();
+
+	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SDL_SoundSystem>());
 }
 
 dae::Minigin::~Minigin()
