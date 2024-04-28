@@ -13,11 +13,10 @@ void dae::SDL_SoundSystem::PlaySound(const sound_id id, const float volume)
 	if (sound) {
 #ifndef NDEBUG
 		std::cout << "Adding sound [" << id << "] to queue...\n";
-
+#endif 
 		std::lock_guard<std::mutex> lock{ m_SoundSysMutex };
 		m_SoundQueue.push({ id, volume });
 		m_SoundAddedCondition.notify_one();
-#endif 
 	}
 }
 

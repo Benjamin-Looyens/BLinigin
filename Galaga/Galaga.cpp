@@ -63,27 +63,27 @@ void load()
 	// Sound
 	auto& soundSys = dae::ServiceLocator::GetSoundSystem();
 
-	soundSys.LinkIDToFilePath(0,  "../Data/Sound/01. Stage Intro.mp3");
-	soundSys.LinkIDToFilePath(1,  "../Data/Sound/02. Fighter Captured.mp3");
-	soundSys.LinkIDToFilePath(2,  "../Data/Sound/03. Fighter Rescued.mp3");
-	soundSys.LinkIDToFilePath(3,  "../Data/Sound/04. Captured Fighter Destroyed.mp3");
-	soundSys.LinkIDToFilePath(4,  "../Data/Sound/05. Challenging Stage.mp3");
-	soundSys.LinkIDToFilePath(5,  "../Data/Sound/06. Challenging Stage Over.mp3");
-	soundSys.LinkIDToFilePath(6,  "../Data/Sound/07. Challenging Stage Perfect.mp3");
-	soundSys.LinkIDToFilePath(7,  "../Data/Sound/08. 1-Up.mp3");
-	soundSys.LinkIDToFilePath(8,  "../Data/Sound/09. Die-Start Up Sound.mp3");
-	soundSys.LinkIDToFilePath(9,  "../Data/Sound/10. Coin.mp3");
-	soundSys.LinkIDToFilePath(10, "../Data/Sound/11. Name Entry.mp3");
-	soundSys.LinkIDToFilePath(11, "../Data/Sound/12. 2nd - 5th Name Entry.mp3");
-	soundSys.LinkIDToFilePath(12, "../Data/Sound/13. Sound Effects.mp3");
+	soundSys.LinkIDToFilePath(1,  "../Data/Sound/01. Stage Intro.mp3");
+	soundSys.LinkIDToFilePath(2,  "../Data/Sound/02. Fighter Captured.mp3");
+	soundSys.LinkIDToFilePath(3,  "../Data/Sound/03. Fighter Rescued.mp3");
+	soundSys.LinkIDToFilePath(4,  "../Data/Sound/04. Captured Fighter Destroyed.mp3");
+	soundSys.LinkIDToFilePath(5,  "../Data/Sound/05. Challenging Stage.mp3");
+	soundSys.LinkIDToFilePath(6,  "../Data/Sound/06. Challenging Stage Over.mp3");
+	soundSys.LinkIDToFilePath(7,  "../Data/Sound/07. Challenging Stage Perfect.mp3");
+	soundSys.LinkIDToFilePath(8,  "../Data/Sound/08. 1-Up.mp3");
+	soundSys.LinkIDToFilePath(9,  "../Data/Sound/09. Die-Start Up Sound.mp3");
+	soundSys.LinkIDToFilePath(10, "../Data/Sound/10. Coin.mp3");
+	soundSys.LinkIDToFilePath(11, "../Data/Sound/11. Name Entry.mp3");
+	soundSys.LinkIDToFilePath(12, "../Data/Sound/12. 2nd - 5th Name Entry.mp3");
+	soundSys.LinkIDToFilePath(13, "../Data/Sound/13. Sound Effects.mp3");
 
-	soundSys.PlaySound(0, 0.1f);
-	soundSys.PlaySound(0, 0.1f);
+	soundSys.PlaySound(1, 0.2f);
 }
 
 // GENERAL TODOS
 // TODO : Fix shared ptrs everywhere
 // TODO : Vec3 to Vec2 (z component is useless in a 2D engine)
+// TODO : Improve Player/Controller Setup
 
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");

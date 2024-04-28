@@ -11,13 +11,13 @@ namespace dae {
 
 	class SoundSystem
 	{
+		friend class Minigin; // So that it can initialize queue and quit
+
 	public:
 		virtual ~SoundSystem() = default;
 		virtual void PlaySound(const sound_id id, const float volume) = 0;
 		virtual void LoadSound(const sound_id id, const bool overwriteIfExists = false) = 0;
 		virtual void LinkIDToFilePath(const sound_id id, const char* filePath) = 0;
-		virtual std::thread InitQueue() = 0;
-		void Quit() { m_Continue = false; m_SoundAddedCondition.notify_one(); };
 
 	protected:
 		virtual void PlaySoundFromQueue() = 0;
@@ -30,5 +30,9 @@ namespace dae {
 		std::condition_variable m_SoundAddedCondition;
 
 		bool m_Continue{ true };
+
+	private:
+		virtual std::thread InitQueue() = 0;
+		void Quit() { m_Continue = false; m_SoundAddedCondition.notify_one(); };
 	};
 }

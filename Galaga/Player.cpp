@@ -57,8 +57,8 @@ void dae::Player::AddToScene(Scene* pSceneToAddTo)
 	// Observers
 	auto pSubject = pPlayer->AddComponent<dae::SubjectComponent>();
 	auto pScoreObserver = pScoreObject->AddComponent<dae::ObservingComponent<dae::ScoreObserver>>(pPlayer, pScoreObject);
-	auto pLifeObserver = pLivesObject->AddComponent<dae::ObservingComponent<dae::LivesObserver>>(pPlayer, pLivesObject);
-	pSubject->AddObserver(pLifeObserver->GetRawPointer());
+	auto pLivesObserver = pLivesObject->AddComponent<dae::ObservingComponent<dae::LivesObserver>>(pPlayer, pLivesObject);
+	pSubject->AddObserver(pLivesObserver->GetRawPointer());
 	pSubject->AddObserver(pScoreObserver->GetRawPointer());
 
 	// Input

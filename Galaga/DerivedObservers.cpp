@@ -3,6 +3,7 @@
 #include "DerivedComponents.h"
 #include "DerivedEvents.h"
 #include <string>
+#include "ServiceLocator.h"
 
 #pragma region LivesObserver
 dae::LivesObserver::LivesObserver(GameObject* pDataContainingObject, GameObject* pDataDisplayObject)
@@ -18,7 +19,7 @@ void dae::LivesObserver::OnNotify(const GameObject*, Event event)
 	switch (event) {
 	case Event::PLAYER_DIED:
 		pLivesComp->LoseLife();
-
+		ServiceLocator::GetSoundSystem().PlaySound(9, 0.4f);
 		break;
 	}
 
@@ -41,9 +42,11 @@ void dae::ScoreObserver::OnNotify(const GameObject*, Event event)
 	switch (event) {
 	case Event::BIG_ENEMY_DIED:
 		pScoreComp->AddPoints(500);
+		ServiceLocator::GetSoundSystem().PlaySound(8, 0.4f);
 		break;
 	case Event::SMALL_ENEMY_DIED:
 		pScoreComp->AddPoints(100);
+		ServiceLocator::GetSoundSystem().PlaySound(10, 0.4f);
 		break;
 	}
 

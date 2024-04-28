@@ -63,10 +63,11 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 
-	// Initialize SDL_mixer
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 		throw std::runtime_error(std::string("SDL_mixer initialization error: ") + Mix_GetError());
 	}
+
+	Mix_AllocateChannels(40); // set amount of audio channels (large enough number to have a lot of sounds simultaneously able to play)
 
 	g_window = SDL_CreateWindow(
 		"Programming 4 assignment",
