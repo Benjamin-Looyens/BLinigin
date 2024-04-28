@@ -29,7 +29,7 @@ namespace dae {
 	};
 
 
-	class LivesObserver : public DataDisplayObserver
+	class LivesObserver final : public DataDisplayObserver
 	{
 	public:
 		LivesObserver(GameObject* pLivesCounterObject, GameObject* pDataDisplayObject);
@@ -37,7 +37,7 @@ namespace dae {
 		virtual void OnNotify(const GameObject* pSubjectObject, Event event) override;
 	};
 
-	class ScoreObserver : public DataDisplayObserver
+	class ScoreObserver final : public DataDisplayObserver
 	{
 	public:
 		ScoreObserver(GameObject* pScoreOwningObject, GameObject* pDataDisplayObject);

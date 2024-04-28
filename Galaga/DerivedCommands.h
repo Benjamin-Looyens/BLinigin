@@ -23,7 +23,18 @@ namespace dae
 		GameObject* m_pGameObject;
 	};
 
-	class MoveCommand : public GameObjectCommand
+	class PrintStringCommand final : public Command
+	{
+	public:
+		void Execute() override;
+
+		PrintStringCommand(std::string stringToPrint);
+
+	private:
+		std::string m_StringToPrint;
+	};
+
+	class MoveCommand final : public GameObjectCommand
 	{
 	public:
 		void Execute() override;
@@ -35,18 +46,7 @@ namespace dae
 		glm::vec3 m_MoveDirection;
 	};
 
-	class PrintStringCommand : public Command
-	{
-	public:
-		void Execute() override;
-
-		PrintStringCommand(std::string stringToPrint);
-
-	private:
-		std::string m_StringToPrint;
-	};
-
-	class NotifyObserverCommand : public GameObjectCommand
+	class NotifyObserverCommand final : public GameObjectCommand
 	{
 	public:
 		void Execute() override;

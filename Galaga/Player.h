@@ -16,7 +16,7 @@ namespace dae {
 		int startingLives;
 	};
 
-	class Player : public Prefab
+	class Player final : public Prefab
 	{
 	public:
 		Player(glm::vec3& playerStartPos, glm::vec3& livesCounterPos, glm::vec3& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController);

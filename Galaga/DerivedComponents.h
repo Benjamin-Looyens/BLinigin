@@ -13,8 +13,9 @@ namespace dae {
 	enum class Event;
 	class Observer;
 
+	// TODO : Merge Text, Texture components
 	// Text Component
-	class TextComponent : public Component
+	class TextComponent final : public Component
 	{
 	public:
 		virtual void Update() override;
@@ -37,7 +38,7 @@ namespace dae {
 	};
 
 	// Texture Component
-	class TextureComponent : public Component
+	class TextureComponent final : public Component
 	{
 	public:
 		virtual void Render() const override;
@@ -56,7 +57,7 @@ namespace dae {
 	};
 
 	// FPS Component
-	class FPSComponent : public Component
+	class FPSComponent final : public Component
 	{
 	public:
 		virtual void Update() override;
@@ -75,7 +76,7 @@ namespace dae {
 		float m_Counter{};
 	};
 
-	class WaveMovementYComponent : public Component
+	class WaveMovementYComponent final : public Component
 	{
 	public:
 		virtual void Update() override;
@@ -96,7 +97,8 @@ namespace dae {
 		float m_WaveTime{ 0.0f };
 	};
 
-	class SubjectComponent : public Component
+	// TODO : Move to library
+	class SubjectComponent final : public Component
 	{
 	public:
 		void AddObserver(Observer* pObserverToAdd);
@@ -115,11 +117,12 @@ namespace dae {
 		std::vector<Observer*> m_pObservers;
 	};
 	
+	// TODO : Move to library
 	template<typename ObserverType>
 	concept DerivedObserver = requires(ObserverType observer) { std::derived_from<ObserverType, Observer>; };
 	 
 	template<DerivedObserver ObserverType>
-	class ObservingComponent : public Component
+	class ObservingComponent final : public Component
 	{
 	public:
 		template<typename... TArgs>
@@ -140,7 +143,7 @@ namespace dae {
 		std::unique_ptr<ObserverType> m_pInternalObserver;
 	};
 
-	class LivesComponent : public Component
+	class LivesComponent final : public Component
 	{
 	public:
 		void LoseLife();
@@ -159,7 +162,7 @@ namespace dae {
 		int m_NumLives;
 	};
 
-	class ScoreComponent : public Component
+	class ScoreComponent final : public Component
 	{
 	public:
 		int GetScore() const { return m_Score; };
@@ -176,7 +179,7 @@ namespace dae {
 		int m_Score{ };
 	};
 
-	class DisplayDataComponent : public Component
+	class DisplayDataComponent final : public Component
 	{
 	public:
 		void UpdateDisplay(std::string dataStr);

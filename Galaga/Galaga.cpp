@@ -59,6 +59,10 @@ void load()
 	playerTwo.AddToScene(&scene);
 }
 
+// GENERAL TODOS
+// TODO : Fix shared ptrs everywhere
+// TODO : Vec3 to Vec2 (z component is useless in a 2D engine)
+
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");
 	engine.Run(load);
