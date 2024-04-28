@@ -4,10 +4,10 @@
 #include <iostream>
 
 namespace dae {
-	class NullSoundSystem final : SoundSystem
+	class NullSoundSystem final : public SoundSystem
 	{
 		void PlaySound(const sound_id, const float) override { std::cerr << "SoundSystem is uninitialized!\n"; };
-		void LoadSound(const sound_id, const bool) override { std::cerr << "SoundSystem is uninitialized!\n"; };
+		void LoadSound(const sound_id, const bool)  override { std::cerr << "SoundSystem is uninitialized!\n"; };
 	};
 
 	class ServiceLocator final
@@ -18,6 +18,5 @@ namespace dae {
 
 	private:
 		static std::unique_ptr<dae::SoundSystem> m_pSoundSysInstance;
-		// std::unique_ptr<dae::SoundSystem> dae::ServiceLocator::m_pSoundSysInstance{ std::make_unique<NullSoundSystem>() };
 	};
 }
