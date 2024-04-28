@@ -14,6 +14,7 @@
 #include <algorithm>
 #include "ServiceLocator.h"
 #include "SoundSystem_Impl.h"
+#include <thread>
 
 SDL_Window* g_window{};
 
@@ -106,6 +107,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 	auto& timer = Timer::GetInstance();
+	auto& soundSys = ServiceLocator::GetSoundSystem();
+
+	// Init sound queue
+	std::thread soundThread = soundSys.InitQueue();
 
 	bool doContinue = true;
 	float lag{ };
@@ -135,4 +140,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		//const auto sleep_time = currentTime + std::chrono::milliseconds(16) - std::chrono::high_resolution_clock::now(); // 30fps : 33.3ms | 60fps : 16.6ms | 90fps : 11.1ms | 120fps : 8.3ms
 		//std::this_thread::sleep_for(sleep_time);
 	}
+
+	soundSys.Quit();
+	soundThread.join();
 }

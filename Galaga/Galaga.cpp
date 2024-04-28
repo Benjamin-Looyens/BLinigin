@@ -78,6 +78,7 @@ void load()
 	soundSys.LinkIDToFilePath(12, "../Data/Sound/13. Sound Effects.mp3");
 
 	soundSys.PlaySound(0, 0.1f);
+	soundSys.PlaySound(0, 0.1f);
 }
 
 // GENERAL TODOS

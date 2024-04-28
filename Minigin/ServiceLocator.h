@@ -6,9 +6,14 @@
 namespace dae {
 	class NullSoundSystem final : public SoundSystem
 	{
+	public:
 		void PlaySound(const sound_id, const float) override { std::cerr << "Unable to play sound because the SoundSystem is uninitialized!\n"; };
 		void LoadSound(const sound_id, const bool) override { std::cerr << "Unable to load sound because the SoundSystem is uninitialized!\n"; };
 		void LinkIDToFilePath(const sound_id, const char*) override { std::cerr << "Unable to add sound-file link because the SoundSystem is uninitialized!\n"; };
+		std::thread InitQueue() override { std::cerr << "Unable to start queue because the SoundSystem is uninitialized!\n"; return std::thread(); };
+
+	protected:
+		void PlaySoundFromQueue() override { std::cerr << "Unable to play sound from queue because the SoundSystem is uninitialized!\n"; };
 	};
 
 	class ServiceLocator final

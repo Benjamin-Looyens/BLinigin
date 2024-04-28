@@ -4,6 +4,7 @@
 #include <SDL_mixer.h>
 #include <map>
 #include <string>
+#include <thread>
 
 namespace dae {
 	class SDL_SoundSystem final : public SoundSystem
@@ -12,7 +13,11 @@ namespace dae {
 		void PlaySound(const sound_id id, const float volume) override;
 		void LoadSound(const sound_id id, const bool overwriteIfExists = false) override;
 		void LinkIDToFilePath(const sound_id id, const char* filePath) override { m_SoundFileLinks[id] = filePath; };
-	
+		std::thread InitQueue() override;
+
+	protected:
+		void PlaySoundFromQueue() override;
+
 	private:
 		std::map<sound_id, Mix_Chunk*> m_LoadedSounds;
 	};

@@ -12,10 +12,12 @@ void dae::SDL_SoundSystem::PlaySound(const sound_id id, const float volume)
 
 	if (sound) {
 #ifndef NDEBUG
-		std::cout << "Playing sound [" << id << "] at volume " << volume * 100 << "...\n";
+		std::cout << "Adding sound [" << id << "] to queue...\n";
+
+		std::lock_guard<std::mutex> lock{ m_SoundSysMutex };
+		m_SoundQueue.push({ id, volume });
+		m_SoundAddedCondition.notify_one();
 #endif 
-		Mix_Volume(-1, static_cast<int>(static_cast<float>(MIX_MAX_VOLUME) * volume));
-		Mix_PlayChannel(-1, sound, 0);
 	}
 }
 
@@ -61,5 +63,37 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfEx
 		else {
 			m_LoadedSounds[id] = sound;
 		}
+	}
+}
+
+std::thread dae::SDL_SoundSystem::InitQueue()
+{
+	std::thread soundThread{ &SDL_SoundSystem::PlaySoundFromQueue, this };
+
+	return soundThread;
+}
+
+void dae::SDL_SoundSystem::PlaySoundFromQueue()
+{
+	while (m_Continue) {
+		std::unique_lock<std::mutex> lock{ m_SoundSysMutex };
+		m_SoundAddedCondition.wait(lock, [this] { return !m_SoundQueue.empty() || !m_Continue; });
+		
+		if (m_SoundQueue.empty()) break;
+
+		auto nextSound = m_SoundQueue.front();
+		m_SoundQueue.pop();
+		
+		lock.unlock();
+		
+		sound_id id{ nextSound.first };
+		float volume{ nextSound.second };
+		auto sound = m_LoadedSounds[id];
+
+#ifndef NDEBUG
+		std::cout << "Playing sound [" << id << "] at volume " << volume * 100 << "...\n";
+#endif 
+		Mix_Volume(-1, static_cast<int>(static_cast<float>(MIX_MAX_VOLUME) * volume));
+		Mix_PlayChannel(-1, sound, 0);
 	}
 }
