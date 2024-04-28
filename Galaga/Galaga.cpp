@@ -19,6 +19,9 @@
 #include "Defines.h"
 #include "DerivedObservers.h"
 #include "Player.h"
+#include "SoundSystem.h"
+#include "SoundSystem_Impl.h"
+#include "ServiceLocator.h"
 
 void load()
 {
@@ -57,6 +60,16 @@ void load()
 
 	dae::Player playerTwo{ glm::vec3{ 60, 420, 0 }, glm::vec3{ 10, 200, 0 }, glm::vec3{ 10, 230, 0 }, "GalagaP2.tga", 1, 50.0f, 5, false };
 	playerTwo.AddToScene(&scene);
+
+	//dae::SDL_SoundSystem test{};
+	//test.PlaySound(0, 0.1f);
+	//test.LoadSound(0);
+	//test.LoadSound(0, true);
+
+	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SDL_SoundSystem>());
+	auto& soundSys = dae::ServiceLocator::GetSoundSystem();
+	soundSys.PlaySound(0, 0.5f);
+
 }
 
 // GENERAL TODOS
