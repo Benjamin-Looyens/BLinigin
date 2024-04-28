@@ -47,7 +47,9 @@ void dae::GameObject::LateUpdate()
 		auto& pComponent = m_pComponents[trueIndex];
 		
 		if (pComponent->IsRemoved()) {
+#ifndef NDEBUG
 			std::cout << "Component " << trueIndex << " removed.\n";
+#endif 
 			m_pComponents.erase(std::remove(m_pComponents.begin(), m_pComponents.end(), pComponent), m_pComponents.end());
 		}
 	}
@@ -95,6 +97,7 @@ void dae::GameObject::RemoveComponent(size_t componentIndex)
 
 void dae::GameObject::PrintComponents() const
 {
+#ifndef NDEBUG
 	std::cout << "Components within game object: \n";
 
 	if (m_pComponents.size() > 0) {
@@ -104,6 +107,7 @@ void dae::GameObject::PrintComponents() const
 	else {
 		std::cout << "None\n";
 	}
+#endif 
 }
 
 void dae::GameObject::AddChild(GameObject* pNewChild)
@@ -130,7 +134,9 @@ void dae::GameObject::AddChild(GameObject* pNewChild)
 	m_pChildObjects.push_back(pNewChild);
 	pNewChild->m_pParentObject = this;
 
+#ifndef NDEBUG
 	std::cout << "Child object has been added.\n";
+#endif 
 }
 
 void dae::GameObject::RemoveChild(GameObject* pChildToRemove)
@@ -156,7 +162,9 @@ void dae::GameObject::RemoveChild(GameObject* pChildToRemove)
 	// Remove self as parent
 	pChildToRemove->m_pParentObject = nullptr;
 
+#ifndef NDEBUG
 	std::cout << "Child object has been removed.\n";
+#endif 
 }
 
 bool dae::GameObject::ValidParent(GameObject* pParent)

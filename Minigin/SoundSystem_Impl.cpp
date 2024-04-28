@@ -11,7 +11,9 @@ void dae::SDL_SoundSystem::PlaySound(const sound_id id, const float volume)
 	}
 
 	if (sound) {
-		std::cout << "Playing sound [" << id << "]...\n";
+#ifndef NDEBUG
+		std::cout << "Playing sound [" << id << "] at volume " << volume * 100 << "...\n";
+#endif 
 		Mix_Volume(-1, static_cast<int>(static_cast<float>(MIX_MAX_VOLUME) * volume));
 		Mix_PlayChannel(-1, sound, 0);
 	}
@@ -23,10 +25,14 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfEx
 	auto sound = m_LoadedSounds[id];
 
 	if (sound) {
+#ifndef NDEBUG
 		std::cout << "Sound [" << id << "] is already loaded!";
+#endif 
 
 		if (overwriteIfExists) {
+#ifndef NDEBUG
 			std::cout << " Overwriting current loaded version:\n";
+#endif 
 			Mix_FreeChunk(m_LoadedSounds[id]);
 			m_LoadedSounds.erase(id);
 
@@ -35,7 +41,9 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfEx
 		else std::cout << "\n";
 	}
 	else {
+#ifndef NDEBUG
 		std::cout << "Loading sound [" << id << "]...\n";
+#endif 
 
 		const char* sound_cstr{ m_SoundFileLinks[id] };
 
