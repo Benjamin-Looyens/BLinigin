@@ -19,12 +19,9 @@ namespace dae {
 		virtual void LoadSound(const sound_id id, const bool overwriteIfExists = false) = 0;
 		virtual void LinkIDToFilePath(const sound_id id, const char* filePath) = 0;
 
-	protected:
-		virtual void PlaySoundFromQueue() = 0;
-
-		virtual void Quit() = 0;
-
 	private:
+		virtual void PlaySoundFromQueue() = 0;
 		virtual std::thread InitQueue() = 0;
+		virtual void Quit() = 0;
 	};
 }

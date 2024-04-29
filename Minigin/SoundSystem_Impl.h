@@ -13,13 +13,12 @@ namespace dae {
 		void PlaySound(const sound_id id, const float volume) override;
 		void LoadSound(const sound_id id, const bool overwriteIfExists = false) override;
 		void LinkIDToFilePath(const sound_id id, const char* filePath) override { m_SoundFileLinks[id] = filePath; };
-		std::thread InitQueue() override;
-
-	protected:
-		void PlaySoundFromQueue() override;
-		void Quit() override { m_Continue = false; m_SoundAddedCondition.notify_one(); };
 
 	private:
+		void PlaySoundFromQueue() override;
+		void Quit() override { m_Continue = false; m_SoundAddedCondition.notify_one(); };
+		std::thread InitQueue() override;
+		
 		std::map<sound_id, Mix_Chunk*> m_LoadedSounds;
 		std::map<sound_id, const char*> m_SoundFileLinks;
 
