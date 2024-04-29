@@ -26,6 +26,7 @@ bool dae::InputManager::ProcessInput()
 	int controllerIndex{ };
 
 	// TODO : Some sort of system to make sure the controller does exist and stuff
+	// TODO : Pimpl the controller
 	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
 	XInputGetState(controllerIndex, &currentState);
 
@@ -113,6 +114,7 @@ void dae::InputManager::AddGamepad()
 	if (code & BL_KEYBOARD_INPUT) {
 		inputIsController_OUT = false;
 
+		// HACK : Fix this :)
 		switch (code) {
 		case BL_KEYBOARD_W:
 			return SDL_SCANCODE_W;

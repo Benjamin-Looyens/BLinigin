@@ -3,25 +3,17 @@
 
 void dae::SDL_SoundSystem::PlaySound(const sound_id id, const float volume)
 {
-	auto sound = m_LoadedSounds[id];
-
-	if (!sound) {
-		LoadSound(id);
-		sound = m_LoadedSounds[id]; // reload
-	}
-
-	if (sound) {
 #ifndef NDEBUG
-		std::cout << "Adding sound [" << id << "] to queue...\n";
+	std::cout << "Adding sound [" << id << "] to queue...\n";
 #endif 
-		std::lock_guard<std::mutex> lock{ m_SoundSysMutex };
-		m_SoundQueue.push({ id, volume });
-		m_SoundAddedCondition.notify_one();
-	}
+	std::lock_guard<std::mutex> lock{ m_SoundSysMutex };
+	m_SoundQueue.push({ id, volume });
+	m_SoundAddedCondition.notify_one();
 }
 
 // WARNING: overwriting will cancel any currently playing sounds of the same id!
-void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfExists)
+// NOTE: Recommended to not be manually called, as PlaySound dynamically loads sounds on parallel thread
+void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfExists) // TODO: Add result to LoadSound as a bool, so I can stop checking if it exists manually
 {
 	auto sound = m_LoadedSounds[id];
 
@@ -89,10 +81,18 @@ void dae::SDL_SoundSystem::PlaySoundFromQueue()
 		float volume{ nextSound.second };
 		auto sound = m_LoadedSounds[id];
 
+		// See if sound is loaded
+		if (!sound) {
+			LoadSound(id);
+			sound = m_LoadedSounds[id]; // reload now that it *is* loaded
+		}
+
+		if (sound) {
 #ifndef NDEBUG
-		std::cout << "Playing sound [" << id << "] at volume " << volume * 100 << "...\n";
+			std::cout << "Playing sound [" << id << "] at volume " << volume * 100 << "...\n";
 #endif 
-		Mix_Volume(-1, static_cast<int>(static_cast<float>(MIX_MAX_VOLUME) * volume));
-		Mix_PlayChannel(-1, sound, 0);
+			Mix_Volume(-1, static_cast<int>(static_cast<float>(MIX_MAX_VOLUME) * volume));
+			Mix_PlayChannel(-1, sound, 0);
+		}
 	}
 }
