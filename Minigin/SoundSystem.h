@@ -22,17 +22,9 @@ namespace dae {
 	protected:
 		virtual void PlaySoundFromQueue() = 0;
 
-		std::map<sound_id, const char*> m_SoundFileLinks;
-
-		// Event Queue
-		std::queue<std::pair<sound_id, float>> m_SoundQueue;
-		std::mutex m_SoundSysMutex;
-		std::condition_variable m_SoundAddedCondition;
-
-		bool m_Continue{ true };
+		virtual void Quit() = 0;
 
 	private:
 		virtual std::thread InitQueue() = 0;
-		void Quit() { m_Continue = false; m_SoundAddedCondition.notify_one(); };
 	};
 }

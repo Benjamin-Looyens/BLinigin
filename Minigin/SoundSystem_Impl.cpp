@@ -91,7 +91,7 @@ void dae::SDL_SoundSystem::PlaySoundFromQueue()
 #ifndef NDEBUG
 			std::cout << "Playing sound [" << id << "] at volume " << volume * 100 << "...\n";
 #endif 
-			Mix_Volume(-1, static_cast<int>(static_cast<float>(MIX_MAX_VOLUME) * volume));
+			Mix_Volume(-1, static_cast<int>(static_cast<float>(MIX_MAX_VOLUME) * volume)); 
 			Mix_PlayChannel(-1, sound, 0);
 		}
 	}

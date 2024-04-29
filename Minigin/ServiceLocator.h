@@ -14,6 +14,7 @@ namespace dae {
 
 	protected:
 		void PlaySoundFromQueue() override { std::cerr << "Unable to play sound from queue because the SoundSystem is uninitialized!\n"; };
+		void Quit() override { std::cerr << "Unable to quit because SoundSystem is uninitialized!\n"; };
 	};
 
 	class ServiceLocator final

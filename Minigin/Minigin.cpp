@@ -15,6 +15,7 @@
 #include "ServiceLocator.h"
 #include "SoundSystem_Impl.h"
 #include <thread>
+#include <vld.h>
 
 SDL_Window* g_window{};
 

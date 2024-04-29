@@ -17,8 +17,17 @@ namespace dae {
 
 	protected:
 		void PlaySoundFromQueue() override;
+		void Quit() override { m_Continue = false; m_SoundAddedCondition.notify_one(); };
 
 	private:
 		std::map<sound_id, Mix_Chunk*> m_LoadedSounds;
+		std::map<sound_id, const char*> m_SoundFileLinks;
+
+		// Event Queue
+		std::queue<std::pair<sound_id, float>> m_SoundQueue;
+		std::mutex m_SoundSysMutex;
+		std::condition_variable m_SoundAddedCondition;
+
+		bool m_Continue{ true };
 	};
 }
