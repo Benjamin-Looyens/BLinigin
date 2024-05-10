@@ -9,7 +9,7 @@ namespace dae {
 	public:
 		void PlaySound(const sound_id, const float) override { std::cerr << "Unable to play sound because the SoundSystem is uninitialized!\n"; };
 		void LinkIDToFilePath(const sound_id, const char*) override { std::cerr << "Unable to add sound-file link because the SoundSystem is uninitialized!\n"; };
-		std::thread InitQueue() override { std::cerr << "Unable to start queue because the SoundSystem is uninitialized!\n"; return std::thread(); };
+		std::thread* InitQueue() override { std::cerr << "Unable to start queue because the SoundSystem is uninitialized!\n"; return nullptr; };
 
 	private:
 		bool LoadSound(const sound_id, const bool) override { std::cerr << "Unable to load sound because the SoundSystem is uninitialized!\n"; return 0; };

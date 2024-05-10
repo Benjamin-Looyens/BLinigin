@@ -16,7 +16,7 @@ namespace dae {
 	private:
 		virtual bool LoadSound(const sound_id id, const bool overwriteIfExists = false) = 0;
 		virtual void PlaySoundFromQueue() = 0;
-		virtual std::thread InitQueue() = 0;
+		virtual std::thread* InitQueue() = 0;
 		virtual void Quit() = 0;
 	};
 }

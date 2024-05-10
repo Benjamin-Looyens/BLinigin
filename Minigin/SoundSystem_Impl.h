@@ -22,7 +22,7 @@ namespace dae {
 		bool LoadSound(const sound_id id, const bool overwriteIfExists = false) override;
 		void PlaySoundFromQueue() override;
 		void Quit() override { m_Continue = false; m_SoundAddedCondition.notify_one(); };
-		std::thread InitQueue() override;
+		std::thread* InitQueue() override;
 		
 		std::map<sound_id, Mix_Chunk*> m_LoadedSounds;
 		std::map<sound_id, const char*> m_SoundFileLinks;

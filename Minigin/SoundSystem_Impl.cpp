@@ -58,9 +58,9 @@ bool dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfEx
 	return false;
 }
 
-std::thread dae::SDL_SoundSystem::InitQueue()
+std::thread* dae::SDL_SoundSystem::InitQueue()
 {
-	std::thread soundThread{ &SDL_SoundSystem::PlaySoundFromQueue, this };
+	std::thread* soundThread{ new std::thread{ &SDL_SoundSystem::PlaySoundFromQueue, this } };
 
 	return soundThread;
 }
