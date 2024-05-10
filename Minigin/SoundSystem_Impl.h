@@ -6,15 +6,20 @@
 #include <string>
 #include <thread>
 
+#include <map>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+
 namespace dae {
-	class SDL_SoundSystem final : public SoundSystem
+	class SDL_SoundSystem final : public ISoundSystem
 	{
 	public:
 		void PlaySound(const sound_id id, const float volume) override;
-		void LoadSound(const sound_id id, const bool overwriteIfExists = false) override;
 		void LinkIDToFilePath(const sound_id id, const char* filePath) override { m_SoundFileLinks[id] = filePath; };
 
 	private:
+		bool LoadSound(const sound_id id, const bool overwriteIfExists = false) override;
 		void PlaySoundFromQueue() override;
 		void Quit() override { m_Continue = false; m_SoundAddedCondition.notify_one(); };
 		std::thread InitQueue() override;

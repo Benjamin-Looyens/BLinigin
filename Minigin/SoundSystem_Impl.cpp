@@ -11,9 +11,7 @@ void dae::SDL_SoundSystem::PlaySound(const sound_id id, const float volume)
 	m_SoundAddedCondition.notify_one();
 }
 
-// WARNING: overwriting will cancel any currently playing sounds of the same id!
-// NOTE: Recommended to not be manually called, as PlaySound dynamically loads sounds on parallel thread
-void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfExists) // TODO: Add result to LoadSound as a bool, so I can stop checking if it exists manually
+bool dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfExists) // TODO: Add result to LoadSound as a bool, so I can stop checking if it exists manually
 {
 	auto sound = m_LoadedSounds[id];
 
@@ -29,7 +27,7 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfEx
 			Mix_FreeChunk(m_LoadedSounds[id]);
 			m_LoadedSounds.erase(id);
 
-			LoadSound(id);
+			return LoadSound(id);
 		}
 		else std::cout << "\n";
 	}
@@ -42,19 +40,22 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfEx
 
 		if (!sound_cstr) {
 			std::cerr << "No sound was found matching the id [" << id << "]!\n";
-			return;
+			return false;
 		}
 
 		sound = Mix_LoadWAV(sound_cstr);
 
 		if (!sound) {
 			std::cerr << "Failed to load sound! SDL_mixer Error: " << Mix_GetError() << "\n";
-			return;
+			return false;
 		}
 		else {
 			m_LoadedSounds[id] = sound;
+			return true;
 		}
 	}
+
+	return false;
 }
 
 std::thread dae::SDL_SoundSystem::InitQueue()
@@ -83,8 +84,7 @@ void dae::SDL_SoundSystem::PlaySoundFromQueue()
 
 		// See if sound is loaded
 		if (!sound) {
-			LoadSound(id);
-			sound = m_LoadedSounds[id]; // reload now that it *is* loaded
+			if (LoadSound(id)) sound = m_LoadedSounds[id]; // reload now that it *is* loaded
 		}
 
 		if (sound) {
