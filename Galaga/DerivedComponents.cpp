@@ -11,8 +11,9 @@
 #include <sstream>
 #include <algorithm>
 #include <math.h>
-#include "DerivedObservers.h"
 #include "DerivedEvents.h"
+#include "Observer.h"
+#include "ServiceLocator.h"
 
 #pragma region TextComponent
 dae::TextComponent::TextComponent(dae::GameObject * pParent, const std::string& text, std::shared_ptr<Font> font)
@@ -134,28 +135,6 @@ void dae::WaveMovementYComponent::Update()
 }
 #pragma endregion WaveMovementYComponent
 
-#pragma region SubjectComponent
-dae::SubjectComponent::SubjectComponent(GameObject* pParent)
-	: Component(pParent)
-{}
-
-void dae::SubjectComponent::AddObserver(Observer* pObserverToAdd)
-{
-	m_pObservers.push_back(pObserverToAdd);
-}
-
-void dae::SubjectComponent::RemoveObserver(Observer* pObserverToRemove) 
-{
-	m_pObservers.erase(std::remove(m_pObservers.begin(), m_pObservers.end(), pObserverToRemove), m_pObservers.end());
-}
-
-void dae::SubjectComponent::NotifyObservers(Event& eventToNotify)
-{
-	for (auto& pObserver : m_pObservers) 
-		pObserver->OnNotify(m_pParent, eventToNotify);
-}
-#pragma endregion SubjectComponent
-
 #pragma region LivesComponent
 dae::LivesComponent::LivesComponent(GameObject* pParent, int lives)
 	: Component(pParent), m_NumLives{ lives }
@@ -194,3 +173,112 @@ void dae::DisplayDataComponent::UpdateDisplay(std::string dataStr)
 	m_pTextLocation->SetText(dataString.str());
 }
 #pragma endregion DataDisplayComponent
+
+dae::LivesObservingComponent::LivesObservingComponent(GameObject* pParent, GameObject* pDisplay)
+	: ObservingComponent(pParent), m_pDisplayObject(pDisplay)
+{}
+
+void dae::LivesObservingComponent::OnNotify(const ISubject* pSubject, Event event)
+{
+	// Attempts to get the player GameObject from pSubject that is calling the event
+	const GameObject* pPlayerObj = nullptr;
+	if (pSubject) {
+		try {
+			pPlayerObj = dynamic_cast<const Component*>(pSubject)->GetParent();
+		}
+		catch (...) {
+			std::cout << "[ScoreObservingComponent] Getting player failed!\n";
+			return;
+		}
+	}
+
+	dae::LivesComponent* pLivesComp = nullptr;
+	if (pPlayerObj) pLivesComp = pPlayerObj->GetComponent<dae::LivesComponent>();
+
+	int prevLives{};
+	if (pLivesComp) prevLives = pLivesComp->GetLifeCount();
+
+	dae::DisplayDataComponent* pDataComp = nullptr;
+	if (m_pDisplayObject) pDataComp = m_pDisplayObject->GetComponent<dae::DisplayDataComponent>();
+	
+	bool doUpdate{ false };
+
+	switch (event) {
+	case Event::PLAYER_DIED:
+		if (pLivesComp) pLivesComp->LoseLife();
+		ServiceLocator::GetSoundSystem().PlaySound(9, 0.4f);
+		doUpdate = true;
+		break;
+	}
+
+	if (!doUpdate) return;
+
+	if (pDataComp && pLivesComp) {
+		if (prevLives != pLivesComp->GetLifeCount()) {
+			pDataComp->UpdateDisplay(std::to_string(pLivesComp->GetLifeCount()));
+		}
+	}
+#ifndef NDEBUG
+	else {
+		if (!pDataComp) std::cout <<  "[LivesObservingComponent] Data Displaying Component is nullptr!\n";
+		if (!pLivesComp) std::cout << "[LivesObservingComponent] Lives Component is nullptr!\n";
+	}
+#endif
+}
+
+dae::ScoreObservingComponent::ScoreObservingComponent(GameObject* pParent, GameObject* pDisplay)
+	: ObservingComponent(pParent), m_pDisplayObject(pDisplay)
+{}
+
+void dae::ScoreObservingComponent::OnNotify(const ISubject* pSubject, Event event)
+{
+	// Attempts to get the player GameObject from pSubject that is calling the event
+	const GameObject* pPlayerObj = nullptr;
+	if (pSubject) {
+		try {
+			pPlayerObj = dynamic_cast<const Component*>(pSubject)->GetParent();
+		}
+		catch (...) {
+			std::cout << "[ScoreObservingComponent] Getting player failed!\n";
+			return;
+		}
+	}
+
+	dae::ScoreComponent* pScoreComp = nullptr;
+	if (pPlayerObj) pScoreComp = pPlayerObj->GetComponent<dae::ScoreComponent>();
+
+	int prevScore{};
+	if (pScoreComp) prevScore = pScoreComp->GetScore();
+
+	dae::DisplayDataComponent* pDataComp = nullptr;
+	if (m_pDisplayObject) pDataComp = m_pDisplayObject->GetComponent<dae::DisplayDataComponent>();
+
+	bool doUpdate{ false };
+
+	switch (event) {
+	case Event::BIG_ENEMY_DIED:
+		if (pScoreComp) pScoreComp->AddPoints(500);
+		ServiceLocator::GetSoundSystem().PlaySound(8, 0.4f);
+		doUpdate = true;
+		break;
+	case Event::SMALL_ENEMY_DIED:
+		if (pScoreComp) pScoreComp->AddPoints(100);
+		ServiceLocator::GetSoundSystem().PlaySound(10, 0.4f);
+		doUpdate = true;
+		break;
+	}
+
+	if (!doUpdate) return;
+
+	if (pDataComp && pScoreComp) {
+		if (prevScore != pScoreComp->GetScore()) {
+			pDataComp->UpdateDisplay(std::to_string(pScoreComp->GetScore()));
+		}
+	}
+#ifndef NDEBUG
+	else {
+		if (!pDataComp) std::cout <<  "[ScoreObservingComponent] Data Displaying Component is nullptr!\n";
+		if (!pScoreComp) std::cout << "[ScoreObservingComponent] Score Component is nullptr!\n";
+	}
+#endif
+}

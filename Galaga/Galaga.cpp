@@ -17,7 +17,6 @@
 #include "InputManager.h"
 #include "DerivedCommands.h"
 #include "Defines.h"
-#include "DerivedObservers.h"
 #include "Player.h"
 #include "SoundSystem.h"
 #include "ServiceLocator.h"

@@ -90,6 +90,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	Timer::GetInstance().Init();
 
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SDL_SoundSystem>());
+	//dae::ServiceLocator::RegisterSoundSystem(nullptr);
 }
 
 dae::Minigin::~Minigin()
@@ -112,7 +113,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& soundSys = ServiceLocator::GetSoundSystem();
 
 	// Init sound queue
-	std::thread soundThread = soundSys.InitQueue();
+	auto pSoundThread = std::unique_ptr<std::thread>(soundSys.InitQueue());
 
 	bool doContinue = true;
 	float lag{ };
@@ -144,5 +145,5 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	}
 
 	soundSys.Quit();
-	soundThread.join();
+	if (pSoundThread.get()) pSoundThread->join();
 }

@@ -8,7 +8,7 @@
 namespace dae
 {
 	class GameObject;
-	class Observer;
+	class IObserver;
 
 	class GameObjectCommand : public Command
 	{

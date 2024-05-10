@@ -4,14 +4,17 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include "Observer.h"
+#include "ObserverComponents.h"
 
 namespace dae {
 	// Class Forward Declarations
 	class Font;
 	class Texture2D;
-	class Observer;
+	class IObserver;
 	enum class Event;
-	class Observer;
+	class IObserver;
+	class ISubject;
 
 	// TODO : Merge Text, Texture components
 	// Text Component
@@ -97,52 +100,6 @@ namespace dae {
 		float m_WaveTime{ 0.0f };
 	};
 
-	// TODO : Move to library
-	class SubjectComponent final : public Component
-	{
-	public:
-		void AddObserver(Observer* pObserverToAdd);
-		void RemoveObserver(Observer* pObserverToRemove);
-
-		void NotifyObservers(Event& eventToNotify);
-
-		SubjectComponent(GameObject* pParent);
-		virtual ~SubjectComponent() = default;
-		SubjectComponent(const SubjectComponent& other) = delete;
-		SubjectComponent(const SubjectComponent&& other) = delete;
-		SubjectComponent& operator=(const SubjectComponent& other) = delete;
-		SubjectComponent& operator=(const SubjectComponent&& other) = delete;
-
-	private:
-		std::vector<Observer*> m_pObservers;
-	};
-	
-	// TODO : Move to library
-	template<typename ObserverType>
-	concept DerivedObserver = requires(ObserverType observer) { std::derived_from<ObserverType, Observer>; };
-	 
-	template<DerivedObserver ObserverType>
-	class ObservingComponent final : public Component
-	{
-	public:
-		template<typename... TArgs>
-		ObservingComponent(GameObject* pParent, const TArgs&... args) : Component(pParent)
-		{
-			//m_pObserver = std::make_unique<ObserverType>(std::forward<TArgs>(args)...);
-			m_pInternalObserver = std::make_unique<ObserverType>(args...);
-		}
-		virtual ~ObservingComponent() = default;
-		ObservingComponent(const ObservingComponent& other) = delete;
-		ObservingComponent(const ObservingComponent&& other) = delete;
-		ObservingComponent& operator=(const ObservingComponent& other) = delete;
-		ObservingComponent& operator=(const ObservingComponent&& other) = delete;
-
-		ObserverType* GetRawPointer() const { return m_pInternalObserver.get(); };
-
-	private:
-		std::unique_ptr<ObserverType> m_pInternalObserver;
-	};
-
 	class LivesComponent final : public Component
 	{
 	public:
@@ -194,6 +151,28 @@ namespace dae {
 	private:
 		dae::TextComponent* m_pTextLocation; // non-owning reference to parent's text component (if it has one)
 		std::string m_DataPrefix;
+	};
+
+	class LivesObservingComponent final : public ObservingComponent
+	{
+	public:
+		LivesObservingComponent(GameObject* pParent, GameObject* pDisplay);
+
+		virtual void OnNotify(const ISubject* pSubject, Event event) override;
+
+	private:
+		GameObject* m_pDisplayObject;
+	};
+
+	class ScoreObservingComponent final : public ObservingComponent
+	{
+	public:
+		ScoreObservingComponent(GameObject* pParent, GameObject* pDisplay);
+
+		virtual void OnNotify(const ISubject* pSubject, Event event) override;
+	
+	private:
+		GameObject* m_pDisplayObject;
 	};
 }
 

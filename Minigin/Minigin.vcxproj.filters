@@ -16,6 +16,9 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{56b583d3-ea21-468f-a314-c75656a58a67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Predefined Derived Classes">
+      <UniqueIdentifier>{7469732c-dd7a-4518-b062-8e0a3a3f8385}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -108,6 +111,9 @@
     <ClInclude Include="SoundSystem_Impl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ObserverComponents.h">
+      <Filter>Predefined Derived Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -172,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="SoundSystem_Impl.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObserverComponents.cpp">
+      <Filter>Predefined Derived Classes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

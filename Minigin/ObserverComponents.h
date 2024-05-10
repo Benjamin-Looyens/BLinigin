@@ -1,0 +1,39 @@
+#pragma once
+#include "Observer.h"
+#include "Component.h"
+
+namespace dae {
+	class GameObject;
+	enum class Event;
+
+	class SubjectComponent : public Component, public ISubject
+	{
+	public:
+		SubjectComponent(GameObject* pParent);
+		virtual ~SubjectComponent() = default;
+
+		SubjectComponent(const SubjectComponent& other) = delete;
+		SubjectComponent(const SubjectComponent&& other) = delete;
+		SubjectComponent& operator=(const SubjectComponent& other) = delete;
+		SubjectComponent& operator=(const SubjectComponent&& other) = delete;
+
+		virtual void AddObserver(IObserver* pObserverToAdd) override;
+		virtual void RemoveObserver(IObserver* pObserverToRemove) override;
+		virtual void NotifyObservers(Event& eventToNotify) override;
+
+	private:
+		std::vector<IObserver*> m_pObservers;
+	};
+
+	class ObservingComponent : public Component, public IObserver
+	{
+	public:
+		ObservingComponent(GameObject* pParent);
+		virtual ~ObservingComponent() = default;
+
+		ObservingComponent(const ObservingComponent& other) = delete;
+		ObservingComponent(const ObservingComponent&& other) = delete;
+		ObservingComponent& operator=(const ObservingComponent& other) = delete;
+		ObservingComponent& operator=(const ObservingComponent&& other) = delete;
+	};
+}

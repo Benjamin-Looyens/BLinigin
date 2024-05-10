@@ -4,9 +4,9 @@
 #include "InputManager.h"
 #include "ResourceManager.h"
 #include "DerivedCommands.h"
-#include "DerivedObservers.h"
 #include "DerivedComponents.h"
 #include "DerivedEvents.h"
+#include "ObserverComponents.h"
 
 dae::Player::Player(glm::vec3& playerStartPos, glm::vec3& livesCounterPos, glm::vec3& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController)
 	: m_PlayerStartPos{ playerStartPos }, m_LivesCounterPos{ livesCounterPos }, m_ScoreCounterPos{ scoreCounterPos },
@@ -56,10 +56,10 @@ void dae::Player::AddToScene(Scene* pSceneToAddTo)
 
 	// Observers
 	auto pSubject = pPlayer->AddComponent<dae::SubjectComponent>();
-	auto pScoreObserver = pScoreObject->AddComponent<dae::ObservingComponent<dae::ScoreObserver>>(pPlayer, pScoreObject);
-	auto pLivesObserver = pLivesObject->AddComponent<dae::ObservingComponent<dae::LivesObserver>>(pPlayer, pLivesObject);
-	pSubject->AddObserver(pLivesObserver->GetRawPointer());
-	pSubject->AddObserver(pScoreObserver->GetRawPointer());
+	auto pScoreObserver = pScoreObject->AddComponent<dae::ScoreObservingComponent>(pScoreObject);
+	auto pLivesObserver = pLivesObject->AddComponent<dae::LivesObservingComponent>(pLivesObject);
+	pSubject->AddObserver(pScoreObserver);
+	pSubject->AddObserver(pLivesObserver);
 
 	// Input
 	auto& input = InputManager::GetInstance();
