@@ -74,7 +74,7 @@ void load()
 	soundSys.LinkIDToFilePath(10, "../Data/Sound/10. Coin.mp3");
 	soundSys.LinkIDToFilePath(11, "../Data/Sound/11. Name Entry.mp3");
 	soundSys.LinkIDToFilePath(12, "../Data/Sound/12. 2nd - 5th Name Entry.mp3");
-	soundSys.LinkIDToFilePath(13, "../Data/Sound/13. Sound Effects.mp3");
+	soundSys.LinkIDToFilePath(13, "../Data/Sound/13. Shoot.mp3");
 
 	soundSys.PlaySound(1, 0.2f);
 }

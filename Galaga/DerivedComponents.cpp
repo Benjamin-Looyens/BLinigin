@@ -206,7 +206,7 @@ void dae::LivesObservingComponent::OnNotify(const ISubject* pSubject, Event even
 	switch (event) {
 	case Event::PLAYER_DIED:
 		if (pLivesComp) pLivesComp->LoseLife();
-		ServiceLocator::GetSoundSystem().PlaySound(9, 0.4f);
+		//ServiceLocator::GetSoundSystem().PlaySound(9, 0.4f);
 		doUpdate = true;
 		break;
 	}
@@ -258,12 +258,12 @@ void dae::ScoreObservingComponent::OnNotify(const ISubject* pSubject, Event even
 	switch (event) {
 	case Event::BIG_ENEMY_DIED:
 		if (pScoreComp) pScoreComp->AddPoints(500);
-		ServiceLocator::GetSoundSystem().PlaySound(8, 0.4f);
+		//ServiceLocator::GetSoundSystem().PlaySound(8, 0.4f);
 		doUpdate = true;
 		break;
 	case Event::SMALL_ENEMY_DIED:
 		if (pScoreComp) pScoreComp->AddPoints(100);
-		ServiceLocator::GetSoundSystem().PlaySound(10, 0.4f);
+		//ServiceLocator::GetSoundSystem().PlaySound(10, 0.4f);
 		doUpdate = true;
 		break;
 	}
