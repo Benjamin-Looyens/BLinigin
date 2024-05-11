@@ -26,13 +26,20 @@ namespace dae
 		void SetLocalTranslation(const float x, const float y, const float z = 0.0f);
 		void SetLocalTranslation(const glm::vec3& newTranslate) { SetLocalTranslation(newTranslate.x, newTranslate.y, newTranslate.z); };
 
-		Transform GetLocalTransform() const { return m_LocalTransform; };
-		glm::vec3 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
+		void SetLocalScale(const float x, const float y, const float z = 1.0f);
+		void MultiplyScale(const float multiplier) { m_LocalTransform.MultiplyScale(multiplier); };
 
+		glm::vec3 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
+		glm::vec3 GetLocalScale() const { return m_LocalTransform.GetScale(); };
+
+		Transform GetLocalTransform() const { return m_LocalTransform; };
 		Transform GetWorldTransform();
 
 		glm::vec3 GetWorldPosition();
+		glm::vec3 GetWorldScale();
+
 		void UpdateWorldPosition();
+		void UpdateWorldScale();
 
 		void RemoveComponent(size_t componentIndex);
 		void PrintComponents() const; // for debug
@@ -91,11 +98,13 @@ namespace dae
 
 	private:
 		void SetPositionDirty();
+		void SetScaleDirty();
 
 		Transform m_LocalTransform{ };
 		Transform m_WorldTransform{ };
 
 		bool m_PositionDirty{ true };
+		bool m_ScaleDirty{ true };
 
 		GameObject* m_pParentObject;
 

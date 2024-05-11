@@ -21,6 +21,14 @@ void dae::GameObject::SetPositionDirty()
 		childObject->SetPositionDirty();
 }
 
+void dae::GameObject::SetScaleDirty()
+{
+	m_ScaleDirty = true;
+
+	for (auto& childObject : m_pChildObjects)
+		childObject->SetScaleDirty();
+}
+
 void dae::GameObject::Update()
 {
 	for (auto& pComponent : m_pComponents) 
@@ -65,16 +73,21 @@ void dae::GameObject::SetLocalTranslation(const float x, const float y, const fl
 {
 	m_LocalTransform.SetTranslation(x, y, z);
 	
-	m_PositionDirty = true;
+	SetPositionDirty();
+}
 
-	for (auto& childObject : m_pChildObjects) 
-		childObject->SetPositionDirty();
+void dae::GameObject::SetLocalScale(const float x, const float y, const float z)
+{
+	m_LocalTransform.SetScale(x, y, z);
+
+	SetScaleDirty();
 }
 
 dae::Transform dae::GameObject::GetWorldTransform()
 {
 	if (m_PositionDirty) UpdateWorldPosition();
-
+	if (m_ScaleDirty) UpdateWorldScale();
+	
 	return m_WorldTransform;
 }
 
@@ -85,16 +98,44 @@ glm::vec3 dae::GameObject::GetWorldPosition()
 	return m_WorldTransform.GetTranslation();
 }
 
+glm::vec3 dae::GameObject::GetWorldScale()
+{
+	if (m_ScaleDirty) UpdateWorldScale();
+
+	return m_WorldTransform.GetScale();
+}
+
 void dae::GameObject::UpdateWorldPosition()
 {
 	if (m_PositionDirty) {
 		auto& localPos = m_LocalTransform.GetTranslation();
 
 		if (m_pParentObject == nullptr) m_WorldTransform.SetTranslation(localPos);
-		else m_WorldTransform.SetTranslation(m_pParentObject->GetWorldPosition() + localPos);
+		else m_WorldTransform.SetTranslation(m_pParentObject->GetWorldTransform().GetTranslation() + localPos);
 	}
 
 	m_PositionDirty = false;
+}
+
+void dae::GameObject::UpdateWorldScale()
+{
+	if (m_ScaleDirty) {
+		auto& localScale = m_LocalTransform.GetScale();
+
+		if (m_pParentObject == nullptr) m_WorldTransform.SetScale(localScale);
+		else {
+			auto& parentScale = m_pParentObject->GetWorldTransform().GetScale();
+			glm::vec3 newScale{ localScale };
+
+			if (parentScale.x != 0.0f) newScale.x *= parentScale.x;
+			if (parentScale.y != 0.0f) newScale.y *= parentScale.y;
+			if (parentScale.z != 0.0f) newScale.z *= parentScale.z;
+
+			m_WorldTransform.SetScale(newScale);
+		}
+	}
+
+	m_ScaleDirty = false;
 }
 
 void dae::GameObject::RemoveComponent(size_t componentIndex)

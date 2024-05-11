@@ -21,9 +21,9 @@ namespace dae
 		void SetRotation(glm::vec3 newRotation) { m_Rotation = newRotation; };
 		void SetRotation(float xAngle, float yAngle, float zAngle) { SetRotation({ xAngle, yAngle, zAngle }); };
 
-		void SetScale(glm::vec3 newPos) { m_Scale = newPos; };
-		void SetScale(float xScale, float yScale, float zScale) { SetRotation({ xScale, yScale, zScale }); };
-		void SetScale(float universalScale) { SetRotation({ universalScale ,universalScale ,universalScale }); };
+		void SetScale(glm::vec3 newScale) { m_Scale = newScale; };
+		void SetScale(float xScale, float yScale, float zScale) { SetScale({ xScale, yScale, zScale }); };
+		void SetScale(float universalScale) { SetScale({ universalScale ,universalScale ,universalScale }); };
 
 		// Modifiers
 		void MultiplyScale(float multiplier);

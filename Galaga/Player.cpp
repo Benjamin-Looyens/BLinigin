@@ -34,8 +34,9 @@ void dae::Player::AddToScene(Scene* pSceneToAddTo)
 {
 	// Player itself
 	auto pPlayer = pSceneToAddTo->AddGameObject();
-	pPlayer->AddComponent<dae::TextureComponent>(m_PlayerSpriteLocation);
 	pPlayer->SetLocalTranslation(m_PlayerStartPos);
+	pPlayer->SetLocalScale(2.0f, 2.0f, 2.0f);
+	pPlayer->AddComponent<dae::TextureComponent>(m_PlayerSpriteLocation);
 	pPlayer->AddComponent<dae::ScoreComponent>();
 	pPlayer->AddComponent<dae::LivesComponent>(m_StartingLives);
 

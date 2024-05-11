@@ -73,9 +73,13 @@ dae::TextureComponent::TextureComponent(dae::GameObject* pParent, const std::str
 void dae::TextureComponent::Render() const
 {
 	// TODO : add scaling & rotation compatibility
-	//const auto& transform = m_pParent->GetLocalTransform();
-	const auto& pos = m_pParent->GetWorldPosition();
-	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+	const auto& transform = m_pParent->GetWorldTransform();
+	const auto& pos = transform.GetTranslation();
+	const auto& scale = transform.GetScale();
+	const auto& widthHeight = m_pTexture->GetSize();
+
+	//Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, static_cast<float>(widthHeight.x) * scale.x, static_cast<float>(widthHeight.y) * scale.y);
 }
 
 void dae::TextureComponent::SetTexture(const std::string& filename)
