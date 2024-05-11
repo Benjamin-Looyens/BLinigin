@@ -71,6 +71,13 @@ void dae::GameObject::SetLocalTranslation(const float x, const float y, const fl
 		childObject->SetPositionDirty();
 }
 
+dae::Transform dae::GameObject::GetWorldTransform()
+{
+	if (m_PositionDirty) UpdateWorldPosition();
+
+	return m_WorldTransform;
+}
+
 glm::vec3 dae::GameObject::GetWorldPosition()
 {
 	if (m_PositionDirty) UpdateWorldPosition();

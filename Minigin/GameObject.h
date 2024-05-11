@@ -29,6 +29,8 @@ namespace dae
 		Transform GetLocalTransform() const { return m_LocalTransform; };
 		glm::vec3 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
 
+		Transform GetWorldTransform();
+
 		glm::vec3 GetWorldPosition();
 		void UpdateWorldPosition();
 
