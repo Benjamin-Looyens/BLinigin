@@ -43,7 +43,7 @@ void dae::SpawnIn::Update(EnemyLogic& enemy)
 
     if (lenSqr < EPSILON) m_CurrentWayPoint++;
 
-    if (m_CurrentWayPoint < m_Path.size()) enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()), 0.0f });
+    if (static_cast<size_t>(m_CurrentWayPoint) < m_Path.size()) enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()), 0.0f });
     else enemy.SetState(std::make_unique<Patrol>());
 }
 

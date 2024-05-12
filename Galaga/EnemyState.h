@@ -51,7 +51,7 @@ namespace dae {
 			}
 
 			void Sample(std::vector<glm::vec2>* pSampledPath) {
-				for (int index{}; index < m_Curves.size(); ++index) {
+				for (size_t index{}; index < m_Curves.size(); ++index) {
 					for (float t{ }; t <= 1.0f; t += (1.0f / static_cast<float>(m_Samples[index]))) {
 						pSampledPath->push_back(m_Curves[index].CalcPosOnCurve(t));
 					}
@@ -65,15 +65,15 @@ namespace dae {
 
 	public:
 		SpawnIn();
-		SpawnIn(std::vector<glm::vec2> path, glm::vec2 endLocation);
+		SpawnIn(std::vector<glm::vec2> path, glm::vec2 startLocation);
 
 		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
 
 	private:
-		std::vector<glm::vec2> m_Path;
-		glm::vec2 m_StartLocation;
+		std::vector<glm::vec2> m_Path{};
+		glm::vec2 m_StartLocation{};
 
 		int m_CurrentWayPoint;
 		static constexpr float EPSILON{ 5.0f };
@@ -103,8 +103,8 @@ namespace dae {
 		void OnExit(EnemyLogic& enemy) override;
 
 	private:
-		glm::vec2 m_KamikazePosition;
-		glm::vec2 m_StartPosition;
+		glm::vec2 m_KamikazePosition{};
+		glm::vec2 m_StartPosition{};
 
 		bool m_NotDone{ true };
 		float m_DoneTimer{};
