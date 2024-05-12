@@ -20,6 +20,7 @@
 #include "Player.h"
 #include "SoundSystem.h"
 #include "ServiceLocator.h"
+#include "Enemy.h"
 
 void load()
 {
@@ -53,10 +54,10 @@ void load()
 	pInstructions3->SetLocalTranslation(0, 30);
 
 	// Prefabs
-	dae::Player playerOne{ glm::vec3{ 30, 420, 0 }, glm::vec3{ 10, 130, 0 }, glm::vec3{ 10, 160, 0 }, "GalagaP1.tga", 0, 50.0f, 5, true };
+	dae::Player playerOne{ glm::vec3{ 30, 420, 0 }, glm::vec3{ 10, 130, 0 }, glm::vec3{ 10, 160, 0 }, "GalagaP1.tga", 0, 100.0f, 5, true };
 	playerOne.AddToScene(&scene);
 
-	dae::Player playerTwo{ glm::vec3{ 60, 420, 0 }, glm::vec3{ 10, 200, 0 }, glm::vec3{ 10, 230, 0 }, "GalagaP2.tga", 1, 50.0f, 5, false };
+	dae::Player playerTwo{ glm::vec3{ 90, 420, 0 }, glm::vec3{ 10, 200, 0 }, glm::vec3{ 10, 230, 0 }, "GalagaP2.tga", 1, 100.0f, 5, false };
 	playerTwo.AddToScene(&scene);
 
 	// Sound
@@ -77,6 +78,9 @@ void load()
 	soundSys.LinkIDToFilePath(13, "../Data/Sound/13. Shoot.mp3");
 
 	soundSys.PlaySound(1, 0.2f);
+
+	dae::Enemy test{ glm::vec3{}, "BasicEnemy.tga", 100.0f };
+	test.AddToScene(&scene);
 }
 
 // GENERAL TODOS
