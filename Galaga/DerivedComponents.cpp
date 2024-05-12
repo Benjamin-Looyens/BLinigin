@@ -70,6 +70,24 @@ dae::TextureComponent::TextureComponent(dae::GameObject* pParent, const std::str
 	m_ComponentName = "TextureComponent";
 }
 
+float dae::TextureComponent::GetTextureWidth() const
+{
+	return static_cast<float>(m_pTexture->GetSize().x);
+}
+
+float dae::TextureComponent::GetTextureHeight() const
+{
+	return static_cast<float>(m_pTexture->GetSize().y);
+}
+
+
+glm::vec2 dae::TextureComponent::GetTextureSize() const
+{
+	glm::ivec2 iVec = m_pTexture->GetSize();
+
+	return { static_cast<float>(iVec.x), static_cast<float>(iVec.y) };
+}
+
 void dae::TextureComponent::Render() const
 {
 	// TODO : add scaling & rotation compatibility

@@ -36,8 +36,8 @@ namespace dae {
 	private:
 		bool m_NeedsUpdate;
 		std::string m_Text;
-		std::shared_ptr<Font> m_pFont;
-		std::shared_ptr<Texture2D> m_pTextTexture;
+		std::shared_ptr<Font> m_pFont; // TODO: unique
+		std::shared_ptr<Texture2D> m_pTextTexture; // TODO: unique
 	};
 
 	// Texture Component
@@ -55,8 +55,12 @@ namespace dae {
 		TextureComponent& operator=(const TextureComponent& other) = delete;
 		TextureComponent& operator=(TextureComponent&& other) = delete;
 
+		float GetTextureWidth() const;
+		float GetTextureHeight() const;
+		glm::vec2 GetTextureSize() const;
+
 	private:
-		std::shared_ptr<Texture2D> m_pTexture;
+		std::shared_ptr<Texture2D> m_pTexture; // TODO: Change to unique ptr
 	};
 
 	// FPS Component

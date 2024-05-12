@@ -37,7 +37,7 @@ namespace dae {
 		std::string m_PlayerSpriteLocation;
 		int m_PlayerIndex;
 		bool m_UseController;
-		float m_MovSpeed;
+		float m_SpawnMovSpeed;
 		int m_StartingLives;
 	};
 }

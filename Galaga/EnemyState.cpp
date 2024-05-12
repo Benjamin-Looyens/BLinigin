@@ -4,70 +4,47 @@
 #include "GameObject.h"
 #include "Timer.h"
 #include <SDL.h>
+#include "DerivedComponents.h"
 
 dae::SpawnIn::SpawnIn()
 {
-    int width, height;
-    SDL_GetWindowSize(SDL_GetKeyboardFocus(), &width, &height);
-    float halfWidth = (static_cast<float>(width) / 2);
-    float startPositionX = halfWidth + 50.0f;
+    int screenWidth;
+    int screenHeight;
+    SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight);
+    float halfWidth = (static_cast<float>(screenWidth) / 2);
+    float startPositionX = halfWidth + 150.0f;
 
     // Temporary hard coded definition
-    
-    //m_Path = {
-    //    { halfWidth, 0.0f, 0.0f },
-    //    { halfWidth, 50.0f, 0.0f },
-    //    { halfWidth + 50.0f, 150.0f, 0.0f },
-    //    { halfWidth + 100.0f, 250.0f, 0.0f },
-    //};
-    //
-    //m_EndLocation = { 100.0f, 100.0f, 0.0f };
+    auto bezierPath = std::make_unique<BezierPath>();
 
-    m_Path = {};
+    bezierPath->AddCurve({ { startPositionX, -10.0f }, { startPositionX, -20.0f }, { startPositionX, 30.0f }, { startPositionX, 20.0f } }, 1);                    // Start straight line down
+    bezierPath->AddCurve({ { startPositionX, 20.0f }, { startPositionX, 100.0f }, { halfWidth - 25.0f, 325.0f }, { halfWidth - 25.0f, 425.0f } }, 25);            // Curve to side
+    bezierPath->AddCurve({ { halfWidth - 25.0f, 425.0f }, { halfWidth - 25.0f, 650.0f }, { halfWidth + 150.0f, 650.0f }, { halfWidth + 150.0f, 425.0f } }, 25);   // U-Turn
+    bezierPath->AddCurve({ { halfWidth + 150.0f, 425.0f }, { halfWidth + 150.0f, 425.0f }, { 25.0f, 25.0f }, { 25.0f, 25.0f } }, 25);                             // Get into patrol location
+    // TODO : Make final location dependent on formation (having set positions for each enemy in a formation)
 
-    auto path = std::make_unique<BezierPath>();
-
-    //path->AddCurve({ { halfWidth, 10.0f }, { halfWidth, 0.0f }, { halfWidth, 310.0f }, { halfWidth, 300.0f } }, 1);
-    path->AddCurve({ { startPositionX, -10.0f }, { startPositionX, -20.0f }, { startPositionX, 30.0f }, { startPositionX, 20.0f } }, 5);
-    path->AddCurve({ { startPositionX, 20.0f }, { startPositionX, 30.0f }, { halfWidth - 25.0f, 325.0f }, { halfWidth - 25.0f, 325.0f } }, 5);
-    
-    path->Sample(&m_Path);
+    bezierPath->Sample(&m_Path);
 
     m_CurrentWayPoint = 0;
-    //m_StartLocation = { startPositionX, 500.0f };
     m_StartLocation = m_Path[0];
 }
 
-dae::SpawnIn::SpawnIn(std::vector<glm::vec2> path, glm::vec2 endLocation)
-    : m_Path{ path }, m_EndLocation{ endLocation }
+dae::SpawnIn::SpawnIn(std::vector<glm::vec2> path, glm::vec2 startLocation)
+    : m_Path{ path }, m_StartLocation{ startLocation }
 {}
 
 void dae::SpawnIn::Update(EnemyLogic& enemy)
 {
-    std::cout << "\n";
+    float deltaTime = Timer::GetInstance().GetDeltaTime();
+    glm::vec2 curLocation = enemy.GetLocation();
 
-    auto dir = m_Path[m_CurrentWayPoint] - enemy.GetLocation();
+    glm::vec2 dir{ m_Path[m_CurrentWayPoint] - curLocation };
     float lenSqr{ std::powf(dir.x, 2) + std::powf(dir.y, 2) };
 
-    if (lenSqr < EPSILON)
-        m_CurrentWayPoint++;
+    if (lenSqr < EPSILON) m_CurrentWayPoint++;
 
-    if (m_CurrentWayPoint < m_Path.size()) {
-        glm::vec2 dist = m_Path[m_CurrentWayPoint] - enemy.GetLocation();
-        enemy.SetLocation({ enemy.GetLocation() + (glm::normalize(dist) * Timer::GetInstance().GetDeltaTime() * enemy.GetSpeed()), 0.0f });
-    }
-    else {
-        enemy.SetState(std::make_unique<Patrol>());
-        return;
-    }
-        
-    //std::cout << "DeltaTime: " << deltaTime << "\n";
-    //std::cout << "Enemy Prev Location: [" << curPos.x << ", " << curPos.y << "]\n";
-    std::cout << "Enemy Location: [" << enemy.GetLocation().x << ", " << enemy.GetLocation().y << "]\n";
-    std::cout << "Path[curWayPoint]: [" << m_Path[m_CurrentWayPoint].x << ", " << m_Path[m_CurrentWayPoint].y << "]\n";
-    std::cout << "CurWayPoint: [" << m_CurrentWayPoint << "]\n";
-    //std::cout << "Dir: [" << dir.x << ", " << dir.y << "]\n";
-    //std::cout << "Len: [" << len << "]\n";
+    if (m_CurrentWayPoint < m_Path.size()) enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()), 0.0f });
+    else enemy.SetState(std::make_unique<Patrol>());
 }
 
 void dae::SpawnIn::OnEnter(EnemyLogic& enemy)
@@ -75,9 +52,8 @@ void dae::SpawnIn::OnEnter(EnemyLogic& enemy)
 #ifndef NDEBUG
     std::cout << "SpawnIn State Entering.\n";
 #endif
-    enemy;
-    //enemy.SetLocation({ m_StartLocation, 0.0f });
-    //std::cout << "Start Location: [" << m_StartLocation.x << ", " << m_StartLocation.y << "]\n";
+
+    enemy.SetLocation({ m_StartLocation.x, m_StartLocation.y - 10.0f, 0.0f });
 }
 
 void dae::SpawnIn::OnExit(EnemyLogic&)
@@ -89,14 +65,37 @@ void dae::SpawnIn::OnExit(EnemyLogic&)
 
 void dae::Patrol::Update(EnemyLogic& enemy)
 {
-    enemy;
+    const float deltaTime = Timer::GetInstance().GetDeltaTime();
+    const glm::vec2 curLocation = enemy.GetLocation();
+
+    if (curLocation.x >= m_MaxPos.x || curLocation.x <= m_MinPos.x) m_CurDirection *= -1.0f;
+
+    enemy.SetLocation({ curLocation + (deltaTime * m_CurDirection * enemy.GetPatrolSpeed()), 0.0f });
+
+    if (m_ElapsedTime >= m_MaxTime) {
+        if (rand() % 2) enemy.SetState(std::make_unique<Kamikaze>());
+    }
+    else m_ElapsedTime += deltaTime;
 }
 
-void dae::Patrol::OnEnter(EnemyLogic&)
+void dae::Patrol::OnEnter(EnemyLogic& enemy)
 {
 #ifndef NDEBUG
     std::cout << "Patrol State Entering.\n";
 #endif
+    constexpr float BORDER_OFFSET{ 25.0f };
+
+    int screenWidth;
+    int screenHeight;
+    SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight);
+
+    auto pParent = enemy.GetParent();
+    auto scale = enemy.GetScale();
+    auto size = pParent->GetComponent<dae::TextureComponent>()->GetTextureSize();
+
+    // TODO : Calculate proper min and max pos using formation reference
+    m_MinPos = { BORDER_OFFSET, BORDER_OFFSET };
+    m_MaxPos = { static_cast<float>(screenWidth) - BORDER_OFFSET - (size.x * scale.x), static_cast<float>(screenHeight) - BORDER_OFFSET };
 }
 
 void dae::Patrol::OnExit(EnemyLogic&)
@@ -108,14 +107,54 @@ void dae::Patrol::OnExit(EnemyLogic&)
 
 void dae::Kamikaze::Update(EnemyLogic& enemy)
 {
-    enemy;
+    float deltaTime = Timer::GetInstance().GetDeltaTime();
+    glm::vec2 curLocation = enemy.GetLocation();
+    
+    glm::vec2 dir{};
+    float lenSqr{};
+
+    if (m_NotDone) dir = { m_KamikazePosition - curLocation };
+    else {
+        if (m_DoneTimer < m_MaxDoneTimer) {
+            m_DoneTimer += deltaTime;
+            return;
+        }
+
+        dir = { m_StartPosition - curLocation };
+    }
+    
+    lenSqr = std::powf(dir.x, 2) + std::powf(dir.y, 2);
+
+    if (lenSqr > EPSILON) {
+        enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()), 0.0f });
+    }
+    else {
+        if (m_NotDone) {
+            m_NotDone = false;
+
+            auto newPos = enemy.GetLocation();
+
+            enemy.SetLocation({ m_StartPosition.x, newPos.y, 1.0f });
+        }
+        else {
+            enemy.SetState(std::make_unique<Patrol>());
+        }
+    }
 }
 
-void dae::Kamikaze::OnEnter(EnemyLogic&)
+void dae::Kamikaze::OnEnter(EnemyLogic& enemy)
 {
 #ifndef NDEBUG
     std::cout << "Kamikaze State Entering.\n";
 #endif
+    
+    int screenWidth;
+    int screenHeight;
+    SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight);
+
+    // TODO : Calculate kamikaze position based on player positions
+    m_KamikazePosition = { static_cast<float>(screenWidth / 2), screenHeight};
+    m_StartPosition = enemy.GetLocation();
 }
 
 void dae::Kamikaze::OnExit(EnemyLogic&)

@@ -16,38 +16,36 @@ namespace dae {
 
 	class SpawnIn final : public EnemyState
 	{
-		struct Bezier {
-			glm::vec2 p0;
-			glm::vec2 p1;
-
-			glm::vec2 p2;
-			glm::vec2 p3;
-
-			glm::vec2 CalcPosOnCurve(float t)
-			{
-				float tSqr{ t * t };
-				float tCub{ tSqr * t };
-
-				float u{ 1.0f - t };
-				float uSqr{ u * u };
-				float uCub{ uSqr * u };
-
-				//glm::vec2 point{ (p0.x * uCub, p0.y * uCub) + (3 * uSqr * t * p1) };
-				glm::vec2 point{ (uCub * p0) + (3 * uSqr * t * p1) + (3 * u * tSqr * p2) + (tCub * p3) };
-				point.x = round(point.x);
-				point.y = round(point.y);
-
-				return point;
-			}
-		};
-
+		// Bezier Movement based on: https://www.youtube.com/watch?v=qoIYkCwWLkA
+		// By "Ather Omar" (Youtube channel, May 1st, 2017)
 		class BezierPath final
 		{
-		public:
-			BezierPath() {};
-			~BezierPath() {};
+			struct Bezier {
+				glm::vec2 startPoint;
+				glm::vec2 startOffset;
 
-			void AddCurve(dae::SpawnIn::Bezier curve, int samples) {
+				glm::vec2 endOffset;
+				glm::vec2 endPoint;
+
+				glm::vec2 CalcPosOnCurve(float t)
+				{
+					float tSqr{ t * t };
+					float tCub{ tSqr * t };
+
+					float u{ 1.0f - t };
+					float uSqr{ u * u };
+					float uCub{ uSqr * u };
+
+					glm::vec2 point{ (uCub * startPoint) + (3 * uSqr * t * startOffset) + (3 * u * tSqr * endOffset) + (tCub * endPoint) };
+					point.x = round(point.x);
+					point.y = round(point.y);
+
+					return point;
+				}
+			};
+
+		public:
+			void AddCurve(Bezier curve, int samples) {
 				m_Curves.push_back(curve);
 				m_Samples.push_back(samples);
 			}
@@ -55,14 +53,13 @@ namespace dae {
 			void Sample(std::vector<glm::vec2>* pSampledPath) {
 				for (int index{}; index < m_Curves.size(); ++index) {
 					for (float t{ }; t <= 1.0f; t += (1.0f / static_cast<float>(m_Samples[index]))) {
-					//for (float t{ }; t <= 1.0f; t += (1.0f / m_Samples[index])) {
 						pSampledPath->push_back(m_Curves[index].CalcPosOnCurve(t));
 					}
 				}
 			}
 
 		private:
-			std::vector<dae::SpawnIn::Bezier> m_Curves;
+			std::vector<Bezier> m_Curves;
 			std::vector<int> m_Samples;
 		};
 
@@ -70,13 +67,12 @@ namespace dae {
 		SpawnIn();
 		SpawnIn(std::vector<glm::vec2> path, glm::vec2 endLocation);
 
-		void Update(EnemyLogic& enemy);
+		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
 
 	private:
 		std::vector<glm::vec2> m_Path;
-		glm::vec2 m_EndLocation;
 		glm::vec2 m_StartLocation;
 
 		int m_CurrentWayPoint;
@@ -86,26 +82,34 @@ namespace dae {
 	class Patrol final : public EnemyState
 	{
 	public:
-		Patrol() {};
-
-		void Update(EnemyLogic& enemy);
+		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
 
 	private:
+		glm::vec2 m_MinPos{};
+		glm::vec2 m_MaxPos{};
+		glm::vec2 m_CurDirection{ 1.0f, 0.0f }; 
 
+		float m_ElapsedTime{};
+		float m_MaxTime{ 15.0f }; // TODO : Define value in constructor (or OnEnter)
 	};
 
 	class Kamikaze final : public EnemyState
 	{
 	public:
-		Kamikaze() {};
-
-		void Update(EnemyLogic& enemy);
+		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
 
 	private:
+		glm::vec2 m_KamikazePosition;
+		glm::vec2 m_StartPosition;
 
+		bool m_NotDone{ true };
+		float m_DoneTimer{};
+		float m_MaxDoneTimer{ 1.0f };
+
+		constexpr static float EPSILON{ 5.0f };
 	};
 }

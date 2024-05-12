@@ -28,30 +28,33 @@ void load()
 
 	// Raw Object Initializations
 	auto pBackgroundObject = scene.AddGameObject();
-	pBackgroundObject->AddComponent<dae::TextureComponent>("background.tga");
+	pBackgroundObject->AddComponent<dae::TextureComponent>("GalagaBackground.png");
 	
-	auto pLogoObject = scene.AddGameObject();
-	pLogoObject->AddComponent<dae::TextureComponent>("logo.tga");
-	pLogoObject->SetLocalTranslation(216, 180);
-	pLogoObject->AddComponent<dae::WaveMovementYComponent>(50.0f, 2.5f);
+	auto pBackgroundTileR = scene.AddGameObject(); 
+	auto pTextureCompR = pBackgroundTileR->AddComponent<dae::TextureComponent>("GalagaBackground.png");
+	pBackgroundTileR->SetLocalTranslation(pTextureCompR->GetTextureWidth(), 0.0f);
+	
+	auto pBackgroundTileB = scene.AddGameObject();
+	pBackgroundTileB->AddComponent<dae::TextureComponent>("GalagaBackground.png");
+	pBackgroundTileB->SetLocalTranslation(0.0f, pTextureCompR->GetTextureHeight());
 
-	auto pFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto pTextObject = scene.AddGameObject();
-	pTextObject->AddComponent<dae::TextComponent>("Programming 4 Assignment", pFont);
-	pTextObject->SetLocalTranslation(80, 20);
+	auto pBackgroundTileBR = scene.AddGameObject();
+	pBackgroundTileBR->AddComponent<dae::TextureComponent>("GalagaBackground.png");
+	pBackgroundTileBR->SetLocalTranslation(pTextureCompR->GetTextureWidth(), pTextureCompR->GetTextureHeight());
 
-	auto pSmallFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25);
-	auto pInstructions1 = scene.AddGameObject();
-	auto pInstructions2 = scene.AddGameObject();
-	auto pInstructions3 = scene.AddGameObject();
-	pInstructions1->AddChild(pInstructions2);
-	pInstructions2->AddChild(pInstructions3);
-	pInstructions1->AddComponent<dae::TextComponent>("Gamepad A / Keyboard E -> Big score", pSmallFont);
-	pInstructions2->AddComponent<dae::TextComponent>("Gamepad B / Keyboard Q -> Small score", pSmallFont);
-	pInstructions3->AddComponent<dae::TextComponent>("Gamepad X / Keyboard Space -> Lose Life", pSmallFont);
-	pInstructions1->SetLocalTranslation(10, 300);
-	pInstructions2->SetLocalTranslation(0, 30);
-	pInstructions3->SetLocalTranslation(0, 30);
+	pBackgroundObject->AddChild(pBackgroundTileR);
+	pBackgroundObject->AddChild(pBackgroundTileB);
+	pBackgroundObject->AddChild(pBackgroundTileBR);
+	
+	//auto pLogoObject = scene.AddGameObject();
+	//pLogoObject->AddComponent<dae::TextureComponent>("logo.tga");
+	//pLogoObject->SetLocalTranslation(216, 180);
+	//pLogoObject->AddComponent<dae::WaveMovementYComponent>(50.0f, 2.5f);
+	//
+	//auto pFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	//auto pTextObject = scene.AddGameObject();
+	//pTextObject->AddComponent<dae::TextComponent>("Programming 4 Assignment", pFont);
+	//pTextObject->SetLocalTranslation(80, 20);
 
 	// Prefabs
 	dae::Player playerOne{ glm::vec3{ 30, 420, 0 }, glm::vec3{ 10, 130, 0 }, glm::vec3{ 10, 160, 0 }, "GalagaP1.tga", 0, 100.0f, 5, true };
@@ -79,7 +82,7 @@ void load()
 
 	soundSys.PlaySound(1, 0.2f);
 
-	dae::Enemy test{ glm::vec3{}, "BasicEnemy.tga", 100.0f };
+	dae::Enemy test{ glm::vec3{}, "BasicEnemy.tga", 350.0f, 50.0f };
 	test.AddToScene(&scene);
 }
 

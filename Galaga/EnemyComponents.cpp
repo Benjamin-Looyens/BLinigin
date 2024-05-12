@@ -2,8 +2,8 @@
 #include "EnemyState.h"
 #include "GameObject.h"
 
-dae::EnemyLogic::EnemyLogic(GameObject* pParent, float speed)
-	: Component(pParent), m_Speed{ speed }
+dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed)
+	: Component(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }
 {
 	m_pSwitchState = std::make_unique<SpawnIn>();
 }
@@ -39,4 +39,10 @@ glm::vec2 dae::EnemyLogic::GetLocation()
 {
 	auto pos = m_pParent->GetWorldPosition();
 	return { pos.x, pos.y };
+}
+
+glm::vec2 dae::EnemyLogic::GetScale()
+{
+	auto scale = m_pParent->GetWorldScale();
+	return { scale.x, scale.y };
 }

@@ -14,8 +14,8 @@ namespace dae {
 	class Enemy : public Prefab
 	{
 	public:
-		Enemy(glm::vec3& startPos, std::string& spriteLocation, float& movSpeed);
-		Enemy(glm::vec3&& startPos, std::string&& spriteLocation, float&& movSpeed);
+		Enemy(glm::vec3& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed);
+		Enemy(glm::vec3&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed);
 
 		virtual void AddToScene(Scene* pSceneToAddTo) override;
 
@@ -27,7 +27,8 @@ namespace dae {
 	private:
 		glm::vec3 m_StartPos;
 		std::string m_SpriteLocation;
-		float m_MovSpeed;
+		float m_SpawnMovSpeed;
+		float m_PatrolMovSpeed;
 	};
 }
 

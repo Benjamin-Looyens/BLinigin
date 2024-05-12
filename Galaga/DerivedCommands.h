@@ -42,7 +42,7 @@ namespace dae
 		MoveCommand(GameObject* pGameObject, glm::vec3 movDirection, float movSpeedPerSecond = 50.0f);
 
 	private:
-		float m_Speed;
+		float m_SpawnSpeed;
 		glm::vec3 m_MoveDirection;
 	};
 

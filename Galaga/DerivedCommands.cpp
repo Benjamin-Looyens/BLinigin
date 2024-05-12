@@ -13,7 +13,7 @@ dae::GameObjectCommand::GameObjectCommand(GameObject* pActor)
 
 #pragma region MoveCommand
 dae::MoveCommand::MoveCommand(GameObject* pGameObject, glm::vec3 movDirection, float movSpeedPerSecond)
-	: GameObjectCommand(pGameObject), m_MoveDirection{ glm::normalize(movDirection) }, m_Speed{movSpeedPerSecond}
+	: GameObjectCommand(pGameObject), m_MoveDirection{ glm::normalize(movDirection) }, m_SpawnSpeed{movSpeedPerSecond}
 {}
 
 void dae::MoveCommand::Execute()
@@ -21,7 +21,7 @@ void dae::MoveCommand::Execute()
 	auto pGameObject = GetGameObject();
 
 	auto pos = pGameObject->GetLocalPosition();
-	pos += (m_MoveDirection * m_Speed) * dae::Timer::GetInstance().GetDeltaTime();
+	pos += (m_MoveDirection * m_SpawnSpeed) * dae::Timer::GetInstance().GetDeltaTime();
 
 	pGameObject->SetLocalTranslation(pos);
 }
