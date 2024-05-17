@@ -62,6 +62,15 @@ void dae::ResourceManager::UnLoadTexture(const std::string& file)
 	}
 }
 
+bool dae::ResourceManager::IsTextureLoaded(const std::string& file)
+{
+	const auto fullPath = m_DataPath + file;
+	auto loadedTexture = m_LoadedTexturesMap[fullPath];
+
+	if (loadedTexture) return true;
+	else return false;
+}
+
 dae::Font* dae::ResourceManager::LoadFont(const std::string& file, unsigned int size)
 {
 	const auto fullPath = m_DataPath + file;
@@ -94,4 +103,12 @@ void dae::ResourceManager::UnLoadFont(const std::string& file, unsigned int size
 	else {
 		std::cerr << "Loaded font with file [" << fullPath << "] and size [" << size << "] was not loaded before trying to unload!\n";
 	}
+}
+
+bool dae::ResourceManager::IsFontLoaded(const std::string& file, unsigned int size)
+{
+	const auto fullPath = m_DataPath + file;
+	auto loadedFont = m_LoadedFontsMap[{fullPath, size}];
+
+	return loadedFont;
 }

@@ -24,9 +24,10 @@ dae::TextComponent::TextComponent(dae::GameObject* pParent, const std::string& t
 
 void dae::TextComponent::Update()
 {
-	if (m_NeedsUpdate)
-	{
+	if (m_NeedsUpdate) {
 		auto& resourceManager = ResourceManager::GetInstance();
+
+		if (resourceManager.IsTextureLoaded(m_ResourceFile)) resourceManager.UnLoadTexture(m_ResourceFile);
 
 		const SDL_Color color = { 255,255,255,255 }; // TODO : Implement colors
 		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), color);
@@ -36,7 +37,6 @@ void dae::TextComponent::Update()
 		if (texture == nullptr) throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 
 		SDL_FreeSurface(surf);
-		resourceManager.UnLoadTexture(m_ResourceFile);
 		m_pTextTexture = resourceManager.LoadTexture(texture, m_ResourceFile);
 		m_NeedsUpdate = false;
 	}

@@ -19,9 +19,11 @@ namespace dae
 		dae::Texture2D* LoadTexture(const std::string& file);
 		dae::Texture2D* LoadTexture(SDL_Texture* pSDL_Texture, const std::string& file);
 		void UnLoadTexture(const std::string& file);
+		bool IsTextureLoaded(const std::string& file);
 
 		dae::Font* LoadFont(const std::string& file, unsigned int size);
 		void UnLoadFont(const std::string& file, unsigned int size);
+		bool IsFontLoaded(const std::string& file, unsigned int size);
 
 	private:
 		friend class Singleton<ResourceManager>;
