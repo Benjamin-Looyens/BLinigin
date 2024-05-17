@@ -96,7 +96,7 @@ namespace dae {
 		WaveMovementYComponent& operator=(const WaveMovementYComponent&& other) = delete;
 
 	private:
-		glm::vec3 m_Origin;
+		glm::vec2 m_Origin;
 
 		float m_WaveHeight;
 		float m_WaveSpeed;

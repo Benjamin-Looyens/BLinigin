@@ -12,7 +12,7 @@ dae::GameObjectCommand::GameObjectCommand(GameObject* pActor)
 {}
 
 #pragma region MoveCommand
-dae::MoveCommand::MoveCommand(GameObject* pGameObject, glm::vec3 movDirection, float movSpeedPerSecond)
+dae::MoveCommand::MoveCommand(GameObject* pGameObject, glm::vec2 movDirection, float movSpeedPerSecond)
 	: GameObjectCommand(pGameObject), m_MoveDirection{ glm::normalize(movDirection) }, m_SpawnSpeed{movSpeedPerSecond}
 {}
 

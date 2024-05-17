@@ -57,10 +57,10 @@ void load()
 	//pTextObject->SetLocalTranslation(80, 20);
 
 	// Prefabs
-	dae::Player playerOne{ glm::vec3{ 30, 420, 0 }, glm::vec3{ 10, 130, 0 }, glm::vec3{ 10, 160, 0 }, "GalagaP1.tga", 0, 100.0f, 5, true };
+	dae::Player playerOne{glm::vec2{ 30, 420 }, glm::vec2{ 10, 130 }, glm::vec2{ 10, 160 }, "GalagaP1.tga", 0, 100.0f, 5, true };
 	playerOne.AddToScene(&scene);
 
-	dae::Player playerTwo{ glm::vec3{ 90, 420, 0 }, glm::vec3{ 10, 200, 0 }, glm::vec3{ 10, 230, 0 }, "GalagaP2.tga", 1, 100.0f, 5, false };
+	dae::Player playerTwo{ glm::vec2{ 90, 420 }, glm::vec2{ 10, 200 }, glm::vec2{ 10, 230 }, "GalagaP2.tga", 1, 100.0f, 5, false };
 	playerTwo.AddToScene(&scene);
 
 	// Sound
@@ -82,13 +82,12 @@ void load()
 
 	soundSys.PlaySound(1, 0.2f);
 
-	dae::Enemy test{ glm::vec3{}, "BasicEnemy.tga", 350.0f, 50.0f };
+	dae::Enemy test{ glm::vec2{}, "BasicEnemy.tga", 350.0f, 50.0f };
 	test.AddToScene(&scene);
 }
 
 // GENERAL TODOS
 // TODO : Fix shared ptrs everywhere
-// TODO : Vec3 to Vec2 (z component is useless in a 2D engine)
 // TODO : Improve Player/Controller Setup
 
 int main(int, char* []) {

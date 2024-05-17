@@ -30,7 +30,7 @@ void dae::EnemyLogic::SetState(std::unique_ptr<EnemyState> pNewState)
 	m_pSwitchState = std::move(pNewState);
 }
 
-void dae::EnemyLogic::SetLocation(glm::vec3 pos)
+void dae::EnemyLogic::SetLocation(glm::vec2 pos)
 {
 	m_pParent->SetLocalTranslation(pos);
 }

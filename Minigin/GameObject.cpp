@@ -69,16 +69,16 @@ void dae::GameObject::Render() const
 		if (pComponent != nullptr) pComponent->Render(); // if component has a rendering section, it will render using game object transform
 }
 
-void dae::GameObject::SetLocalTranslation(const float x, const float y, const float z)
+void dae::GameObject::SetLocalTranslation(const float x, const float y)
 {
-	m_LocalTransform.SetTranslation(x, y, z);
+	m_LocalTransform.SetTranslation(x, y);
 	
 	SetPositionDirty();
 }
 
-void dae::GameObject::SetLocalScale(const float x, const float y, const float z)
+void dae::GameObject::SetLocalScale(const float x, const float y)
 {
-	m_LocalTransform.SetScale(x, y, z);
+	m_LocalTransform.SetScale(x, y);
 
 	SetScaleDirty();
 }
@@ -91,14 +91,14 @@ dae::Transform dae::GameObject::GetWorldTransform()
 	return m_WorldTransform;
 }
 
-glm::vec3 dae::GameObject::GetWorldPosition()
+glm::vec2 dae::GameObject::GetWorldPosition()
 {
 	if (m_PositionDirty) UpdateWorldPosition();
 	
 	return m_WorldTransform.GetTranslation();
 }
 
-glm::vec3 dae::GameObject::GetWorldScale()
+glm::vec2 dae::GameObject::GetWorldScale()
 {
 	if (m_ScaleDirty) UpdateWorldScale();
 
@@ -125,11 +125,10 @@ void dae::GameObject::UpdateWorldScale()
 		if (m_pParentObject == nullptr) m_WorldTransform.SetScale(localScale);
 		else {
 			auto& parentScale = m_pParentObject->GetWorldTransform().GetScale();
-			glm::vec3 newScale{ localScale };
+			glm::vec2 newScale{ localScale };
 
 			if (parentScale.x != 0.0f) newScale.x *= parentScale.x;
 			if (parentScale.y != 0.0f) newScale.y *= parentScale.y;
-			if (parentScale.z != 0.0f) newScale.z *= parentScale.z;
 
 			m_WorldTransform.SetScale(newScale);
 		}

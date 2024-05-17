@@ -1,12 +1,12 @@
 #pragma once
 #include "Prefab.h"
-#include "glm/vec3.hpp"
+#include "glm/vec2.hpp"
 #include <string>
 
 namespace dae {
 	struct EnemyData
 	{
-		glm::vec3 startPos;
+		glm::vec2 startPos;
 		std::string spriteLocation;
 		float movSpeed;
 	};
@@ -14,8 +14,8 @@ namespace dae {
 	class Enemy : public Prefab
 	{
 	public:
-		Enemy(glm::vec3& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed);
-		Enemy(glm::vec3&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed);
+		Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed);
+		Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed);
 
 		virtual void AddToScene(Scene* pSceneToAddTo) override;
 
@@ -25,7 +25,7 @@ namespace dae {
 		Enemy& operator=(const Enemy&& other) = delete;
 
 	private:
-		glm::vec3 m_StartPos;
+		glm::vec2 m_StartPos;
 		std::string m_SpriteLocation;
 		float m_SpawnMovSpeed;
 		float m_PatrolMovSpeed;

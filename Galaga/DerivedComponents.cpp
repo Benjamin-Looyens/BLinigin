@@ -149,7 +149,7 @@ void dae::WaveMovementYComponent::Update()
 
 	m_WaveTime = static_cast<float>(std::fmod(m_WaveTime, M_PI * 2));
 
-	glm::vec3 wavePos{ m_Origin };
+	glm::vec2 wavePos{ m_Origin };
 
 	wavePos.y += m_WaveHeight * (std::sinf(m_WaveTime));
 

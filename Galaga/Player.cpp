@@ -8,7 +8,7 @@
 #include "DerivedEvents.h"
 #include "ObserverComponents.h"
 
-dae::Player::Player(glm::vec3& playerStartPos, glm::vec3& livesCounterPos, glm::vec3& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController)
+dae::Player::Player(glm::vec2& playerStartPos, glm::vec2& livesCounterPos, glm::vec2& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController)
 	: m_PlayerStartPos{ playerStartPos }, m_LivesCounterPos{ livesCounterPos }, m_ScoreCounterPos{ scoreCounterPos },
 	m_PlayerSpriteLocation{ playerSpriteLocation },
 	m_PlayerIndex{ playerIndex },
@@ -17,7 +17,7 @@ dae::Player::Player(glm::vec3& playerStartPos, glm::vec3& livesCounterPos, glm::
 	m_StartingLives{ startingLives }
 {}
 
-dae::Player::Player(glm::vec3&& playerStartPos, glm::vec3&& livesCounterPos, glm::vec3&& scoreCounterPos, std::string&& playerSpriteLocation, int&& playerIndex, float&& movSpeed, int&& startingLives, bool&& useController)
+dae::Player::Player(glm::vec2&& playerStartPos, glm::vec2&& livesCounterPos, glm::vec2&& scoreCounterPos, std::string&& playerSpriteLocation, int&& playerIndex, float&& movSpeed, int&& startingLives, bool&& useController)
 	: m_PlayerStartPos{ playerStartPos }, m_LivesCounterPos{ livesCounterPos }, m_ScoreCounterPos{ scoreCounterPos },
 	m_PlayerSpriteLocation{ playerSpriteLocation },
 	m_PlayerIndex{ playerIndex },
@@ -35,7 +35,7 @@ void dae::Player::AddToScene(Scene* pSceneToAddTo)
 	// Player itself
 	auto pPlayer = pSceneToAddTo->AddGameObject();
 	pPlayer->SetLocalTranslation(m_PlayerStartPos);
-	pPlayer->SetLocalScale(2.0f, 2.0f, 2.0f);
+	pPlayer->SetLocalScale(2.0f, 2.0f);
 	pPlayer->AddComponent<dae::TextureComponent>(m_PlayerSpriteLocation);
 	pPlayer->AddComponent<dae::ScoreComponent>();
 	pPlayer->AddComponent<dae::LivesComponent>(m_StartingLives);
@@ -68,20 +68,20 @@ void dae::Player::AddToScene(Scene* pSceneToAddTo)
 	switch (m_UseController) {
 	case true:
 		input.AddGamepad();
-		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_UP,		pPlayer, glm::vec3{  0, -1,  0 }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_LEFT,	pPlayer, glm::vec3{ -1,  0,  0 }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT,	pPlayer, glm::vec3{  1,  0,  0 }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_DOWN,	pPlayer, glm::vec3{  0,  1,  0 }, m_SpawnMovSpeed);
-
+		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_UP,		pPlayer, glm::vec2{  0.0f, -1.0f }, m_SpawnMovSpeed);
+		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_LEFT,	pPlayer, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
+		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT,	pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
+		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_DOWN,	pPlayer, glm::vec2{  0.0f,  1.0f }, m_SpawnMovSpeed);
+		
 		input.AddCommand<dae::NotifyObserverCommand>(BL_GAMEPAD_A, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::BIG_ENEMY_DIED);
 		input.AddCommand<dae::NotifyObserverCommand>(BL_GAMEPAD_B, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::SMALL_ENEMY_DIED);
 		input.AddCommand<dae::NotifyObserverCommand>(BL_GAMEPAD_X, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::PLAYER_DIED);
 		break;
 	case false:
-		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_W, pPlayer, glm::vec3{  0, -1,  0 }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, pPlayer, glm::vec3{ -1,  0,  0 }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_S, pPlayer, glm::vec3{  0,  1,  0 }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, pPlayer, glm::vec3{  1,  0,  0 }, m_SpawnMovSpeed);
+		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_W, pPlayer, glm::vec2{  0.0f, -1.0f }, m_SpawnMovSpeed);
+		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, pPlayer, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
+		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_S, pPlayer, glm::vec2{  0.0f,  1.0f }, m_SpawnMovSpeed);
+		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
 
 		input.AddCommand<dae::NotifyObserverCommand>(BL_KEYBOARD_E,		dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::BIG_ENEMY_DIED);
 		input.AddCommand<dae::NotifyObserverCommand>(BL_KEYBOARD_Q,		dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::SMALL_ENEMY_DIED);

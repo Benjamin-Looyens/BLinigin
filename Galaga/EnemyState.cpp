@@ -43,7 +43,7 @@ void dae::SpawnIn::Update(EnemyLogic& enemy)
 
     if (lenSqr < EPSILON) m_CurrentWayPoint++;
 
-    if (static_cast<size_t>(m_CurrentWayPoint) < m_Path.size()) enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()), 0.0f });
+    if (static_cast<size_t>(m_CurrentWayPoint) < m_Path.size()) enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()) });
     else enemy.SetState(std::make_unique<Patrol>());
 }
 
@@ -53,7 +53,7 @@ void dae::SpawnIn::OnEnter(EnemyLogic& enemy)
     std::cout << "SpawnIn State Entering.\n";
 #endif
 
-    enemy.SetLocation({ m_StartLocation.x, m_StartLocation.y - 10.0f, 0.0f });
+    enemy.SetLocation({ m_StartLocation.x, m_StartLocation.y - 10.0f });
 }
 
 void dae::SpawnIn::OnExit(EnemyLogic&)
@@ -70,7 +70,7 @@ void dae::Patrol::Update(EnemyLogic& enemy)
 
     if (curLocation.x >= m_MaxPos.x || curLocation.x <= m_MinPos.x) m_CurDirection *= -1.0f;
 
-    enemy.SetLocation({ curLocation + (deltaTime * m_CurDirection * enemy.GetPatrolSpeed()), 0.0f });
+    enemy.SetLocation({ curLocation + (deltaTime * m_CurDirection * enemy.GetPatrolSpeed()) });
 
     if (m_ElapsedTime >= m_MaxTime) {
         if (rand() % 2) enemy.SetState(std::make_unique<Kamikaze>());
@@ -126,7 +126,7 @@ void dae::Kamikaze::Update(EnemyLogic& enemy)
     lenSqr = std::powf(dir.x, 2) + std::powf(dir.y, 2);
 
     if (lenSqr > EPSILON) {
-        enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()), 0.0f });
+        enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()) });
     }
     else {
         if (m_NotDone) {
@@ -134,7 +134,7 @@ void dae::Kamikaze::Update(EnemyLogic& enemy)
 
             auto newPos = enemy.GetLocation();
 
-            enemy.SetLocation({ m_StartPosition.x, newPos.y, 1.0f });
+            enemy.SetLocation({ m_StartPosition.x, newPos.y });
         }
         else {
             enemy.SetState(std::make_unique<Patrol>());

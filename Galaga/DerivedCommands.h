@@ -1,6 +1,6 @@
 #pragma once
 #include "Command.h"
-#include "glm/vec3.hpp"
+#include "glm/vec2.hpp"
 #include <memory>
 #include <string>
 #include "Events.h"
@@ -39,11 +39,11 @@ namespace dae
 	public:
 		void Execute() override;
 
-		MoveCommand(GameObject* pGameObject, glm::vec3 movDirection, float movSpeedPerSecond = 50.0f);
+		MoveCommand(GameObject* pGameObject, glm::vec2 movDirection, float movSpeedPerSecond = 50.0f);
 
 	private:
 		float m_SpawnSpeed;
-		glm::vec3 m_MoveDirection;
+		glm::vec2 m_MoveDirection;
 	};
 
 	class NotifyObserverCommand final : public GameObjectCommand

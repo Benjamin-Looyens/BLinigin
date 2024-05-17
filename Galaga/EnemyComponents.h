@@ -15,7 +15,7 @@ namespace dae {
 		void LateUpdate() override;
 		
 		void SetState(std::unique_ptr<EnemyState> pNewState);
-		void SetLocation(glm::vec3 pos);
+		void SetLocation(glm::vec2 pos);
 
 		glm::vec2 GetLocation();
 		glm::vec2 GetScale();

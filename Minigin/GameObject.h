@@ -23,20 +23,20 @@ namespace dae
 		void Render() const;
 
 		void SetTransform(const Transform& newTransform) { m_LocalTransform = newTransform; };
-		void SetLocalTranslation(const float x, const float y, const float z = 0.0f);
-		void SetLocalTranslation(const glm::vec3& newTranslate) { SetLocalTranslation(newTranslate.x, newTranslate.y, newTranslate.z); };
+		void SetLocalTranslation(const float x, const float y);
+		void SetLocalTranslation(const glm::vec2& newTranslate) { SetLocalTranslation(newTranslate.x, newTranslate.y); };
 
-		void SetLocalScale(const float x, const float y, const float z = 1.0f);
+		void SetLocalScale(const float x, const float y);
 		void MultiplyScale(const float multiplier) { m_LocalTransform.MultiplyScale(multiplier); };
 
-		glm::vec3 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
-		glm::vec3 GetLocalScale() const { return m_LocalTransform.GetScale(); };
+		glm::vec2 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
+		glm::vec2 GetLocalScale() const { return m_LocalTransform.GetScale(); };
 
 		Transform GetLocalTransform() const { return m_LocalTransform; };
 		Transform GetWorldTransform();
 
-		glm::vec3 GetWorldPosition();
-		glm::vec3 GetWorldScale();
+		glm::vec2 GetWorldPosition();
+		glm::vec2 GetWorldScale();
 
 		void UpdateWorldPosition();
 		void UpdateWorldScale();
