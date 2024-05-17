@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include "Singleton.h"
+#include "Scene.h"
 
 namespace dae
 {
@@ -20,6 +21,6 @@ namespace dae
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
-		std::vector<std::shared_ptr<Scene>> m_pScenes;
+		std::vector<std::unique_ptr<Scene>> m_pScenes;
 	};
 }

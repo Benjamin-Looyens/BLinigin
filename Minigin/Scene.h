@@ -1,14 +1,13 @@
 #pragma once
-#include "SceneManager.h"
-#include "Observer.h"
+#include "GameObject.h"
 
 namespace dae
 {
-	class GameObject;
+	class SceneManager;
 
 	class Scene final
 	{
-		friend Scene& SceneManager::CreateScene(const std::string& name);
+		friend class SceneManager; 
 	public:
 		void RemoveAll();
 
