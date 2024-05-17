@@ -6,6 +6,8 @@
 namespace dae {
 	class Timer final : public Singleton<Timer> 
 	{
+		friend class Singleton<Timer>;
+
 	public:
 		void Init();
 		void Update();
