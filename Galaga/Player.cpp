@@ -45,13 +45,16 @@ void dae::Player::AddToScene(Scene* pSceneToAddTo)
 
 	const std::string scorePrefix{ "Player " + std::to_string(m_PlayerIndex + 1) + " score: " };
 	auto pScoreObject = pSceneToAddTo->AddGameObject();
-	pScoreObject->AddComponent<dae::TextComponent>("Score: ", pFont);
+	std::string playerStr{ "player" + std::to_string(m_PlayerIndex) };
+	std::string scoreStr{ playerStr + "Score" };
+	std::string livesStr{ playerStr + "Lives" };
+	pScoreObject->AddComponent<dae::TextComponent>("Score: ", pFont, scoreStr);
 	pScoreObject->AddComponent<dae::DisplayDataComponent>(scorePrefix.c_str(), std::to_string(0));
 	pScoreObject->SetLocalTranslation(m_ScoreCounterPos);
 
 	const std::string livesPrefix{ "Player " + std::to_string(m_PlayerIndex + 1) + " lives: " };
 	auto pLivesObject = pSceneToAddTo->AddGameObject();
-	pLivesObject->AddComponent<dae::TextComponent>("Lives: ", pFont);
+	pLivesObject->AddComponent<dae::TextComponent>("Lives: ", pFont, livesStr);
 	pLivesObject->AddComponent<dae::DisplayDataComponent>(livesPrefix.c_str(), std::to_string(m_StartingLives));
 	pLivesObject->SetLocalTranslation(m_LivesCounterPos);
 

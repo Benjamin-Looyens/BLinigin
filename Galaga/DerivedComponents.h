@@ -26,7 +26,7 @@ namespace dae {
 
 		void SetText(const std::string& text);
 
-		TextComponent(dae::GameObject* pParent, const std::string& text, std::shared_ptr<Font> font);
+		TextComponent(dae::GameObject* pParent, const std::string& text, Font* font, const std::string& internalIdentifier);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -36,8 +36,9 @@ namespace dae {
 	private:
 		bool m_NeedsUpdate;
 		std::string m_Text;
-		std::shared_ptr<Font> m_pFont; // TODO: unique
-		std::shared_ptr<Texture2D> m_pTextTexture; // TODO: unique
+		const std::string m_ResourceFile;
+		Font* m_pFont; // TODO: unique
+		Texture2D* m_pTextTexture; // TODO: unique
 	};
 
 	// Texture Component
@@ -60,7 +61,7 @@ namespace dae {
 		glm::vec2 GetTextureSize() const;
 
 	private:
-		std::shared_ptr<Texture2D> m_pTexture; // TODO: Change to unique ptr
+		Texture2D* m_pTexture; // TODO: Change to unique ptr
 	};
 
 	// FPS Component
