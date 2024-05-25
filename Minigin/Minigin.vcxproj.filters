@@ -1,186 +1,197 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Engine Included Derived Classes">
+      <UniqueIdentifier>{7469732c-dd7a-4518-b062-8e0a3a3f8385}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
+    <Filter Include="Globals">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="imgui">
+    <Filter Include="Sound">
+      <UniqueIdentifier>{98889b15-4a6d-46f8-a264-1b85c2c7531b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{8318ca9b-c3c4-4510-bfa1-ef9806cbcf23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{47405b03-33a2-4acf-b25e-0648ea1328a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core Engine Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="External Includes">
+      <UniqueIdentifier>{52429eae-311e-4212-978d-49c880b88384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External Includes\imgui">
       <UniqueIdentifier>{56b583d3-ea21-468f-a314-c75656a58a67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Predefined Derived Classes">
-      <UniqueIdentifier>{7469732c-dd7a-4518-b062-8e0a3a3f8385}</UniqueIdentifier>
+    <Filter Include="Classes To Derive From">
+      <UniqueIdentifier>{f6bd499c-563b-4422-bc9c-b96f240e3062}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Minigin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imconfig.h">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imgui.h">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imgui_internal.h">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imstb_rectpack.h">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imstb_textedit.h">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\backends\imgui_impl_opengl3.h">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\backends\imgui_impl_sdl2.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Defines.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Gamepad.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Events.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Prefab.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceLocator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundSystem_Impl.h">
-      <Filter>Header Files</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClInclude>
     <ClInclude Include="ObserverComponents.h">
-      <Filter>Predefined Derived Classes</Filter>
+      <Filter>Engine Included Derived Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystem.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystem_Impl.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Prefab.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigin.h">
+      <Filter>Core Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Classes To Derive From</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Classes To Derive From</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Classes To Derive From</Filter>
+    </ClInclude>
+    <ClInclude Include="Gamepad.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Core Engine Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Minigin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Core Engine Files</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui_demo.cpp">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui_draw.cpp">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui_tables.cpp">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\backends\imgui_impl_sdl2.cpp">
-      <Filter>imgui</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\backends\imgui_impl_opengl3.cpp">
-      <Filter>imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Gamepad.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceLocator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundSystem_Impl.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>External Includes\imgui</Filter>
     </ClCompile>
     <ClCompile Include="ObserverComponents.cpp">
-      <Filter>Predefined Derived Classes</Filter>
+      <Filter>Engine Included Derived Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundSystem_Impl.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Gamepad.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
