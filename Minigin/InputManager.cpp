@@ -22,63 +22,65 @@ bool dae::InputManager::ProcessInput()
 	const Uint8* pStates = SDL_GetKeyboardState(nullptr);
     const Uint32 mouseState = SDL_GetMouseState(nullptr, nullptr);
 
-	// XInput Controller Input
-	XINPUT_STATE currentState{};
-	int controllerIndex{ };
-
-	// TODO : Some sort of system to make sure the controller does exist and stuff
+    // TODO : Some sort of system to make sure the controller does exist and stuff
 	// TODO : Pimpl the controller
-	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
-	XInputGetState(controllerIndex, &currentState);
-
 
 	for (auto& gamepad : m_Gamepads) gamepad.UpdateControllerState();
 
 	// HACK : Please if you have time, find some other way to do this because good lord
-	for (size_t index{}; index < m_Commands.size(); ++index) {
-		if (m_Commands[index].isController) {
-			for (auto& gamepad : m_Gamepads) {
-				switch (m_Commands[index].inputState) {
-				case InputState::PRESSED_THIS_FRAME:
-					if (gamepad.ButtonPressedThisFrame(m_Commands[index].commandCode))
-						m_Commands[index].pCommand->Execute();
-					break;
-				case InputState::RELEASED_THIS_FRAME:
-					if (gamepad.ButtonReleasedThisFrame(m_Commands[index].commandCode))
-						m_Commands[index].pCommand->Execute();
-					break;
-				case InputState::HELD:
-					if (gamepad.ButtonHeld(m_Commands[index].commandCode))
-						m_Commands[index].pCommand->Execute();
-					break;
-				}
-			}
-		}
-		else {
-			switch (m_Commands[index].inputState) {
-			case InputState::HELD:
-                if (pStates[static_cast<SDL_Scancode>(m_Commands[index].commandCode)])
-                    m_Commands[index].pCommand->Execute();
-                else if (mouseState & SDL_BUTTON(m_Commands[index].commandCode)) // TODO : Check that no scenario causes problems where the code is overlapping with SDL_SCANCODE and SDL_BUTTON
-                    m_Commands[index].pCommand->Execute();
-				break;
-			}
-		}
-	}
-    // TODO : Change the e.type check to a switch 
+    for (auto& command : m_Commands) {
+        if (command.isController) {
+            for (auto& gamepad : m_Gamepads) {
+                switch (command.inputState) {
+                case InputState::PRESSED_THIS_FRAME:
+                    if (gamepad.ButtonPressedThisFrame(command.commandCode)) command.pCommand->Execute();
+                    break;
+                case InputState::RELEASED_THIS_FRAME:
+                    if (gamepad.ButtonReleasedThisFrame(command.commandCode)) command.pCommand->Execute();
+                    break;
+                case InputState::HELD:
+                    if (gamepad.ButtonHeld(command.commandCode)) command.pCommand->Execute();
+                    break;
+                }
+            }
+        }
+        else {
+            switch (command.inputState) {
+            case InputState::HELD:
+                if (pStates[static_cast<SDL_Scancode>(command.commandCode)])
+                    command.pCommand->Execute();
+                else if (mouseState & SDL_BUTTON(command.commandCode)) // TODO : Check that no scenario causes problems where the code is overlapping with SDL_SCANCODE and SDL_BUTTON
+                    command.pCommand->Execute();
+                break;
+            }
+        }
+    }
+    
 	while (SDL_PollEvent(&e)) {
-		if (e.type == SDL_QUIT) return false;
-		else if (e.type == SDL_KEYDOWN)         HandleKeyboardInput(InputState::PRESSED_THIS_FRAME,  e);
-		else if (e.type == SDL_KEYUP)           HandleKeyboardInput(InputState::RELEASED_THIS_FRAME, e);
-		else if (e.type == SDL_MOUSEBUTTONDOWN) HandleMouseInput   (InputState::PRESSED_THIS_FRAME,  e);
-        else if (e.type == SDL_MOUSEBUTTONUP)   HandleMouseInput   (InputState::RELEASED_THIS_FRAME, e);
-        else if (e.type == SDL_MOUSEMOTION) {
+		switch (e.type) {
+		case SDL_QUIT:
+            return false;
+			break;
+		case SDL_KEYDOWN:
+            HandleKeyboardInput(InputState::PRESSED_THIS_FRAME, e);
+			break;
+		case SDL_KEYUP:
+            HandleKeyboardInput(InputState::RELEASED_THIS_FRAME, e);
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+            HandleMouseInput(InputState::PRESSED_THIS_FRAME, e);
+			break;
+		case SDL_MOUSEBUTTONUP:
+            HandleMouseInput(InputState::RELEASED_THIS_FRAME, e);
+			break;
+		case SDL_MOUSEMOTION:
             m_MousePos.x = e.motion.x;
             m_MousePos.y = e.motion.y;
 
             m_RelMousePos.x = e.motion.xrel;
             m_RelMousePos.y = e.motion.yrel;
-        }
+			break;
+		}
 
 		// ImGUI
 		ImGui_ImplSDL2_ProcessEvent(&e);
