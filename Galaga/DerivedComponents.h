@@ -179,5 +179,13 @@ namespace dae {
 	private:
 		GameObject* m_pDisplayObject;
 	};
+
+	class FollowMouseComponent final : public Component
+	{
+	public:
+		FollowMouseComponent(GameObject* pParent);
+
+		void Update() override;
+	};
 }
 

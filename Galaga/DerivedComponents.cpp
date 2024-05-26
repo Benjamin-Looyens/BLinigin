@@ -14,6 +14,7 @@
 #include "DerivedEvents.h"
 #include "Observer.h"
 #include "ServiceLocator.h"
+#include "InputManager.h"
 
 #pragma region TextComponent
 dae::TextComponent::TextComponent(dae::GameObject* pParent, const std::string& text, Font* font, const std::string& internalIdentifier)
@@ -302,4 +303,13 @@ void dae::ScoreObservingComponent::OnNotify(const ISubject* pSubject, Event even
 		if (!pScoreComp) std::cout << "[ScoreObservingComponent] Score Component is nullptr!\n";
 	}
 #endif
+}
+
+dae::FollowMouseComponent::FollowMouseComponent(GameObject* pParent)
+	: Component(pParent)
+{}
+
+void dae::FollowMouseComponent::Update()
+{
+	m_pParent->SetLocalTranslation(InputManager::GetInstance().GetMousePos());
 }
