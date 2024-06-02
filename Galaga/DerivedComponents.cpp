@@ -313,3 +313,22 @@ void dae::FollowMouseComponent::Update()
 {
 	m_pParent->SetLocalTranslation(InputManager::GetInstance().GetMousePos());
 }
+
+dae::ConstantMovementComponent::ConstantMovementComponent(GameObject* pParent, float speed, glm::vec2 movDir)
+	: Component(pParent), m_Speed{ speed }, m_MovDir{ movDir }
+{}
+
+void dae::ConstantMovementComponent::Update()
+{
+	const float& deltaTime = Timer::GetInstance().GetDeltaTime();
+
+	m_pParent->AddLocalTranslation(deltaTime * m_Speed * m_MovDir);
+
+	m_ElapsedTime += deltaTime;
+	if (m_ElapsedTime > MAX_LIFETIME) {
+#ifndef NDEBUG
+		std::cout << "Dart Destroyed.\n";
+#endif 
+		m_pParent->Destroy();
+	}
+}

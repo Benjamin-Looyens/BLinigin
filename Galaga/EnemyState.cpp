@@ -6,7 +6,7 @@
 #include <SDL.h>
 #include "DerivedComponents.h"
 
-dae::SpawnIn::SpawnIn()
+dae::EnemySpawnInState::EnemySpawnInState()
 {
     int screenWidth;
     int screenHeight;
@@ -29,11 +29,11 @@ dae::SpawnIn::SpawnIn()
     m_StartLocation = m_Path[0];
 }
 
-dae::SpawnIn::SpawnIn(std::vector<glm::vec2> path, glm::vec2 startLocation)
+dae::EnemySpawnInState::EnemySpawnInState(std::vector<glm::vec2> path, glm::vec2 startLocation)
     : m_Path{ path }, m_StartLocation{ startLocation }
 {}
 
-void dae::SpawnIn::Update(EnemyLogic& enemy)
+void dae::EnemySpawnInState::Update(EnemyLogic& enemy)
 {
     float deltaTime = Timer::GetInstance().GetDeltaTime();
     glm::vec2 curLocation = enemy.GetLocation();
@@ -44,10 +44,10 @@ void dae::SpawnIn::Update(EnemyLogic& enemy)
     if (lenSqr < EPSILON) m_CurrentWayPoint++;
 
     if (static_cast<size_t>(m_CurrentWayPoint) < m_Path.size()) enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()) });
-    else enemy.SetState(std::make_unique<Patrol>());
+    else enemy.SetState(std::make_unique<EnemyPatrolState>());
 }
 
-void dae::SpawnIn::OnEnter(EnemyLogic& enemy)
+void dae::EnemySpawnInState::OnEnter(EnemyLogic& enemy)
 {
 #ifndef NDEBUG
     std::cout << "SpawnIn State Entering.\n";
@@ -56,14 +56,14 @@ void dae::SpawnIn::OnEnter(EnemyLogic& enemy)
     enemy.SetLocation({ m_StartLocation.x, m_StartLocation.y - 10.0f });
 }
 
-void dae::SpawnIn::OnExit(EnemyLogic&)
+void dae::EnemySpawnInState::OnExit(EnemyLogic&)
 {
 #ifndef NDEBUG
     std::cout << "SpawnIn State Exiting.\n";
 #endif
 }
 
-void dae::Patrol::Update(EnemyLogic& enemy)
+void dae::EnemyPatrolState::Update(EnemyLogic& enemy)
 {
     const float deltaTime = Timer::GetInstance().GetDeltaTime();
     const glm::vec2 curLocation = enemy.GetLocation();
@@ -73,12 +73,12 @@ void dae::Patrol::Update(EnemyLogic& enemy)
     enemy.SetLocation({ curLocation + (deltaTime * m_CurDirection * enemy.GetPatrolSpeed()) });
 
     if (m_ElapsedTime >= m_MaxTime) {
-        if (rand() % 2) enemy.SetState(std::make_unique<Kamikaze>());
+        if (rand() % 2) enemy.SetState(std::make_unique<EnemyKamikazeState>());
     }
     else m_ElapsedTime += deltaTime;
 }
 
-void dae::Patrol::OnEnter(EnemyLogic& enemy)
+void dae::EnemyPatrolState::OnEnter(EnemyLogic& enemy)
 {
 #ifndef NDEBUG
     std::cout << "Patrol State Entering.\n";
@@ -98,14 +98,14 @@ void dae::Patrol::OnEnter(EnemyLogic& enemy)
     m_MaxPos = { static_cast<float>(screenWidth) - BORDER_OFFSET - (size.x * scale.x), static_cast<float>(screenHeight) - BORDER_OFFSET };
 }
 
-void dae::Patrol::OnExit(EnemyLogic&)
+void dae::EnemyPatrolState::OnExit(EnemyLogic&)
 {
 #ifndef NDEBUG
     std::cout << "Patrol State Exiting.\n";
 #endif
 }
 
-void dae::Kamikaze::Update(EnemyLogic& enemy)
+void dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
 {
     float deltaTime = Timer::GetInstance().GetDeltaTime();
     glm::vec2 curLocation = enemy.GetLocation();
@@ -137,12 +137,12 @@ void dae::Kamikaze::Update(EnemyLogic& enemy)
             enemy.SetLocation({ m_StartPosition.x, newPos.y });
         }
         else {
-            enemy.SetState(std::make_unique<Patrol>());
+            enemy.SetState(std::make_unique<EnemyPatrolState>());
         }
     }
 }
 
-void dae::Kamikaze::OnEnter(EnemyLogic& enemy)
+void dae::EnemyKamikazeState::OnEnter(EnemyLogic& enemy)
 {
 #ifndef NDEBUG
     std::cout << "Kamikaze State Entering.\n";
@@ -157,21 +157,27 @@ void dae::Kamikaze::OnEnter(EnemyLogic& enemy)
     m_StartPosition = enemy.GetLocation();
 }
 
-void dae::Kamikaze::OnExit(EnemyLogic&)
+void dae::EnemyKamikazeState::OnExit(EnemyLogic&)
 {
 #ifndef NDEBUG
     std::cout << "Kamikaze State Exiting.\n";
 #endif
 }
 
-void dae::Death::Update(EnemyLogic&)
+void dae::EnemyDeathState::Update(EnemyLogic&)
 {
 }
 
-void dae::Death::OnEnter(EnemyLogic&)
+void dae::EnemyDeathState::OnEnter(EnemyLogic&)
 {
+#ifndef NDEBUG
+    std::cout << "Death State Entering.\n";
+#endif
 }
 
-void dae::Death::OnExit(EnemyLogic&)
+void dae::EnemyDeathState::OnExit(EnemyLogic&)
 {
+#ifndef NDEBUG
+    std::cout << "Death State Exiting.\n";
+#endif
 }

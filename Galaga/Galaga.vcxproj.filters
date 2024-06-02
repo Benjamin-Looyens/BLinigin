@@ -16,6 +16,12 @@
     <Filter Include="Source Files\Enemy">
       <UniqueIdentifier>{24a6c513-ca99-421d-bed9-c3fdd33b5efc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{264fa33d-9cd6-444e-9b66-59f510729cdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player\Dart">
+      <UniqueIdentifier>{b19fb360-f21d-4276-8faf-3d9b976ff9be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Galaga.cpp">
@@ -25,15 +31,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DerivedComponents.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dart.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EnemyComponents.cpp">
@@ -48,6 +45,21 @@
     <ClCompile Include="TEMP_PlayerGlobal.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameplayCommands.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponents.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Dart.cpp">
+      <Filter>Source Files\Player\Dart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DerivedCommands.h">
@@ -56,16 +68,7 @@
     <ClInclude Include="DerivedComponents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DerivedEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dart.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EnemyComponents.h">
@@ -73,6 +76,21 @@
     </ClInclude>
     <ClInclude Include="EnemyState.h">
       <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameplayCommands.h">
+      <Filter>Source Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponents.h">
+      <Filter>Source Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Dart.h">
+      <Filter>Source Files\Player\Dart</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

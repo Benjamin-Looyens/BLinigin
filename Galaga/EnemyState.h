@@ -14,7 +14,7 @@ namespace dae {
 		virtual void OnExit(EnemyLogic& enemy) = 0;
 	};
 
-	class SpawnIn final : public EnemyState
+	class EnemySpawnInState final : public EnemyState
 	{
 		// Bezier Movement based on: https://www.youtube.com/watch?v=qoIYkCwWLkA
 		// By "Ather Omar" (Youtube channel, May 1st, 2017)
@@ -64,8 +64,8 @@ namespace dae {
 		};
 
 	public:
-		SpawnIn();
-		SpawnIn(std::vector<glm::vec2> path, glm::vec2 startLocation);
+		EnemySpawnInState();
+		EnemySpawnInState(std::vector<glm::vec2> path, glm::vec2 startLocation);
 
 		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
@@ -79,7 +79,7 @@ namespace dae {
 		static constexpr float EPSILON{ 5.0f };
 	};
 
-	class Patrol final : public EnemyState
+	class EnemyPatrolState final : public EnemyState
 	{
 	public:
 		void Update(EnemyLogic& enemy) override;
@@ -95,7 +95,7 @@ namespace dae {
 		float m_MaxTime{ 15.0f }; // TODO : Define value in constructor (or OnEnter)
 	};
 
-	class Kamikaze final : public EnemyState
+	class EnemyKamikazeState final : public EnemyState
 	{
 	public:
 		void Update(EnemyLogic& enemy) override;
@@ -113,7 +113,7 @@ namespace dae {
 		constexpr static float EPSILON{ 5.0f };
 	};
 
-	class Death final : public EnemyState
+	class EnemyDeathState final : public EnemyState
 	{
 	public:
 		void Update(EnemyLogic& enemy) override;

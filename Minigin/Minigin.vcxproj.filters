@@ -83,9 +83,6 @@
     <ClInclude Include="Renderer.h">
       <Filter>Globals</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Objects</Filter>
     </ClInclude>
@@ -127,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="CollisionComponents.h">
       <Filter>Engine Included Derived Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Classes To Derive From</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

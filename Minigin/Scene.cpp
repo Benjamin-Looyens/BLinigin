@@ -60,7 +60,7 @@ void Scene::Render() const
 
 GameObject* dae::Scene::AddGameObject()
 {
-	m_pObjects.push_back(std::make_unique<GameObject>());
+	m_pObjects.push_back(std::make_unique<GameObject>(this));
 
 	return m_pObjects[m_pObjects.size() - 1].get();
 }

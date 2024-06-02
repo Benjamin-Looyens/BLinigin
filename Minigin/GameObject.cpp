@@ -6,9 +6,10 @@
 //#include "DerivedComponents.h"
 #include <iostream>
 #include <algorithm>
+#include "Scene.h"
 
-dae::GameObject::GameObject(GameObject* pParentObject)
-	: m_pParentObject{ pParentObject }
+dae::GameObject::GameObject(Scene* pScene, GameObject* pParentObject)
+	: m_pContainingScene{ pScene }, m_pParentObject { pParentObject }
 {}
 
 dae::GameObject::~GameObject() = default;
@@ -73,6 +74,13 @@ void dae::GameObject::SetLocalTranslation(const float x, const float y)
 {
 	m_LocalTransform.SetTranslation(x, y);
 	
+	SetPositionDirty();
+}
+
+void dae::GameObject::AddLocalTranslation(const glm::vec2& add)
+{
+	m_LocalTransform.AddTranslation(add);
+
 	SetPositionDirty();
 }
 

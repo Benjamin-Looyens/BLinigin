@@ -5,7 +5,7 @@
 #include <SDL_rect.h>
 
 namespace dae {
-	class CollisionComponent final : public dae::Component
+	class CollisionComponent final : public Component
 	{
 	public:
 		bool DoesOverlap(CollisionComponent* otherCollision) const;

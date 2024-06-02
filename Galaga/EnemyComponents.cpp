@@ -7,7 +7,7 @@
 dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed)
 	: Component(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }
 {
-	m_pSwitchState = std::make_unique<SpawnIn>();
+	m_pSwitchState = std::make_unique<EnemySpawnInState>();
 }
 
 void dae::EnemyLogic::Update()
@@ -24,7 +24,7 @@ void dae::EnemyLogic::Update()
 			if (pPlayerCollision) {
 				if (pCollision->DoesOverlap(pPlayerCollision)) {
 					//std::cout << "OVERLAP!\n";
-					SetState(std::make_unique<dae::Death>());
+					SetState(std::make_unique<dae::EnemyDeathState>());
 				}
 			}
 		}

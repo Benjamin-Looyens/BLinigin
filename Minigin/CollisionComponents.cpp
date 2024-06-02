@@ -35,8 +35,7 @@ bool dae::CollisionComponent::DoesOverlap(GameObject* pOtherObject) const
 
 bool dae::CollisionComponent::DoesOverlap(SDL_FRect rectangle) const
 {
-	auto scale = m_pParent->GetWorldScale();
-	SDL_FRect scaledCollision{ m_CollisionRect.x, m_CollisionRect.y, m_CollisionRect.w * scale.x, m_CollisionRect.h * scale.y };
+	SDL_FRect scaledCollision = GetRect();
 
 	return SDL_HasIntersectionF(&rectangle, &scaledCollision);
 }

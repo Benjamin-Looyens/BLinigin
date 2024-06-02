@@ -8,6 +8,7 @@
 #include "DerivedEvents.h"
 #include "ObserverComponents.h"
 #include "CollisionComponents.h"
+#include "PlayerComponents.h"
 
 dae::Player::Player(glm::vec2& playerStartPos, glm::vec2& livesCounterPos, glm::vec2& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController)
 	: m_PlayerStartPos{ playerStartPos }, m_LivesCounterPos{ livesCounterPos }, m_ScoreCounterPos{ scoreCounterPos },
@@ -41,6 +42,7 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 	pPlayer->AddComponent<dae::ScoreComponent>();
 	pPlayer->AddComponent<dae::LivesComponent>(m_StartingLives);
 	pPlayer->AddComponent<dae::CollisionComponent>(pTextureComp->GetTextureSize());
+	pPlayer->AddComponent<dae::PlayerLogic>();
 
 	// Lives & Score counters
 	auto pFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25);
@@ -77,7 +79,9 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_LEFT,	pPlayer, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
 		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT,	pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
 		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_DOWN,	pPlayer, glm::vec2{  0.0f,  1.0f }, m_SpawnMovSpeed);
-		
+
+		input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
+
 		input.AddCommand<dae::NotifyObserverCommand>(BL_GAMEPAD_A, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::BIG_ENEMY_DIED);
 		input.AddCommand<dae::NotifyObserverCommand>(BL_GAMEPAD_B, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::SMALL_ENEMY_DIED);
 		input.AddCommand<dae::NotifyObserverCommand>(BL_GAMEPAD_X, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::PLAYER_DIED);
@@ -87,6 +91,8 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, pPlayer, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
 		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_S, pPlayer, glm::vec2{  0.0f,  1.0f }, m_SpawnMovSpeed);
 		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
+
+		input.AddCommand<dae::FireCommand>(BL_MOUSE_RMB, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
 
 		input.AddCommand<dae::NotifyObserverCommand>(BL_KEYBOARD_E,		dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::BIG_ENEMY_DIED);
 		input.AddCommand<dae::NotifyObserverCommand>(BL_KEYBOARD_Q,		dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::SMALL_ENEMY_DIED);

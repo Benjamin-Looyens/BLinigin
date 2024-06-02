@@ -9,6 +9,7 @@ namespace dae
 {
 	class Texture2D;
 	class Component;
+	class Scene;
 
 	// TODO : Potentially refactor the concept and template setup here
 	template<typename ComponentType>
@@ -25,6 +26,7 @@ namespace dae
 		void SetTransform(const Transform& newTransform) { m_LocalTransform = newTransform; };
 		void SetLocalTranslation(const float x, const float y);
 		void SetLocalTranslation(const glm::vec2& newTranslate) { SetLocalTranslation(newTranslate.x, newTranslate.y); };
+		void AddLocalTranslation(const glm::vec2& add);
 
 		void SetLocalScale(const float x, const float y);
 		void MultiplyScale(const float multiplier) { m_LocalTransform.MultiplyScale(multiplier); };
@@ -88,8 +90,9 @@ namespace dae
 		void SeperateFromParent();
 		int GetChildCount() const { return static_cast<int>(m_pChildObjects.size()); };
 		bool HasParent() const { return (m_pParentObject != nullptr); };
+		dae::Scene* GetContainingScene() { return m_pContainingScene; };
 
-		GameObject(GameObject* pParent = nullptr);
+		GameObject(Scene* pScene, GameObject* pParent = nullptr);
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -114,5 +117,7 @@ namespace dae
 		bool m_UseParentWorld{ true };
 
 		bool m_Destroyed{ false };
+
+		dae::Scene* m_pContainingScene;
 	};
 }

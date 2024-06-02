@@ -95,6 +95,7 @@ void load()
 // GENERAL TODOS
 // TODO : Fix shared ptrs everywhere
 // TODO : Improve Player/Controller Setup
+// TODO : Check every class to make sure if applies rule of 5 correctly
 
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");

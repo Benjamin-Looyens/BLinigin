@@ -158,7 +158,9 @@
     <ClCompile Include="EnemyComponents.cpp" />
     <ClCompile Include="EnemyState.cpp" />
     <ClCompile Include="Galaga.cpp" />
+    <ClCompile Include="GameplayCommands.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerComponents.cpp" />
     <ClCompile Include="TEMP_PlayerGlobal.cpp" />
     <ClCompile Include="TEMP_PlayerGlobal.h" />
   </ItemGroup>
@@ -170,7 +172,9 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyComponents.h" />
     <ClInclude Include="EnemyState.h" />
+    <ClInclude Include="GameplayCommands.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerComponents.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
