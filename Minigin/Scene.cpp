@@ -80,3 +80,15 @@ void dae::Scene::RemoveObject(GameObject* pObject)
 	}
 }
 
+std::vector<GameObject*> dae::Scene::GetAllObjects()
+{
+	std::vector<GameObject*> pRetObjects{};
+	pRetObjects.reserve(m_pObjects.size());
+
+	for (auto& pObject : m_pObjects) {
+		pRetObjects.push_back(pObject.get());
+	}
+
+	return pRetObjects;
+}
+

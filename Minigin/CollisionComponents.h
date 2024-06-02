@@ -11,6 +11,7 @@ namespace dae {
 		bool DoesOverlap(CollisionComponent* otherCollision) const;
 		bool DoesOverlap(GameObject* otherObject) const;
 		bool DoesOverlap(SDL_FRect rectangle) const;
+		std::vector<GameObject*> GetAllOverlappingObjects();
 
 		SDL_FRect GetRect() const;
 

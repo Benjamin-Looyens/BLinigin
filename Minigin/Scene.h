@@ -20,6 +20,8 @@ namespace dae
 		void RemoveObject(size_t objectIndex);
 		void RemoveObject(GameObject* pObject);
 
+		std::vector<GameObject*> GetAllObjects();
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

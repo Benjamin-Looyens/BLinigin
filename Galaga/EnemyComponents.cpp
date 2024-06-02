@@ -14,21 +14,21 @@ void dae::EnemyLogic::Update()
 {
 	if (m_pState.get())	m_pState->Update(*this);
 
-	auto pCollision = m_pParent->GetComponent<dae::CollisionComponent>();
-	if (pCollision) {
-		auto pPlayers = PlayerLocator::GetPlayers(); 
+	//auto pCollision = m_pParent->GetComponent<dae::CollisionComponent>();
+	//if (pCollision) {
+	//	auto pPlayers = PlayerLocator::GetPlayers(); 
 
-		for (auto& pPlayer : pPlayers) {
-			auto pPlayerCollision = pPlayer->GetComponent<dae::CollisionComponent>();
+	//	for (auto& pPlayer : pPlayers) {
+	//		auto pPlayerCollision = pPlayer->GetComponent<dae::CollisionComponent>();
 
-			if (pPlayerCollision) {
-				if (pCollision->DoesOverlap(pPlayerCollision)) {
-					//std::cout << "OVERLAP!\n";
-					SetState(std::make_unique<dae::EnemyDeathState>());
-				}
-			}
-		}
-	}
+	//		if (pPlayerCollision) {
+	//			if (pCollision->DoesOverlap(pPlayerCollision)) {
+	//				//std::cout << "OVERLAP!\n";
+	//				SetState(std::make_unique<dae::EnemyDeathState>());
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 void dae::EnemyLogic::LateUpdate()
@@ -51,6 +51,19 @@ void dae::EnemyLogic::SetState(std::unique_ptr<EnemyState> pNewState)
 void dae::EnemyLogic::SetLocation(glm::vec2 pos)
 {
 	m_pParent->SetLocalTranslation(pos);
+}
+
+void dae::EnemyLogic::GetHit()
+{
+	// TODO : Implement more logic for get hit
+	SetState(std::make_unique<dae::EnemyDeathState>());
+	m_TookDamage = true;
+}
+
+void dae::EnemyLogic::Die()
+{
+	// TODO : More logic for dying
+	m_pParent->Destroy();
 }
 
 glm::vec2 dae::EnemyLogic::GetLocation()

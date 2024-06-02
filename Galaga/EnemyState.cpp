@@ -164,8 +164,13 @@ void dae::EnemyKamikazeState::OnExit(EnemyLogic&)
 #endif
 }
 
-void dae::EnemyDeathState::Update(EnemyLogic&)
+void dae::EnemyDeathState::Update(EnemyLogic& enemy)
 {
+    m_ElapsedTime += Timer::GetInstance().GetDeltaTime();
+
+    if (m_ElapsedTime > DEATH_TIMER) {
+        enemy.Die();
+    }
 }
 
 void dae::EnemyDeathState::OnEnter(EnemyLogic&)

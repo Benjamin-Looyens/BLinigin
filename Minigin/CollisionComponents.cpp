@@ -1,5 +1,6 @@
 #include "CollisionComponents.h"
 #include <SDL.h>
+#include "Scene.h"
 
 dae::CollisionComponent::CollisionComponent(GameObject* pParent, glm::vec2 widthHeight)
 	: dae::Component(pParent)
@@ -38,6 +39,29 @@ bool dae::CollisionComponent::DoesOverlap(SDL_FRect rectangle) const
 	SDL_FRect scaledCollision = GetRect();
 
 	return SDL_HasIntersectionF(&rectangle, &scaledCollision);
+}
+
+/// <summary>
+/// <b>EXPENSIVE</b> Gets all the game objects that have collision component and overlap the current collision component
+/// </summary>
+/// <returns>A vector of GameObject* containing the overlapping objects</returns>
+std::vector<dae::GameObject*> dae::CollisionComponent::GetAllOverlappingObjects()
+{
+	auto pScene = m_pParent->GetContainingScene();
+	std::vector<GameObject*> pOverlappingObjects{};
+
+	auto pAllObjects = pScene->GetAllObjects();
+	for (auto& pObject : pAllObjects) {
+		if (pObject) {
+			auto pCollisionComp = pObject->GetComponent<dae::CollisionComponent>();
+
+			if (pCollisionComp && DoesOverlap(pCollisionComp)) {
+				pOverlappingObjects.push_back(pObject);
+			}
+		}
+	}
+
+	return pOverlappingObjects;
 }
 
 SDL_FRect dae::CollisionComponent::GetRect() const

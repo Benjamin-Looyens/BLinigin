@@ -198,9 +198,6 @@ namespace dae {
 		void Update() override;
 
 	private:
-		float m_ElapsedTime{};
-		static constexpr float MAX_LIFETIME{ 10.0f };
-
 		float m_Speed;
 		glm::vec2 m_MovDir;
 	};

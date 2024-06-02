@@ -16,6 +16,9 @@ namespace dae {
 		
 		void SetState(std::unique_ptr<EnemyState> pNewState);
 		void SetLocation(glm::vec2 pos);
+		void GetHit();
+		void Die();
+		bool Damaged() const { return m_TookDamage; };
 
 		glm::vec2 GetLocation();
 		glm::vec2 GetScale();
@@ -29,6 +32,8 @@ namespace dae {
 
 		float m_SpawnSpeed;
 		float m_PatrolSpeed;
+
+		bool m_TookDamage = false;
 
 		int m_Health;
 	};

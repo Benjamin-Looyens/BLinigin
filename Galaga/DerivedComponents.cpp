@@ -323,12 +323,4 @@ void dae::ConstantMovementComponent::Update()
 	const float& deltaTime = Timer::GetInstance().GetDeltaTime();
 
 	m_pParent->AddLocalTranslation(deltaTime * m_Speed * m_MovDir);
-
-	m_ElapsedTime += deltaTime;
-	if (m_ElapsedTime > MAX_LIFETIME) {
-#ifndef NDEBUG
-		std::cout << "Dart Destroyed.\n";
-#endif 
-		m_pParent->Destroy();
-	}
 }

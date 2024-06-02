@@ -1,0 +1,39 @@
+#include "DartLogic.h"
+#include "EnemyComponents.h"
+#include "Timer.h"
+
+dae::DartLogic::DartLogic(GameObject* pParent)
+	: Component(pParent)
+{
+	if (pParent) {
+		m_pParentCollision = pParent->GetComponent<dae::CollisionComponent>(); 
+		if (m_pParentCollision == nullptr) Remove();
+	}
+}
+
+void dae::DartLogic::Update()
+{
+	if (m_pParentCollision) {
+		auto pOverlaps = m_pParentCollision->GetAllOverlappingObjects();
+
+		for (auto& pOverlap : pOverlaps) {
+			auto pEnemyLogic = pOverlap->GetComponent<dae::EnemyLogic>();
+
+			if (pEnemyLogic) {
+				if (pEnemyLogic->Damaged()) continue;
+				pEnemyLogic->GetHit();
+				m_pParent->Destroy(); 
+			}
+		}
+	}
+
+	const float& deltaTime = Timer::GetInstance().GetDeltaTime();
+
+	m_ElapsedTime += deltaTime;
+	if (m_ElapsedTime > MAX_LIFETIME) {
+#ifndef NDEBUG
+		std::cout << "Dart Destroyed.\n";
+#endif 
+		m_pParent->Destroy();
+	}
+}

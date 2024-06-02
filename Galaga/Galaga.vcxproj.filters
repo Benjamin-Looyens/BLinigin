@@ -60,6 +60,9 @@
     <ClCompile Include="Dart.cpp">
       <Filter>Source Files\Player\Dart</Filter>
     </ClCompile>
+    <ClCompile Include="DartLogic.cpp">
+      <Filter>Source Files\Player\Dart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DerivedCommands.h">
@@ -90,6 +93,9 @@
       <Filter>Source Files\Player</Filter>
     </ClInclude>
     <ClInclude Include="Dart.h">
+      <Filter>Source Files\Player\Dart</Filter>
+    </ClInclude>
+    <ClInclude Include="DartLogic.h">
       <Filter>Source Files\Player\Dart</Filter>
     </ClInclude>
   </ItemGroup>

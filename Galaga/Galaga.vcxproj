@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Dart.cpp" />
+    <ClCompile Include="DartLogic.cpp" />
     <ClCompile Include="DerivedCommands.cpp" />
     <ClCompile Include="DerivedComponents.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dart.h" />
+    <ClInclude Include="DartLogic.h" />
     <ClInclude Include="DerivedCommands.h" />
     <ClInclude Include="DerivedComponents.h" />
     <ClInclude Include="DerivedEvents.h" />

@@ -119,5 +119,9 @@ namespace dae {
 		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
+
+	private:
+		float m_ElapsedTime{};
+		constexpr static float DEATH_TIMER{ 1.0f };
 	};
 }
