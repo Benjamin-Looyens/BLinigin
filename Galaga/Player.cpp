@@ -7,6 +7,7 @@
 #include "DerivedComponents.h"
 #include "DerivedEvents.h"
 #include "ObserverComponents.h"
+#include "CollisionComponents.h"
 
 dae::Player::Player(glm::vec2& playerStartPos, glm::vec2& livesCounterPos, glm::vec2& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController)
 	: m_PlayerStartPos{ playerStartPos }, m_LivesCounterPos{ livesCounterPos }, m_ScoreCounterPos{ scoreCounterPos },
@@ -30,15 +31,16 @@ dae::Player::Player(PlayerData& playerdata)
 	: Player(playerdata.startPos, playerdata.livesCounterPos, playerdata.scoreCounterPos, playerdata.spriteLocation, playerdata.playerIndex, playerdata.movSpeed, playerdata.startingLives, playerdata.useController)
 {}
 
-void dae::Player::AddToScene(Scene* pSceneToAddTo)
+dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 {
 	// Player itself
 	auto pPlayer = pSceneToAddTo->AddGameObject();
 	pPlayer->SetLocalTranslation(m_PlayerStartPos);
 	pPlayer->SetLocalScale(2.0f, 2.0f);
-	pPlayer->AddComponent<dae::TextureComponent>(m_PlayerSpriteLocation);
+	auto pTextureComp = pPlayer->AddComponent<dae::TextureComponent>(m_PlayerSpriteLocation);
 	pPlayer->AddComponent<dae::ScoreComponent>();
 	pPlayer->AddComponent<dae::LivesComponent>(m_StartingLives);
+	pPlayer->AddComponent<dae::CollisionComponent>(pTextureComp->GetTextureSize());
 
 	// Lives & Score counters
 	auto pFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25);
@@ -91,4 +93,6 @@ void dae::Player::AddToScene(Scene* pSceneToAddTo)
 		input.AddCommand<dae::NotifyObserverCommand>(BL_KEYBOARD_SPACE, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::PLAYER_DIED);
 		break;
 	}
+
+	return pPlayer;
 }

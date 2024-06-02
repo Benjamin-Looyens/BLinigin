@@ -163,3 +163,15 @@ void dae::Kamikaze::OnExit(EnemyLogic&)
     std::cout << "Kamikaze State Exiting.\n";
 #endif
 }
+
+void dae::Death::Update(EnemyLogic&)
+{
+}
+
+void dae::Death::OnEnter(EnemyLogic&)
+{
+}
+
+void dae::Death::OnExit(EnemyLogic&)
+{
+}

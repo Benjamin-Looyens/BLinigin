@@ -125,6 +125,9 @@
     <ClInclude Include="Defines.h">
       <Filter>Core Engine Files</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionComponents.h">
+      <Filter>Engine Included Derived Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Minigin.cpp">
@@ -192,6 +195,9 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponents.cpp">
+      <Filter>Engine Included Derived Classes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

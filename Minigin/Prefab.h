@@ -8,7 +8,7 @@ namespace dae {
 	class Prefab
 	{
 	public:
-		virtual void AddToScene(Scene* pSceneToAddTo) = 0;
+		virtual GameObject* AddToScene(Scene* pSceneToAddTo) = 0;
 
 		Prefab() = default;
 

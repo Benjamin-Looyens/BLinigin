@@ -7,6 +7,8 @@
 #include "Observer.h"
 #include "ObserverComponents.h"
 
+// TODO : Check & remove virtual where unnecessary (eg: virtual destructors in final)
+
 namespace dae {
 	// Class Forward Declarations
 	class Font;
@@ -16,7 +18,7 @@ namespace dae {
 	class IObserver;
 	class ISubject;
 
-	// TODO : Merge Text, Texture components
+	// TODO : Merge Text, Texture components & Move them to Engine Files
 	// Text Component
 	class TextComponent final : public Component
 	{

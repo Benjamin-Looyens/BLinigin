@@ -23,7 +23,7 @@ namespace dae {
 		Player(glm::vec2&& playerStartPos, glm::vec2&& livesCounterPos, glm::vec2&& scoreCounterPos, std::string&& playerSpriteLocation, int&& playerIndex, float&& movSpeed, int&& startingLives, bool&& useController);
 		Player(PlayerData& playerdata);
 
-		virtual void AddToScene(Scene* pSceneToAddTo) override;
+		virtual GameObject* AddToScene(Scene* pSceneToAddTo) override;
 
 		Player(const Player& other) = delete;
 		Player(const Player&& other) = delete;

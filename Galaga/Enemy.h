@@ -17,7 +17,7 @@ namespace dae {
 		Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed);
 		Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed);
 
-		virtual void AddToScene(Scene* pSceneToAddTo) override;
+		virtual GameObject* AddToScene(Scene* pSceneToAddTo) override;
 
 		Enemy(const Enemy& other) = delete;
 		Enemy(const Enemy&& other) = delete;

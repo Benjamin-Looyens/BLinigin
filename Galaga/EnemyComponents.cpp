@@ -1,6 +1,8 @@
 #include "EnemyComponents.h"
 #include "EnemyState.h"
 #include "GameObject.h"
+#include "TEMP_PlayerGlobal.h"
+#include "CollisionComponents.h"
 
 dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed)
 	: Component(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }
@@ -11,6 +13,22 @@ dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolS
 void dae::EnemyLogic::Update()
 {
 	if (m_pState.get())	m_pState->Update(*this);
+
+	auto pCollision = m_pParent->GetComponent<dae::CollisionComponent>();
+	if (pCollision) {
+		auto pPlayers = PlayerLocator::GetPlayers(); 
+
+		for (auto& pPlayer : pPlayers) {
+			auto pPlayerCollision = pPlayer->GetComponent<dae::CollisionComponent>();
+
+			if (pPlayerCollision) {
+				if (pCollision->DoesOverlap(pPlayerCollision)) {
+					//std::cout << "OVERLAP!\n";
+					SetState(std::make_unique<dae::Death>());
+				}
+			}
+		}
+	}
 }
 
 void dae::EnemyLogic::LateUpdate()

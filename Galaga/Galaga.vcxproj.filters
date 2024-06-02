@@ -42,6 +42,12 @@
     <ClCompile Include="EnemyState.cpp">
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="TEMP_PlayerGlobal.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TEMP_PlayerGlobal.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DerivedCommands.h">
