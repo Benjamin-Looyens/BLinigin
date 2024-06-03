@@ -157,6 +157,7 @@
     <ClCompile Include="DerivedComponents.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyComponents.cpp" />
+    <ClCompile Include="EnemyDeath.cpp" />
     <ClCompile Include="EnemyState.cpp" />
     <ClCompile Include="Galaga.cpp" />
     <ClCompile Include="GameplayCommands.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="DerivedEvents.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyComponents.h" />
+    <ClInclude Include="EnemyDeath.h" />
     <ClInclude Include="EnemyState.h" />
     <ClInclude Include="GameplayCommands.h" />
     <ClInclude Include="Player.h" />

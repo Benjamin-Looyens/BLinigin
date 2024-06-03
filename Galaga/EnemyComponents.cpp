@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "CollisionComponents.h"
 #include "DerivedEvents.h"
+#include "DerivedComponents.h"
+#include <SDL.h>
 
 #include "TEMP_PlayerGlobal.h"
 
@@ -55,6 +57,18 @@ void dae::EnemyLogic::GetHit()
 void dae::EnemyLogic::Die()
 {
 	m_pState->OnExit(*this);
+
+	auto parentPos = m_pParent->GetWorldPosition();
+	auto parentSize = m_pParent->GetComponent<dae::AnimatedTextureComponent>()->GetAppliedTextureSize();
+
+	auto pDeathObj = m_DeathAnim.AddToScene(m_pParent->GetContainingScene());
+	auto deathSize = pDeathObj->GetComponent<dae::AnimatedTextureComponent>()->GetAppliedTextureSize();
+
+	glm::vec2 deathPos{ parentPos.x + ((parentSize.x - deathSize.x) / 2), parentPos.y + ((parentSize.y - deathSize.y) / 2) };
+
+	pDeathObj->SetLocalTranslation(deathPos);
+	pDeathObj->SetLocalScale(m_pParent->GetWorldScale());
+
 	m_pParent->Destroy();
 }
 

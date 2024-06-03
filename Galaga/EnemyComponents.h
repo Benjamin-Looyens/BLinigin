@@ -3,6 +3,7 @@
 #include "ObserverComponents.h"
 #include "EnemyState.h"
 #include <memory>
+#include "EnemyDeath.h"
 
 namespace dae {
 	class GameObject;
@@ -36,5 +37,7 @@ namespace dae {
 		bool m_TookDamage = false;
 
 		int m_Health{ 1 };
+
+		EnemyDeath m_DeathAnim{ };
 	};
 }

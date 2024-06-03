@@ -116,11 +116,11 @@ void dae::AnimatedTextureComponent::Update()
 	float deltaTime = Timer::GetInstance().GetDeltaTime();
 
 	m_ElapsedTime += deltaTime;
-	const float timeFPSModifier = static_cast<float>(m_NumFrames) / m_FPS;
+	const float frameAdvanceTime = static_cast<float>(m_NumFrames) / m_FPS;
 
-	if (timeFPSModifier <= m_ElapsedTime) {
+	if (frameAdvanceTime <= m_ElapsedTime) {
 		m_CurFrame = (m_CurFrame + 1) % m_NumFrames;
-		m_ElapsedTime = m_ElapsedTime - timeFPSModifier;
+		m_ElapsedTime = m_ElapsedTime - frameAdvanceTime;
 	}
 }
 
@@ -144,6 +144,11 @@ glm::vec2 dae::AnimatedTextureComponent::GetAppliedTextureSize() const
 	glm::vec2 appliedSize = { fullSize.x / m_NumFrames, fullSize.y };
 
 	return appliedSize;
+}
+
+float dae::AnimatedTextureComponent::GetTimeForLoop() const
+{
+	return (static_cast<float>(m_NumFrames) / m_FPS) * static_cast<float>(m_NumFrames);
 }
 
 
@@ -239,4 +244,15 @@ void dae::ConstantMovementComponent::Update()
 	const float& deltaTime = Timer::GetInstance().GetDeltaTime();
 
 	m_pParent->AddLocalTranslation(deltaTime * m_Speed * m_MovDir);
+}
+
+dae::TimedDestroyComponent::TimedDestroyComponent(GameObject* pParent, float timeTillDestroy)
+	: Component(pParent), m_TimeTillDestroy{ timeTillDestroy }
+{}
+
+void dae::TimedDestroyComponent::Update()
+{
+	m_ElapsedTime += Timer::GetInstance().GetDeltaTime();
+
+	if (m_ElapsedTime >= m_TimeTillDestroy) m_pParent->Destroy();
 }

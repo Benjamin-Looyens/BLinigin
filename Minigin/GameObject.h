@@ -29,6 +29,7 @@ namespace dae
 		void AddLocalTranslation(const glm::vec2& add);
 
 		void SetLocalScale(const float x, const float y);
+		void SetLocalScale(glm::vec2 newScale) { SetLocalScale(newScale.x, newScale.y); };
 		void MultiplyScale(const float multiplier) { m_LocalTransform.MultiplyScale(multiplier); };
 
 		glm::vec2 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };

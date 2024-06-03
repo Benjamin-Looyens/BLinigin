@@ -74,6 +74,7 @@ namespace dae {
 		void Render() const override;
 
 		glm::vec2 GetAppliedTextureSize() const;
+		float GetTimeForLoop() const;
 
 		AnimatedTextureComponent(dae::GameObject* pParent, const std::string& fileName, int numFrames, float fps);
 	
@@ -161,6 +162,17 @@ namespace dae {
 	private:
 		float m_Speed;
 		glm::vec2 m_MovDir;
+	};
+
+	class TimedDestroyComponent final : public Component
+	{
+	public:
+		TimedDestroyComponent(GameObject* pParent, float timeTillDestroy);
+		void Update() override;
+
+	private:
+		float m_ElapsedTime{};
+		float m_TimeTillDestroy;
 	};
 }
 
