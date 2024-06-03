@@ -93,6 +93,7 @@ void load()
 // TODO : Fix shared ptrs everywhere
 // TODO : Improve Player/Controller Setup
 // TODO : Check every class to make sure if applies rule of 5 correctly
+// TODO : Add layering options which guarantees that some Objects/Components are rendered above others
 
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");

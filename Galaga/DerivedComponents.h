@@ -108,52 +108,6 @@ namespace dae {
 		float m_WaveTime{ 0.0f };
 	};
 
-	class LivesComponent final : public Component
-	{
-	public:
-		void LoseLife();
-		void GainLife();
-
-		int GetLifeCount() const { return m_NumLives; };
-
-		void Render() const override;
-		void SetLifeTexture(Texture2D* pNewTexture);
-
-		LivesComponent(GameObject* pParent, int lives, glm::vec2 displayPosition = { 0, 0 }, glm::vec2 livesStackDirection = { 1, 0 });
-		virtual ~LivesComponent() = default;
-		LivesComponent(const LivesComponent& other) = delete;
-		LivesComponent(const LivesComponent&& other) = delete;
-		LivesComponent& operator=(const LivesComponent& other) = delete;
-		LivesComponent& operator=(const LivesComponent&& other) = delete;
-
-	private:
-		int m_NumLives;
-		
-		glm::vec2 m_DisplayPos;
-		glm::vec2 m_LivesStackDir;
-
-		Texture2D* m_pLifeTexture;
-
-		static constexpr float s_SPACER_BETWEEN_LIVES{ 5.0f };
-	};
-
-	class ScoreComponent final : public Component
-	{
-	public:
-		int GetScore() const { return m_Score; };
-		void AddPoints(int pointsToAdd) { m_Score += pointsToAdd; };
-
-		ScoreComponent(GameObject* pParent) : Component(pParent) {};
-		virtual ~ScoreComponent() = default;
-		ScoreComponent(const ScoreComponent& other) = delete;
-		ScoreComponent(const ScoreComponent&& other) = delete;
-		ScoreComponent& operator=(const ScoreComponent& other) = delete;
-		ScoreComponent& operator=(const ScoreComponent&& other) = delete;
-
-	private:
-		int m_Score{ };
-	};
-
 	class DisplayDataComponent final : public Component
 	{
 	public:
@@ -169,28 +123,6 @@ namespace dae {
 	private:
 		dae::TextComponent* m_pTextLocation; // non-owning reference to parent's text component (if it has one)
 		std::string m_DataPrefix;
-	};
-
-	class LivesObservingComponent final : public ObservingComponent
-	{
-	public:
-		LivesObservingComponent(GameObject* pParent, GameObject* pDisplay);
-
-		virtual void OnNotify(const ISubject* pSubject, Event event) override;
-
-	private:
-		GameObject* m_pDisplayObject;
-	};
-
-	class ScoreObservingComponent final : public ObservingComponent
-	{
-	public:
-		ScoreObservingComponent(GameObject* pParent, GameObject* pDisplay);
-
-		virtual void OnNotify(const ISubject* pSubject, Event event) override;
-	
-	private:
-		GameObject* m_pDisplayObject;
 	};
 
 	class FollowMouseComponent final : public Component

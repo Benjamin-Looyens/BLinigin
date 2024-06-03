@@ -17,9 +17,9 @@ namespace dae {
 		SubjectComponent& operator=(const SubjectComponent& other) = delete;
 		SubjectComponent& operator=(const SubjectComponent&& other) = delete;
 
-		virtual void AddObserver(IObserver* pObserverToAdd) override;
-		virtual void RemoveObserver(IObserver* pObserverToRemove) override;
-		virtual void NotifyObservers(Event& eventToNotify) override;
+		void AddObserver(IObserver* pObserverToAdd) override;
+		void RemoveObserver(IObserver* pObserverToRemove) override;
+		void NotifyObservers(Event& eventToNotify) override;
 
 	private:
 		std::vector<IObserver*> m_pObservers;
