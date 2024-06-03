@@ -90,6 +90,8 @@ void load()
 	// TEMP
 	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);
 	dae::PlayerLocator::RegisterPlayer(pPlayerTwoObject);
+
+	pPlayerOneObject->PrintComponents();
 }
 
 // GENERAL TODOS

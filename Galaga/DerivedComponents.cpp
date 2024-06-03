@@ -19,9 +19,7 @@
 #pragma region TextComponent
 dae::TextComponent::TextComponent(dae::GameObject* pParent, const std::string& text, Font* font, const std::string& internalIdentifier)
 	: Component(pParent), m_NeedsUpdate(true), m_Text(text), m_pFont(font), m_pTextTexture(nullptr), m_ResourceFile{ internalIdentifier }
-{
-	m_ComponentName = "TextComponent";
-}
+{}
 
 void dae::TextComponent::Update()
 {
@@ -67,7 +65,6 @@ dae::TextureComponent::TextureComponent(dae::GameObject* pParent, const std::str
 	: Component(pParent)
 {
 	SetTexture(filename);
-	m_ComponentName = "TextureComponent";
 }
 
 float dae::TextureComponent::GetTextureWidth() const

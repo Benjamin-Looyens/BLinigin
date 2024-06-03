@@ -13,30 +13,30 @@ namespace dae {
 		virtual void Update() {};
 		virtual void LateUpdate() {};
 		virtual void Render() const {};
-		std::string GetName() const { return m_ComponentName; };
 
 		void Remove() { m_Removed = true; };
 		bool IsRemoved() { return m_Removed; };
 		const GameObject* GetParent() const { return m_pParent; };
+		const std::string GetName() const { return typeid(*this).name(); };
 
 		//Component() = default;
-		Component(GameObject* pParent) { 
+		Component(GameObject* pParent) {
 			m_pParent = pParent;
 			assert(pParent && "Component was created with parent = nullptr (parent does not exist).");
 		};
-		virtual ~Component() {};
+		virtual ~Component() = 0;
+
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
 
 	protected:
-		std::string m_ComponentName{ "BaseComponent" };
-	
 		bool m_Removed{ false };
 
+		// HACK : Potentially change the pParent to a private getter rather than protected so that derived components cannot remove their parent for example
 		GameObject* m_pParent;
 	};
 
+	inline Component::~Component() {};
 }
-

@@ -48,6 +48,7 @@ void dae::GameObject::LateUpdate()
 		pComponent->LateUpdate();
 	}
 
+	// TODO : Refine component removal system & also fix it cause seems kinda broken
 	// Remove components marked for remove
 	const size_t curSize{ m_pComponents.size() };
 
@@ -157,6 +158,7 @@ void dae::GameObject::PrintComponents() const
 
 	if (m_pComponents.size() > 0) {
 		for (size_t index{ }; index < m_pComponents.size(); ++index)
+			//if (m_pComponents[index] != nullptr) std::cout << "[" << index << "] " << typeid(m_pComponents[index].get()).name() << "\n";
 			if (m_pComponents[index] != nullptr) std::cout << "[" << index << "] " << m_pComponents[index]->GetName() << "\n";
 	}
 	else {
