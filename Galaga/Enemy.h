@@ -4,6 +4,8 @@
 #include <string>
 
 namespace dae {
+	class IObserver;
+
 	struct EnemyData
 	{
 		glm::vec2 startPos;
@@ -14,8 +16,8 @@ namespace dae {
 	class Enemy : public Prefab
 	{
 	public:
-		Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed);
-		Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed);
+		Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed, std::vector<IObserver*>& observers);
+		Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed, std::vector<IObserver*>& observers);
 
 		virtual GameObject* AddToScene(Scene* pSceneToAddTo) override;
 
@@ -29,6 +31,7 @@ namespace dae {
 		std::string m_SpriteLocation;
 		float m_SpawnMovSpeed;
 		float m_PatrolMovSpeed;
+		std::vector<IObserver*> m_Observers; 
 	};
 }
 

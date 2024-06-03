@@ -20,6 +20,7 @@ namespace dae {
 		void AddObserver(IObserver* pObserverToAdd) override;
 		void RemoveObserver(IObserver* pObserverToRemove) override;
 		void NotifyObservers(Event& eventToNotify) override;
+		void NotifyObservers(Event&& eventToNotify) override;
 
 	private:
 		std::vector<IObserver*> m_pObservers;

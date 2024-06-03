@@ -7,7 +7,7 @@
 namespace dae {
 	class GameObject;
 
-	class EnemyLogic final : public Component
+	class EnemyLogic final : public SubjectComponent
 	{
 	public:
 		EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed);

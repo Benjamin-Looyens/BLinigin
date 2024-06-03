@@ -21,6 +21,7 @@
 #include "SoundSystem.h"
 #include "ServiceLocator.h"
 #include "Enemy.h"
+#include "PlayerComponents.h"
 
 #include "TEMP_PlayerGlobal.h"
 
@@ -79,7 +80,11 @@ void load()
 
 	soundSys.PlaySound(1, 0.2f);
 
-	dae::Enemy test{ glm::vec2{}, "BasicEnemy.tga", 350.0f, 50.0f };
+	std::vector<dae::IObserver*> enemyObservers;
+	enemyObservers.push_back(pPlayerOneObject->GetComponent<dae::ScoreComponent>());
+	enemyObservers.push_back(pPlayerTwoObject->GetComponent<dae::ScoreComponent>());
+
+	dae::Enemy test{ glm::vec2{}, "BasicEnemy.tga", 350.0f, 50.0f, enemyObservers };
 	test.AddToScene(&scene);
 
 	// TEMP

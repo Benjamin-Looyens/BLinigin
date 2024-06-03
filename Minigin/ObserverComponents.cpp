@@ -22,6 +22,12 @@ void dae::SubjectComponent::NotifyObservers(Event& eventToNotify)
 	for (auto& pObserver : m_pObservers)
 		pObserver->OnNotify(dynamic_cast<ISubject*>(this), eventToNotify);
 }
+
+void dae::SubjectComponent::NotifyObservers(Event&& eventToNotify)
+{
+	for (auto& pObserver : m_pObservers)
+		pObserver->OnNotify(dynamic_cast<ISubject*>(this), eventToNotify);
+}
 #pragma endregion SubjectComponent
 
 #pragma region ObservingComponent

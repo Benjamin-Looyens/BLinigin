@@ -22,6 +22,7 @@ namespace dae
 		virtual void AddObserver(IObserver* pObserverToAdd) = 0;
 		virtual void RemoveObserver(IObserver* pObserverToRemove) = 0;
 		virtual void NotifyObservers(Event& eventToNotify) = 0;
+		virtual void NotifyObservers(Event&& eventToNotify) = 0;
 	};
 }
 

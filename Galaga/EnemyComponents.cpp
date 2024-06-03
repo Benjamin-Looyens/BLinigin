@@ -1,11 +1,13 @@
 #include "EnemyComponents.h"
 #include "EnemyState.h"
 #include "GameObject.h"
-#include "TEMP_PlayerGlobal.h"
 #include "CollisionComponents.h"
+#include "DerivedEvents.h"
+
+#include "TEMP_PlayerGlobal.h"
 
 dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed)
-	: Component(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }
+	: SubjectComponent(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }
 {
 	m_pSwitchState = std::make_unique<EnemySpawnInState>();
 }
@@ -58,6 +60,8 @@ void dae::EnemyLogic::GetHit()
 	// TODO : Implement more logic for get hit
 	SetState(std::make_unique<dae::EnemyDeathState>());
 	m_TookDamage = true;
+
+	NotifyObservers(Event::BOSS_DIED_FORMATION);
 }
 
 void dae::EnemyLogic::Die()
