@@ -9,6 +9,8 @@ namespace dae {
 
 	class Component
 	{
+		//friend Component* GameObject::AddComponent(); // TODO : Find maintainable method to creating components *only* within GameObject::AddComponent()
+
 	public:
 		virtual void Update() {};
 		virtual void LateUpdate() {};

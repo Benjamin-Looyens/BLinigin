@@ -87,7 +87,7 @@ glm::vec2 dae::TextureComponent::GetTextureSize() const
 
 void dae::TextureComponent::Render() const
 {
-	// TODO : add scaling & rotation compatibility
+	// TODO : add rotation compatibility
 	const auto& transform = m_pParent->GetWorldTransform();
 	const auto& pos = transform.GetTranslation();
 	const auto& scale = transform.GetScale();
@@ -155,13 +155,43 @@ void dae::WaveMovementYComponent::Update()
 #pragma endregion WaveMovementYComponent
 
 #pragma region LivesComponent
-dae::LivesComponent::LivesComponent(GameObject* pParent, int lives)
-	: Component(pParent), m_NumLives{ lives }
-{}
+dae::LivesComponent::LivesComponent(GameObject* pParent, int lives, glm::vec2 displayPosition, glm::vec2 livesStackDirection)
+	: Component(pParent), m_NumLives{ lives }, m_DisplayPos{ displayPosition }, m_LivesStackDir{ livesStackDirection }
+{
+	if (pParent) {
+		auto pTextureComp = pParent->GetComponent<dae::TextureComponent>();
+		
+		if (pTextureComp) {
+			m_pLifeTexture = pTextureComp->GetTexture();
+		}
+	}
+}
 
 void dae::LivesComponent::GainLife()
 {
 	m_NumLives++;
+}
+
+void dae::LivesComponent::Render() const
+{
+	if (m_pLifeTexture == nullptr) return;
+
+	const auto& widthHeight = m_pLifeTexture->GetSize();
+
+	glm::vec2 offset{	(s_SPACER_BETWEEN_LIVES + static_cast<float>(widthHeight.x)),
+						(s_SPACER_BETWEEN_LIVES + static_cast<float>(widthHeight.y))
+	};
+
+	for (int index{ }; index < m_NumLives; ++index) {
+		Renderer::GetInstance().RenderTexture(*m_pLifeTexture, m_DisplayPos.x + (offset.x * static_cast<float>(index) * m_LivesStackDir.x),
+															   m_DisplayPos.y + (offset.y * static_cast<float>(index) * m_LivesStackDir.y),
+															   static_cast<float>(widthHeight.x), static_cast<float>(widthHeight.y));
+	}
+}
+
+void dae::LivesComponent::SetLifeTexture(Texture2D* pNewTexture)
+{
+	m_pLifeTexture = pNewTexture;
 }
 
 void dae::LivesComponent::LoseLife()
@@ -216,30 +246,20 @@ void dae::LivesObservingComponent::OnNotify(const ISubject* pSubject, Event even
 
 	int prevLives{};
 	if (pLivesComp) prevLives = pLivesComp->GetLifeCount();
-
-	dae::DisplayDataComponent* pDataComp = nullptr;
-	if (m_pDisplayObject) pDataComp = m_pDisplayObject->GetComponent<dae::DisplayDataComponent>();
 	
 	bool doUpdate{ false };
 
 	switch (event) {
 	case Event::PLAYER_DIED:
 		if (pLivesComp) pLivesComp->LoseLife();
-		//ServiceLocator::GetSoundSystem().PlaySound(9, 0.4f);
 		doUpdate = true;
 		break;
 	}
 
 	if (!doUpdate) return;
 
-	if (pDataComp && pLivesComp) {
-		if (prevLives != pLivesComp->GetLifeCount()) {
-			pDataComp->UpdateDisplay(std::to_string(pLivesComp->GetLifeCount()));
-		}
-	}
 #ifndef NDEBUG
-	else {
-		if (!pDataComp) std::cout <<  "[LivesObservingComponent] Data Displaying Component is nullptr!\n";
+	if (!pLivesComp) {
 		if (!pLivesComp) std::cout << "[LivesObservingComponent] Lives Component is nullptr!\n";
 	}
 #endif
@@ -274,15 +294,30 @@ void dae::ScoreObservingComponent::OnNotify(const ISubject* pSubject, Event even
 
 	bool doUpdate{ false };
 
+	// TODO : Play damage sounds in other location
 	switch (event) {
-	case Event::BIG_ENEMY_DIED:
-		if (pScoreComp) pScoreComp->AddPoints(500);
-		//ServiceLocator::GetSoundSystem().PlaySound(8, 0.4f);
+	case Event::BEE_DIED_FORMATION:
+		if (pScoreComp) pScoreComp->AddPoints(50);
 		doUpdate = true;
 		break;
-	case Event::SMALL_ENEMY_DIED:
+	case Event::BEE_DIED_KAMIKAZE:
 		if (pScoreComp) pScoreComp->AddPoints(100);
-		//ServiceLocator::GetSoundSystem().PlaySound(10, 0.4f);
+		doUpdate = true;
+		break;
+	case Event::BUTTERFLY_DIED_FORMATION:
+		if (pScoreComp) pScoreComp->AddPoints(80);
+		doUpdate = true;
+		break;
+	case Event::BUTTERFLY_DIED_KAMIKAZE:
+		if (pScoreComp) pScoreComp->AddPoints(160);
+		doUpdate = true;
+		break;
+	case Event::BOSS_DIED_FORMATION:
+		if (pScoreComp) pScoreComp->AddPoints(150);
+		doUpdate = true;
+		break;
+	case Event::BOSS_DIED_KAMIKAZE:
+		if (pScoreComp) pScoreComp->AddPoints(400);
 		doUpdate = true;
 		break;
 	}

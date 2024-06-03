@@ -1,4 +1,5 @@
 #include "PlayerComponents.h"
+#include "ServiceLocator.h"
 
 dae::PlayerLogic::PlayerLogic(GameObject* pParent)
 	: Component(pParent)
@@ -20,4 +21,7 @@ void dae::PlayerLogic::Fire()
 	auto pDart = dart.AddToScene(m_pParent->GetContainingScene());
 
 	m_pDarts.push_back(pDart);
+
+	auto& soundSys = ServiceLocator::GetSoundSystem();
+	soundSys.PlaySound(13, 0.3f);
 }

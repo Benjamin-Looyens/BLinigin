@@ -56,12 +56,4 @@ namespace dae
 	private:
 		dae::Event m_EventToNotify;
 	};
-
-	class FireCommand final : public GameObjectCommand
-	{
-	public:
-		void Execute() override;
-
-		FireCommand(dae::GameObject* pGameObject);
-	};
 }

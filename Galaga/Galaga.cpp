@@ -26,6 +26,10 @@
 
 void load()
 {
+	int screenWidth;
+	int screenHeight;
+	SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight); // HACK : **NEED TO FIND ALTERNATIVE** Window size may not be made if the window is not in focus currently
+
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 	// Raw Object Initializations
@@ -47,22 +51,13 @@ void load()
 	pBackgroundObject->AddChild(pBackgroundTileR);
 	pBackgroundObject->AddChild(pBackgroundTileB);
 	pBackgroundObject->AddChild(pBackgroundTileBR);
-	
-	//auto pLogoObject = scene.AddGameObject();
-	//pLogoObject->AddComponent<dae::TextureComponent>("logo.tga");
-	//pLogoObject->SetLocalTranslation(216, 180);
-	//pLogoObject->AddComponent<dae::WaveMovementYComponent>(50.0f, 2.5f);
-	//
-	//auto pFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//auto pTextObject = scene.AddGameObject();
-	//pTextObject->AddComponent<dae::TextComponent>("Programming 4 Assignment", pFont);
-	//pTextObject->SetLocalTranslation(80, 20);
 
 	// Prefabs
-	dae::Player playerOne{glm::vec2{ 30, 420 }, glm::vec2{ 10, 130 }, glm::vec2{ 10, 160 }, "GalagaP1.tga", 0, 100.0f, 5, true };
+	dae::Player playerOne{glm::vec2{ 30, 420 }, glm::vec2{ 10, 10 }, glm::vec2{ 10, 160 }, "GalagaP1.tga", 0, 100.0f, 5, true };
 	auto pPlayerOneObject = playerOne.AddToScene(&scene);
 
-	dae::Player playerTwo{ glm::vec2{ 90, 420 }, glm::vec2{ 10, 200 }, glm::vec2{ 10, 230 }, "GalagaP2.tga", 1, 100.0f, 5, false };
+	auto textureSize = pPlayerOneObject->GetComponent<dae::TextureComponent>()->GetTextureSize(); // NOTE : Temporary setup
+	dae::Player playerTwo{ glm::vec2{ 90, 420 }, glm::vec2{ screenWidth - 10 - textureSize.x, 10 }, glm::vec2{ 10, 230 }, "GalagaP2.tga", 1, 100.0f, 5, false };
 	auto pPlayerTwoObject = playerTwo.AddToScene(&scene);
 
 	// Sound

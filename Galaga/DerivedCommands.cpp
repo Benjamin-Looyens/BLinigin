@@ -52,15 +52,3 @@ void dae::NotifyObserverCommand::Execute()
 		pSubjectComp->NotifyObservers(m_EventToNotify);
 }
 #pragma endregion NotifyObserverCommand
-
-void dae::FireCommand::Execute()
-{
-	auto pGameObject = GetGameObject();
-	auto pPlayerLogic = pGameObject->GetComponent<dae::PlayerLogic>();
-
-	if (pPlayerLogic) pPlayerLogic->Fire();
-}
-
-dae::FireCommand::FireCommand(dae::GameObject* pGameObject)
-	: GameObjectCommand(pGameObject)
-{}

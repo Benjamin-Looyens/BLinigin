@@ -9,6 +9,7 @@
 #include "ObserverComponents.h"
 #include "CollisionComponents.h"
 #include "PlayerComponents.h"
+#include "GameplayCommands.h"
 
 dae::Player::Player(glm::vec2& playerStartPos, glm::vec2& livesCounterPos, glm::vec2& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController)
 	: m_PlayerStartPos{ playerStartPos }, m_LivesCounterPos{ livesCounterPos }, m_ScoreCounterPos{ scoreCounterPos },
@@ -40,7 +41,8 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 	pPlayer->SetLocalScale(2.0f, 2.0f);
 	auto pTextureComp = pPlayer->AddComponent<dae::TextureComponent>(m_PlayerSpriteLocation);
 	pPlayer->AddComponent<dae::ScoreComponent>();
-	pPlayer->AddComponent<dae::LivesComponent>(m_StartingLives);
+	if (m_PlayerIndex) pPlayer->AddComponent<dae::LivesComponent>(m_StartingLives, m_LivesCounterPos, glm::vec2{ -1, 0 });
+	else pPlayer->AddComponent<dae::LivesComponent>(m_StartingLives, m_LivesCounterPos, glm::vec2{ 1, 0 });
 	pPlayer->AddComponent<dae::CollisionComponent>(pTextureComp->GetTextureSize());
 	pPlayer->AddComponent<dae::PlayerLogic>();
 
@@ -56,11 +58,7 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 	pScoreObject->AddComponent<dae::DisplayDataComponent>(scorePrefix.c_str(), std::to_string(0));
 	pScoreObject->SetLocalTranslation(m_ScoreCounterPos);
 
-	const std::string livesPrefix{ "Player " + std::to_string(m_PlayerIndex + 1) + " lives: " };
-	auto pLivesObject = pSceneToAddTo->AddGameObject();
-	pLivesObject->AddComponent<dae::TextComponent>("Lives: ", pFont, livesStr);
-	pLivesObject->AddComponent<dae::DisplayDataComponent>(livesPrefix.c_str(), std::to_string(m_StartingLives));
-	pLivesObject->SetLocalTranslation(m_LivesCounterPos);
+	auto pLivesObject = pSceneToAddTo->AddGameObject(); // TODO : just make the lives component an observer rather than making a new object and adding lives observer to it
 
 	// Observers
 	auto pSubject = pPlayer->AddComponent<dae::SubjectComponent>();
@@ -82,8 +80,6 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 
 		input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
 
-		input.AddCommand<dae::NotifyObserverCommand>(BL_GAMEPAD_A, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::BIG_ENEMY_DIED);
-		input.AddCommand<dae::NotifyObserverCommand>(BL_GAMEPAD_B, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::SMALL_ENEMY_DIED);
 		input.AddCommand<dae::NotifyObserverCommand>(BL_GAMEPAD_X, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::PLAYER_DIED);
 		break;
 	case false:
@@ -94,8 +90,6 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 
 		input.AddCommand<dae::FireCommand>(BL_MOUSE_RMB, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
 
-		input.AddCommand<dae::NotifyObserverCommand>(BL_KEYBOARD_E,		dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::BIG_ENEMY_DIED);
-		input.AddCommand<dae::NotifyObserverCommand>(BL_KEYBOARD_Q,		dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::SMALL_ENEMY_DIED);
 		input.AddCommand<dae::NotifyObserverCommand>(BL_KEYBOARD_SPACE, dae::InputState::PRESSED_THIS_FRAME, pPlayer, Event::PLAYER_DIED);
 		break;
 	}

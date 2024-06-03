@@ -50,6 +50,7 @@ namespace dae {
 		virtual void Render() const override;
 
 		void SetTexture(const std::string& filename);
+		Texture2D* GetTexture() const { return m_pTexture; };
 
 		TextureComponent(dae::GameObject* pParent, const std::string& filename);
 		virtual ~TextureComponent() = default;
@@ -113,9 +114,12 @@ namespace dae {
 		void LoseLife();
 		void GainLife();
 
-		int GetLifeCount() { return m_NumLives; };
+		int GetLifeCount() const { return m_NumLives; };
 
-		LivesComponent(GameObject* pParent, int lives);
+		void Render() const override;
+		void SetLifeTexture(Texture2D* pNewTexture);
+
+		LivesComponent(GameObject* pParent, int lives, glm::vec2 displayPosition = { 0, 0 }, glm::vec2 livesStackDirection = { 1, 0 });
 		virtual ~LivesComponent() = default;
 		LivesComponent(const LivesComponent& other) = delete;
 		LivesComponent(const LivesComponent&& other) = delete;
@@ -124,6 +128,13 @@ namespace dae {
 
 	private:
 		int m_NumLives;
+		
+		glm::vec2 m_DisplayPos;
+		glm::vec2 m_LivesStackDir;
+
+		Texture2D* m_pLifeTexture;
+
+		static constexpr float s_SPACER_BETWEEN_LIVES{ 5.0f };
 	};
 
 	class ScoreComponent final : public Component
