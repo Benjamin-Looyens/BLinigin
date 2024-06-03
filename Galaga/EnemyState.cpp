@@ -185,4 +185,6 @@ void dae::EnemyDeathState::OnExit(EnemyLogic&)
 #ifndef NDEBUG
     std::cout << "Death State Exiting.\n";
 #endif
+
+    // TODO : Play death explosion & sound effect
 }

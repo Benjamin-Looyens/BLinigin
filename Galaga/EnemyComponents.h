@@ -35,6 +35,6 @@ namespace dae {
 
 		bool m_TookDamage = false;
 
-		int m_Health;
+		int m_Health{ 1 };
 	};
 }

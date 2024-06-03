@@ -15,22 +15,6 @@ dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolS
 void dae::EnemyLogic::Update()
 {
 	if (m_pState.get())	m_pState->Update(*this);
-
-	//auto pCollision = m_pParent->GetComponent<dae::CollisionComponent>();
-	//if (pCollision) {
-	//	auto pPlayers = PlayerLocator::GetPlayers(); 
-
-	//	for (auto& pPlayer : pPlayers) {
-	//		auto pPlayerCollision = pPlayer->GetComponent<dae::CollisionComponent>();
-
-	//		if (pPlayerCollision) {
-	//			if (pCollision->DoesOverlap(pPlayerCollision)) {
-	//				//std::cout << "OVERLAP!\n";
-	//				SetState(std::make_unique<dae::EnemyDeathState>());
-	//			}
-	//		}
-	//	}
-	//}
 }
 
 void dae::EnemyLogic::LateUpdate()
@@ -58,15 +42,19 @@ void dae::EnemyLogic::SetLocation(glm::vec2 pos)
 void dae::EnemyLogic::GetHit()
 {
 	// TODO : Implement more logic for get hit
-	SetState(std::make_unique<dae::EnemyDeathState>());
-	m_TookDamage = true;
+	if (--m_Health >= 0) {
+		if (dynamic_cast<EnemyKamikazeState*>(m_pState.get())) NotifyObservers(Event::BOSS_DIED_KAMIKAZE);
+		else NotifyObservers(Event::BOSS_DIED_FORMATION);
 
-	NotifyObservers(Event::BOSS_DIED_FORMATION);
+		SetState(std::make_unique<dae::EnemyDeathState>());
+	}
+
+	m_TookDamage = true;
 }
 
 void dae::EnemyLogic::Die()
 {
-	// TODO : More logic for dying
+	m_pState->OnExit(*this);
 	m_pParent->Destroy();
 }
 
