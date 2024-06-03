@@ -92,9 +92,11 @@ void dae::TextureComponent::Render() const
 	const auto& pos = transform.GetTranslation();
 	const auto& scale = transform.GetScale();
 	const auto& widthHeight = m_pTexture->GetSize();
+	const auto& scaledWidthHeight = static_cast<glm::ivec2>(static_cast<glm::vec2>(widthHeight) * scale); // HACK : holy static_cast 
+	//const auto& iPos = static_cast<glm::ivec2>(pos);
 
 	//Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
-	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, static_cast<float>(widthHeight.x) * scale.x, static_cast<float>(widthHeight.y) * scale.y);
+	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, static_cast<float>(scaledWidthHeight.x), static_cast<float>(scaledWidthHeight.y));
 }
 
 void dae::TextureComponent::SetTexture(const std::string& filename)
@@ -102,6 +104,48 @@ void dae::TextureComponent::SetTexture(const std::string& filename)
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 #pragma endregion TextureComponent
+
+dae::AnimatedTextureComponent::AnimatedTextureComponent(dae::GameObject* pParent, const std::string& fileName, int numFrames, float fps)
+	: dae::TextureComponent(pParent, fileName), m_NumFrames{ numFrames }, m_FPS{ fps }
+{
+	m_FrameWidthHeight = { GetTextureSize().x / numFrames, GetTextureSize().y };
+}
+
+void dae::AnimatedTextureComponent::Update()
+{
+	float deltaTime = Timer::GetInstance().GetDeltaTime();
+
+	m_ElapsedTime += deltaTime;
+	const float timeFPSModifier = static_cast<float>(m_NumFrames) / m_FPS;
+
+	if (timeFPSModifier <= m_ElapsedTime) {
+		m_CurFrame = (m_CurFrame + 1) % m_NumFrames;
+		m_ElapsedTime = m_ElapsedTime - timeFPSModifier;
+	}
+}
+
+void dae::AnimatedTextureComponent::Render() const
+{
+	const auto& transform = m_pParent->GetWorldTransform();
+	const auto& pos = transform.GetTranslation();
+	const auto& scale = transform.GetScale();
+	const auto& iPos = static_cast<glm::ivec2>(pos);
+
+	SDL_Rect srcRect = { m_CurFrame * m_FrameWidthHeight.x, 0, m_FrameWidthHeight.x, m_FrameWidthHeight.y };
+	SDL_Rect dstRect = { iPos.x, iPos.y,
+						 static_cast<int>(m_FrameWidthHeight.x * scale.x), static_cast<int>(m_FrameWidthHeight.y * scale.y) };
+
+	Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, dstRect);
+}
+
+glm::vec2 dae::AnimatedTextureComponent::GetAppliedTextureSize() const
+{
+	glm::vec2 fullSize = GetTextureSize();
+	glm::vec2 appliedSize = { fullSize.x / m_NumFrames, fullSize.y };
+
+	return appliedSize;
+}
+
 
 #pragma region FPSComponent
 dae::FPSComponent::FPSComponent(dae::GameObject* pParent, float displayUpdateInterval)

@@ -84,7 +84,7 @@ void load()
 	enemyObservers.push_back(pPlayerOneObject->GetComponent<dae::ScoreComponent>());
 	enemyObservers.push_back(pPlayerTwoObject->GetComponent<dae::ScoreComponent>());
 
-	dae::Enemy test{ glm::vec2{}, "BasicEnemy.tga", 350.0f, 50.0f, enemyObservers };
+	dae::Enemy test{ glm::vec2{}, "BossFull.png", 350.0f, 50.0f, enemyObservers };
 	test.AddToScene(&scene);
 
 	// TEMP
@@ -99,6 +99,7 @@ void load()
 // TODO : Improve Player/Controller Setup
 // TODO : Check every class to make sure if applies rule of 5 correctly
 // TODO : Add layering options which guarantees that some Objects/Components are rendered above others
+// TODO : Reduce auto usage
 
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");

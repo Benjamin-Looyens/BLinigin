@@ -39,12 +39,12 @@ namespace dae {
 		bool m_NeedsUpdate;
 		std::string m_Text;
 		const std::string m_ResourceFile;
-		Font* m_pFont; // TODO: unique
-		Texture2D* m_pTextTexture; // TODO: unique
+		Font* m_pFont;
+		Texture2D* m_pTextTexture;
 	};
 
 	// Texture Component
-	class TextureComponent final : public Component
+	class TextureComponent : public Component
 	{
 	public:
 		virtual void Render() const override;
@@ -63,8 +63,26 @@ namespace dae {
 		float GetTextureHeight() const;
 		glm::vec2 GetTextureSize() const;
 
+	protected:
+		Texture2D* m_pTexture;
+	};
+
+	class AnimatedTextureComponent final : public TextureComponent
+	{
+	public:
+		void Update() override;
+		void Render() const override;
+
+		glm::vec2 GetAppliedTextureSize() const;
+
+		AnimatedTextureComponent(dae::GameObject* pParent, const std::string& fileName, int numFrames, float fps);
+	
 	private:
-		Texture2D* m_pTexture; // TODO: Change to unique ptr
+		int m_NumFrames;
+		int m_CurFrame;
+		float m_FPS;
+		float m_ElapsedTime;
+		glm::ivec2 m_FrameWidthHeight;
 	};
 
 	// FPS Component
