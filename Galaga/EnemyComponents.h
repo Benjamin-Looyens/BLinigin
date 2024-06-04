@@ -5,6 +5,7 @@
 #include <memory>
 #include "EnemyDeath.h"
 #include "DerivedEvents.h"
+#include "SoundSystem.h"
 
 namespace dae {
 	class GameObject;
@@ -12,7 +13,7 @@ namespace dae {
 	class EnemyLogic final : public SubjectComponent
 	{
 	public:
-		EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health = 1);
+		EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health, sound_id damageSoundID, sound_id deathSoundID);
 		void Update() override;
 		void LateUpdate() override;
 		
@@ -47,5 +48,8 @@ namespace dae {
 		dae::Event m_NormalDeath	= dae::Event::BOSS_DIED_FORMATION;
 		dae::Event m_KamikazeDeath	= dae::Event::BOSS_DIED_KAMIKAZE;
 		dae::Event m_ReturnDeath	= dae::Event::NULL_EVENT;
+
+		sound_id m_DamageSound;
+		sound_id m_DeathSound;
 	};
 }

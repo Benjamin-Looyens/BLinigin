@@ -78,6 +78,10 @@ void load()
 	soundSys.LinkIDToFilePath(11, "../Data/Sound/11. Name Entry.mp3");
 	soundSys.LinkIDToFilePath(12, "../Data/Sound/12. 2nd - 5th Name Entry.mp3");
 	soundSys.LinkIDToFilePath(13, "../Data/Sound/13. Shoot.mp3");
+	soundSys.LinkIDToFilePath(14, "../Data/Sound/BossDamage.mp3");
+	soundSys.LinkIDToFilePath(15, "../Data/Sound/BossDeath.mp3");
+	soundSys.LinkIDToFilePath(16, "../Data/Sound/BeeDeath.mp3");
+	soundSys.LinkIDToFilePath(17, "../Data/Sound/ButterflyDeath.mp3");
 
 	soundSys.PlaySound(1, 0.2f);
 

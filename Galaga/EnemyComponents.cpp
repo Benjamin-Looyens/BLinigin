@@ -5,11 +5,12 @@
 #include "DerivedEvents.h"
 #include "DerivedComponents.h"
 #include <SDL.h>
+#include "ServiceLocator.h"
 
 #include "TEMP_PlayerGlobal.h"
 
-dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health)
-	: SubjectComponent(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }, m_Health{ health }
+dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health, sound_id damageSoundID, sound_id deathSoundID)
+	: SubjectComponent(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }, m_Health{ health }, m_DamageSound{ damageSoundID }, m_DeathSound{ deathSoundID }
 {
 	m_pSwitchState = std::make_unique<EnemySpawnInState>();
 }
@@ -59,10 +60,14 @@ bool dae::EnemyLogic::GetHit()
 		m_TookDamage = true;
 		m_pParent->GetComponent<dae::AnimatedTextureComponent>()->StopAnimating();
 
-		return true; // Died, thus return true
+		BL_SOUND.PlaySound(m_DeathSound, 0.3f);
+
+		return true; 
 	}
 	else {
 		m_pParent->GetComponent<dae::AnimatedTextureComponent>()->NextLayer();
+
+		BL_SOUND.PlaySound(m_DamageSound, 0.3f);
 	}
 
 	return false; // Is still alive, return false

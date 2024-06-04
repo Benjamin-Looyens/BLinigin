@@ -27,3 +27,5 @@ namespace dae {
 		static std::unique_ptr<dae::ISoundSystem> m_pSoundSysInstance;
 	};
 }
+
+#define BL_SOUND dae::ServiceLocator::GetSoundSystem()
