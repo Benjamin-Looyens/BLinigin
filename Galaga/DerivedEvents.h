@@ -3,6 +3,8 @@
 
 namespace dae {
 	enum class Event {
+		NULL_EVENT,
+
 		PLAYER_DIED,
 		PLAYER_SPAWNED,
 		

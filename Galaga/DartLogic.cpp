@@ -3,7 +3,7 @@
 #include "Timer.h"
 
 dae::DartLogic::DartLogic(GameObject* pParent)
-	: Component(pParent)
+	: SubjectComponent(pParent)
 {
 	if (pParent) {
 		m_pParentCollision = pParent->GetComponent<dae::CollisionComponent>(); 
@@ -21,7 +21,9 @@ void dae::DartLogic::Update()
 
 			if (pEnemyLogic) {
 				if (pEnemyLogic->Damaged()) continue;
+				
 				pEnemyLogic->GetHit();
+				NotifyObservers(pEnemyLogic->GetDeathEvent());
 				
 				if (m_pParent) m_pParent->Destroy();
 			}

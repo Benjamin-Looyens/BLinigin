@@ -4,6 +4,7 @@
 #include "EnemyState.h"
 #include <memory>
 #include "EnemyDeath.h"
+#include "DerivedEvents.h"
 
 namespace dae {
 	class GameObject;
@@ -17,7 +18,7 @@ namespace dae {
 		
 		void SetState(std::unique_ptr<EnemyState> pNewState);
 		void SetLocation(glm::vec2 pos);
-		void GetHit();
+		bool GetHit(); // Returns boolean for if it died or not
 		void Die();
 		bool Damaged() const { return m_TookDamage; };
 
@@ -26,6 +27,8 @@ namespace dae {
 
 		float GetSpawnSpeed() const { return m_SpawnSpeed; };
 		float GetPatrolSpeed() const { return m_PatrolSpeed; };
+
+		dae::Event GetDeathEvent() const { return m_ReturnDeath; };
 
 	private:
 		std::unique_ptr<EnemyState> m_pState;
@@ -39,5 +42,10 @@ namespace dae {
 		int m_Health;
 
 		EnemyDeath m_DeathAnim{ };
+
+		// TODO : Implement these through constructor
+		dae::Event m_NormalDeath	= dae::Event::BOSS_DIED_FORMATION;
+		dae::Event m_KamikazeDeath	= dae::Event::BOSS_DIED_KAMIKAZE;
+		dae::Event m_ReturnDeath	= dae::Event::NULL_EVENT;
 	};
 }

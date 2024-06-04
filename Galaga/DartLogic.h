@@ -1,9 +1,10 @@
 #pragma once
 #include "Component.h"
 #include "CollisionComponents.h"
+#include "ObserverComponents.h"
 
 namespace dae {
-	class DartLogic final : public Component
+	class DartLogic final : public SubjectComponent
 	{
 	public:
 		void Update() override;

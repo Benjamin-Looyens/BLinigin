@@ -41,21 +41,31 @@ void dae::EnemyLogic::SetLocation(glm::vec2 pos)
 	m_pParent->SetLocalTranslation(pos);
 }
 
-void dae::EnemyLogic::GetHit()
+bool dae::EnemyLogic::GetHit()
 {
 	// TODO : Implement more logic for get hit
 	if (--m_Health <= 0) {
-		if (m_pState != nullptr && dynamic_cast<EnemyKamikazeState*>(m_pState.get())) NotifyObservers(Event::BOSS_DIED_KAMIKAZE);
-		else NotifyObservers(Event::BOSS_DIED_FORMATION);
+		if (m_pState != nullptr && dynamic_cast<EnemyKamikazeState*>(m_pState.get())) {
+			NotifyObservers(Event::BOSS_DIED_KAMIKAZE);
+			m_ReturnDeath = m_KamikazeDeath;
+		}
+		else {
+			NotifyObservers(Event::BOSS_DIED_FORMATION);
+			m_ReturnDeath = m_NormalDeath;
+		}
 
 		SetState(std::make_unique<dae::EnemyDeathState>());
 
 		m_TookDamage = true;
 		m_pParent->GetComponent<dae::AnimatedTextureComponent>()->StopAnimating();
+
+		return true; // Died, thus return true
 	}
 	else {
 		m_pParent->GetComponent<dae::AnimatedTextureComponent>()->NextLayer();
 	}
+
+	return false; // Is still alive, return false
 }
 
 void dae::EnemyLogic::Die()

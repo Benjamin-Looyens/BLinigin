@@ -7,6 +7,9 @@
 #include "Font.h"
 #include "ResourceManager.h"
 #include <SDL_ttf.h>
+#include <algorithm>
+#include "GameObject.h"
+#include "DartLogic.h"
 
 dae::PlayerLogic::PlayerLogic(GameObject* pParent)
 	: Component(pParent)
@@ -19,6 +22,7 @@ void dae::PlayerLogic::Update()
 void dae::PlayerLogic::LateUpdate()
 {
 	// TODO : Remove destroyed darts
+	//m_pDarts.erase(std::remove_if(begin(m_pDarts), end(m_pDarts), [](const GameObject* pObject) { return (pObject == nullptr || pObject->IsDestroyed()); }), m_pDarts.end());
 }
 
 void dae::PlayerLogic::Fire()
@@ -27,7 +31,16 @@ void dae::PlayerLogic::Fire()
 	
 	auto pDart = dart.AddToScene(m_pParent->GetContainingScene());
 
-	m_pDarts.push_back(pDart);
+	//m_pDarts.push_back(pDart);
+	
+	// TODO : rework the observer assignment here to be less coupled
+	auto pDartLogic = pDart->GetComponent<dae::DartLogic>();
+	if (pDartLogic) {
+		auto pScore = m_pParent->GetComponent<dae::ScoreComponent>();
+		if (pScore) {
+			pDartLogic->AddObserver(pScore);
+		}
+	}
 
 	auto& soundSys = ServiceLocator::GetSoundSystem();
 	soundSys.PlaySound(13, 0.3f);
@@ -131,6 +144,8 @@ void dae::ScoreComponent::Render() const
 
 void dae::ScoreComponent::OnNotify(const ISubject*, Event event)
 {
+
+
 	switch (event) {
 	case Event::BEE_DIED_FORMATION:
 		AddPoints(50);

@@ -48,7 +48,7 @@ namespace dae
 		void PrintComponents() const; // for debug
 
 		void Destroy() { m_Destroyed = true; };
-		bool IsDestroyed() { return m_Destroyed; };
+		bool IsDestroyed() const { return m_Destroyed; };
 
 		void SetUseParentWorld(const bool newUse) { m_UseParentWorld = newUse; };
 

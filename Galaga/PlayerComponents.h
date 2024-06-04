@@ -24,6 +24,7 @@ namespace dae {
 
 	private:
 		std::vector<GameObject*> m_pDarts;
+		bool m_DartDestroyedThisFrame;
 	};
 
 	class LivesComponent final : public ObservingComponent

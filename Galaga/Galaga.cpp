@@ -82,8 +82,8 @@ void load()
 	soundSys.PlaySound(1, 0.2f);
 
 	std::vector<dae::IObserver*> enemyObservers;
-	enemyObservers.push_back(pPlayerOneObject->GetComponent<dae::ScoreComponent>());
-	enemyObservers.push_back(pPlayerTwoObject->GetComponent<dae::ScoreComponent>());
+	//enemyObservers.push_back(pPlayerOneObject->GetComponent<dae::ScoreComponent>());
+	//enemyObservers.push_back(pPlayerTwoObject->GetComponent<dae::ScoreComponent>());
 
 	dae::StageManager stageManager{ enemyObservers };
 	stageManager.AddToScene(&scene);
