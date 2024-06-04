@@ -2,9 +2,7 @@
 #include "Singleton.h"
 #include <vector>
 #include <memory>
-//#include <utility>
 #include "Command.h"
-//#include "DerivedCommands.h"
 #include "Gamepad.h"
 #include <glm/vec2.hpp>
 

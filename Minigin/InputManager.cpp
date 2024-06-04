@@ -62,7 +62,7 @@ bool dae::InputManager::ProcessInput()
             return false;
 			break;
 		case SDL_KEYDOWN:
-            HandleKeyboardInput(InputState::PRESSED_THIS_FRAME, e);
+            if (e.key.repeat == 0) HandleKeyboardInput(InputState::PRESSED_THIS_FRAME, e);
 			break;
 		case SDL_KEYUP:
             HandleKeyboardInput(InputState::RELEASED_THIS_FRAME, e);

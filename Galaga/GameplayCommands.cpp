@@ -8,7 +8,7 @@ dae::FireCommand::FireCommand(dae::GameObject* pGameObject)
 void dae::FireCommand::Execute()
 {
 	auto pGameObject = GetGameObject();
-	auto pPlayerLogic = pGameObject->GetComponent<dae::PlayerLogic>();
+	auto pPlayerLogic = pGameObject->GetComponent<dae::PlayerLogic>(); // TODO : Store pPlayerLogic rather than getting it every command call
 
 	if (pPlayerLogic) pPlayerLogic->Fire();
 }
