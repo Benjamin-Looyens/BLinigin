@@ -29,6 +29,8 @@ namespace dae
 		InputState inputState = InputState::HELD;
 	};
 
+	// TODO : Potentially a wrapper class that handles input which itself handles whether it gets it from a controller or not
+
 	template<typename CommandType>
 	concept DerivedCommand = requires(CommandType command) { std::derived_from<CommandType, Command>; };
 

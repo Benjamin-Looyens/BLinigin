@@ -11,7 +11,7 @@ namespace dae {
 	class EnemyLogic final : public SubjectComponent
 	{
 	public:
-		EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed);
+		EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health = 1);
 		void Update() override;
 		void LateUpdate() override;
 		
@@ -36,7 +36,7 @@ namespace dae {
 
 		bool m_TookDamage = false;
 
-		int m_Health{ 1 };
+		int m_Health;
 
 		EnemyDeath m_DeathAnim{ };
 	};

@@ -122,6 +122,6 @@ namespace dae {
 
 	private:
 		float m_ElapsedTime{};
-		constexpr static float DEATH_TIMER{ 1.0f };
+		constexpr static float DEATH_TIMER{ 0.0f };
 	};
 }

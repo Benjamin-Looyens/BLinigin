@@ -105,14 +105,16 @@ void dae::TextureComponent::SetTexture(const std::string& filename)
 }
 #pragma endregion TextureComponent
 
-dae::AnimatedTextureComponent::AnimatedTextureComponent(dae::GameObject* pParent, const std::string& fileName, int numFrames, float fps)
-	: dae::TextureComponent(pParent, fileName), m_NumFrames{ numFrames }, m_FPS{ fps }
+dae::AnimatedTextureComponent::AnimatedTextureComponent(dae::GameObject* pParent, const std::string& fileName, int numFrames, float fps, int numLayers)
+	: dae::TextureComponent(pParent, fileName), m_NumFrames{ numFrames }, m_FPS{ fps }, m_NumLayers{ numLayers }
 {
-	m_FrameWidthHeight = { GetTextureSize().x / numFrames, GetTextureSize().y };
+	m_FrameWidthHeight = { GetTextureSize().x / numFrames, GetTextureSize().y / numLayers };
 }
 
 void dae::AnimatedTextureComponent::Update()
 {
+	if (!m_DoAnimation) return;
+
 	float deltaTime = Timer::GetInstance().GetDeltaTime();
 
 	m_ElapsedTime += deltaTime;
@@ -131,7 +133,7 @@ void dae::AnimatedTextureComponent::Render() const
 	const auto& scale = transform.GetScale();
 	const auto& iPos = static_cast<glm::ivec2>(pos);
 
-	SDL_Rect srcRect = { m_CurFrame * m_FrameWidthHeight.x, 0, m_FrameWidthHeight.x, m_FrameWidthHeight.y };
+	SDL_Rect srcRect = { m_CurFrame * m_FrameWidthHeight.x, m_CurLayer * m_FrameWidthHeight.y, m_FrameWidthHeight.x, m_FrameWidthHeight.y };
 	SDL_Rect dstRect = { iPos.x, iPos.y,
 						 static_cast<int>(m_FrameWidthHeight.x * scale.x), static_cast<int>(m_FrameWidthHeight.y * scale.y) };
 
@@ -141,7 +143,7 @@ void dae::AnimatedTextureComponent::Render() const
 glm::vec2 dae::AnimatedTextureComponent::GetAppliedTextureSize() const
 {
 	glm::vec2 fullSize = GetTextureSize();
-	glm::vec2 appliedSize = { fullSize.x / m_NumFrames, fullSize.y };
+	glm::vec2 appliedSize = { fullSize.x / m_NumFrames, fullSize.y / m_NumLayers };
 
 	return appliedSize;
 }
@@ -149,6 +151,11 @@ glm::vec2 dae::AnimatedTextureComponent::GetAppliedTextureSize() const
 float dae::AnimatedTextureComponent::GetTimeForLoop() const
 {
 	return (static_cast<float>(m_NumFrames) / m_FPS) * static_cast<float>(m_NumFrames);
+}
+
+void dae::AnimatedTextureComponent::NextLayer()
+{
+	m_CurLayer = (m_CurLayer + 1) % m_NumLayers;
 }
 
 

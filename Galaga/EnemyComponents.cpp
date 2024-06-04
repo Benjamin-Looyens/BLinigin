@@ -8,8 +8,8 @@
 
 #include "TEMP_PlayerGlobal.h"
 
-dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed)
-	: SubjectComponent(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }
+dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health)
+	: SubjectComponent(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }, m_Health{ health }
 {
 	m_pSwitchState = std::make_unique<EnemySpawnInState>();
 }
@@ -44,14 +44,18 @@ void dae::EnemyLogic::SetLocation(glm::vec2 pos)
 void dae::EnemyLogic::GetHit()
 {
 	// TODO : Implement more logic for get hit
-	if (--m_Health >= 0) {
+	if (--m_Health <= 0) {
 		if (dynamic_cast<EnemyKamikazeState*>(m_pState.get())) NotifyObservers(Event::BOSS_DIED_KAMIKAZE);
 		else NotifyObservers(Event::BOSS_DIED_FORMATION);
 
 		SetState(std::make_unique<dae::EnemyDeathState>());
-	}
 
-	m_TookDamage = true;
+		m_TookDamage = true;
+		m_pParent->GetComponent<dae::AnimatedTextureComponent>()->StopAnimating();
+	}
+	else {
+		m_pParent->GetComponent<dae::AnimatedTextureComponent>()->NextLayer();
+	}
 }
 
 void dae::EnemyLogic::Die()

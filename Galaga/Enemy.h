@@ -16,8 +16,8 @@ namespace dae {
 	class Enemy : public Prefab
 	{
 	public:
-		Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed, std::vector<IObserver*>& observers);
-		Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed, std::vector<IObserver*>& observers);
+		Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed, std::vector<IObserver*>& observers, float& animFPS, int& animFrames, int& health);
+		Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed, std::vector<IObserver*>& observers, float&& animFPS, int&& animFrames, int&& health);
 
 		virtual GameObject* AddToScene(Scene* pSceneToAddTo) override;
 
@@ -32,6 +32,10 @@ namespace dae {
 		float m_SpawnMovSpeed;
 		float m_PatrolMovSpeed;
 		std::vector<IObserver*> m_Observers; 
+
+		float m_AnimFPS;
+		int m_AnimFrames;
+		int m_Health;
 	};
 }
 
