@@ -35,3 +35,31 @@ dae::ObservingComponent::ObservingComponent(GameObject* pParent)
 	: Component(pParent)
 {}
 #pragma endregion ObservingComponent
+
+#pragma region ObservingSubjectComponent
+dae::ObservingSubjectComponent::ObservingSubjectComponent(GameObject* pParent)
+	: Component(pParent)
+{}
+
+void dae::ObservingSubjectComponent::AddObserver(IObserver* pObserverToAdd)
+{
+	m_pObservers.push_back(pObserverToAdd);
+}
+
+void dae::ObservingSubjectComponent::RemoveObserver(IObserver* pObserverToRemove)
+{
+	m_pObservers.erase(std::remove(m_pObservers.begin(), m_pObservers.end(), pObserverToRemove), m_pObservers.end());
+}
+
+void dae::ObservingSubjectComponent::NotifyObservers(Event& eventToNotify)
+{
+	for (auto& pObserver : m_pObservers)
+		pObserver->OnNotify(dynamic_cast<ISubject*>(this), eventToNotify);
+}
+
+void dae::ObservingSubjectComponent::NotifyObservers(Event&& eventToNotify)
+{
+	for (auto& pObserver : m_pObservers)
+		pObserver->OnNotify(dynamic_cast<ISubject*>(this), eventToNotify);
+}
+#pragma endregion ObservingSubjectComponent

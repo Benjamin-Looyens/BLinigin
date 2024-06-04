@@ -22,6 +22,7 @@
 #include "ServiceLocator.h"
 #include "Enemy.h"
 #include "PlayerComponents.h"
+#include "StageManager.h"
 
 #include "TEMP_PlayerGlobal.h"
 
@@ -84,8 +85,8 @@ void load()
 	enemyObservers.push_back(pPlayerOneObject->GetComponent<dae::ScoreComponent>());
 	enemyObservers.push_back(pPlayerTwoObject->GetComponent<dae::ScoreComponent>());
 
-	dae::Enemy boss{ glm::vec2{}, "Boss.png", 350.0f, 50.0f, enemyObservers, 3.0f, 2, 2 };
-	boss.AddToScene(&scene);
+	dae::StageManager stageManager{ enemyObservers };
+	stageManager.AddToScene(&scene);
 
 	// TEMP
 	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);

@@ -21,10 +21,14 @@ namespace dae {
 
 		virtual GameObject* AddToScene(Scene* pSceneToAddTo) override;
 
-		Enemy(const Enemy& other) = delete;
-		Enemy(const Enemy&& other) = delete;
-		Enemy& operator=(const Enemy& other) = delete;
-		Enemy& operator=(const Enemy&& other) = delete;
+		void SetObservers(std::vector<IObserver*> newObservers) { m_Observers = newObservers; };
+		std::vector<IObserver*> GetObservers() const { return m_Observers; };
+
+		// TODO : Verify rule of 5 here & in base class
+		//Enemy(const Enemy& other) = delete;
+		//Enemy(const Enemy&& other) = delete;
+		//Enemy& operator=(const Enemy& other) = delete;
+		//Enemy& operator=(const Enemy&& other) = delete;
 
 	private:
 		glm::vec2 m_StartPos;

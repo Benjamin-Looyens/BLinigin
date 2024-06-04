@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Player\Dart">
       <UniqueIdentifier>{b19fb360-f21d-4276-8faf-3d9b976ff9be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Enemy\Stages">
+      <UniqueIdentifier>{b48ca20d-c917-4cc5-ad15-ffc9029e1a22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Galaga.cpp">
@@ -66,15 +69,18 @@
     <ClCompile Include="EnemyDeath.cpp">
       <Filter>Source Files\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>Source Files\Enemy\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="StageComponents.cpp">
+      <Filter>Source Files\Enemy\Stages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DerivedCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DerivedComponents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DerivedEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EnemyComponents.h">
@@ -103,6 +109,15 @@
     </ClInclude>
     <ClInclude Include="EnemyDeath.h">
       <Filter>Source Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="StageManager.h">
+      <Filter>Source Files\Enemy\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="DerivedEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StageComponents.h">
+      <Filter>Source Files\Enemy\Stages</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

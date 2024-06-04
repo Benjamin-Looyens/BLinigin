@@ -37,4 +37,24 @@ namespace dae {
 		ObservingComponent& operator=(const ObservingComponent& other) = delete;
 		ObservingComponent& operator=(const ObservingComponent&& other) = delete;
 	};
+
+	class ObservingSubjectComponent : public Component, public IObserver, public ISubject
+	{
+	public:
+		ObservingSubjectComponent(GameObject* pParent);
+		virtual ~ObservingSubjectComponent() = default;
+
+		ObservingSubjectComponent(const ObservingSubjectComponent& other) = delete;
+		ObservingSubjectComponent(const ObservingSubjectComponent&& other) = delete;
+		ObservingSubjectComponent& operator=(const ObservingSubjectComponent& other) = delete;
+		ObservingSubjectComponent& operator=(const ObservingSubjectComponent&& other) = delete;
+
+		void AddObserver(IObserver* pObserverToAdd) override;
+		void RemoveObserver(IObserver* pObserverToRemove) override;
+		void NotifyObservers(Event& eventToNotify) override;
+		void NotifyObservers(Event&& eventToNotify) override;
+
+	private:
+		std::vector<IObserver*> m_pObservers;
+	};
 }

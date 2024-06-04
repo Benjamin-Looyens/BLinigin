@@ -17,7 +17,7 @@ dae::Enemy::Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& sp
 dae::GameObject* dae::Enemy::AddToScene(Scene* pSceneToAddTo)
 {
 	auto pEnemy = pSceneToAddTo->AddGameObject();
-	auto pTextureComp = pEnemy->AddComponent<dae::AnimatedTextureComponent>(m_SpriteLocation, m_AnimFrames, m_AnimFPS, m_Health); // pPlayer->AddComponent<dae::AnimatedTextureComponent>(m_PlayerSpriteLocation, 2, 5.0f);
+	auto pTextureComp = pEnemy->AddComponent<dae::AnimatedTextureComponent>(m_SpriteLocation, m_AnimFrames, m_AnimFPS, m_Health);
 	auto pLogic = pEnemy->AddComponent<dae::EnemyLogic>(m_SpawnMovSpeed, m_PatrolMovSpeed, m_Health);
 	pEnemy->AddComponent<dae::CollisionComponent>(pTextureComp->GetAppliedTextureSize());
 

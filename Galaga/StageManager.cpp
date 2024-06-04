@@ -1,0 +1,21 @@
+#include "StageManager.h"
+#include "GameObject.h"
+#include "Scene.h"
+#include "DerivedComponents.h"
+#include "StageComponents.h"
+
+dae::StageManager::StageManager(std::vector<IObserver*>& enemyObservers)
+{
+    m_EnemyObservers = enemyObservers;
+}
+
+dae::GameObject* dae::StageManager::AddToScene(dae::Scene* pSceneToAddTo)
+{
+    auto pStageManagerObject = pSceneToAddTo->AddGameObject();
+    pStageManagerObject->AddComponent<dae::StageManagerLogic>(  dae::Enemy{ glm::vec2{}, "Boss.png", 350.0f, 50.0f, m_EnemyObservers, 3.0f, 2, 2 }, 
+                                                                dae::Enemy{ glm::vec2{}, "Butterfly.png", 300.0f, 50.0f, m_EnemyObservers, 3.0f, 2, 1 },
+                                                                dae::Enemy{ glm::vec2{}, "Bee.png", 250.0f, 50.0f, m_EnemyObservers, 3.0f, 2, 1 });
+    
+
+    return pStageManagerObject;
+}

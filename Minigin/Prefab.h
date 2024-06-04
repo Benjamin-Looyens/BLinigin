@@ -11,10 +11,11 @@ namespace dae {
 		virtual GameObject* AddToScene(Scene* pSceneToAddTo) = 0;
 
 		Prefab() = default;
-
-		Prefab(const Prefab& other) = delete;
-		Prefab(const Prefab&& other) = delete;
-		Prefab& operator=(const Prefab& other) = delete;
-		Prefab& operator=(const Prefab&& other) = delete;
+		
+		// TODO : Verify rule of 5 here
+		//Prefab(const Prefab& other) = delete;
+		//Prefab(const Prefab&& other) = delete;
+		//Prefab& operator=(const Prefab& other) = delete;
+		//Prefab& operator=(const Prefab&& other) = delete;
 	};
 }
