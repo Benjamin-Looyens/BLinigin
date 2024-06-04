@@ -22,12 +22,16 @@ namespace dae {
 		dae::Enemy m_ButterflyEnemy;
 
 		int m_CurrentStage{};
+		int m_NumFormations{ 3 };
+
 		int m_NumberEnemies{};
 
 		float m_TimeBetweenStages{ 1.0f };
 		float m_ElapsedTime{};
 
 		bool m_StageActive = false; // TODO : Implement state pattern here
+
+		std::vector<std::unique_ptr<glm::vec2>> m_FormationPositions;
 
 		void NextStage();
 	};

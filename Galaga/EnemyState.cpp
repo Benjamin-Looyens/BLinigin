@@ -188,3 +188,22 @@ void dae::EnemyDeathState::OnExit(EnemyLogic&)
 
     // TODO : Play death explosion & sound effect
 }
+
+void dae::EnemyReturnToPatrolState::Update(EnemyLogic& enemy)
+{
+    enemy;
+}
+
+void dae::EnemyReturnToPatrolState::OnEnter(EnemyLogic&)
+{
+#ifndef NDEBUG
+    std::cout << "ReturnToPatrol State Entering.\n";
+#endif
+}
+
+void dae::EnemyReturnToPatrolState::OnExit(EnemyLogic&)
+{
+#ifndef NDEBUG
+    std::cout << "ReturnToPatrol State Exiting.\n";
+#endif
+}

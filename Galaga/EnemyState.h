@@ -114,6 +114,17 @@ namespace dae {
 		constexpr static float EPSILON{ 5.0f };
 	};
 
+	class EnemyReturnToPatrolState final : public EnemyState
+	{
+	public: 
+		void Update(EnemyLogic& enemy) override;
+		void OnEnter(EnemyLogic& enemy) override;
+		void OnExit(EnemyLogic& enemy) override;
+
+	private:
+
+	};
+
 	class EnemyDeathState final : public EnemyState
 	{
 	public:

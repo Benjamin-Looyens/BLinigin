@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Enemy.h"
 #include "GameObject.h"
+#include <string>
 
 dae::StageManagerLogic::StageManagerLogic(GameObject* pParent, dae::Enemy boss, dae::Enemy butterfly, dae::Enemy bee)
 	: ObservingSubjectComponent(pParent), m_BossEnemy{ boss }, m_ButterflyEnemy{ butterfly }, m_BeeEnemy{ bee }
@@ -56,9 +57,13 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 
 void dae::StageManagerLogic::NextStage()
 {
+	//std::string formationString{ "Formation" + std::to_string((m_CurrentStage + 1) % m_NumFormations) + ".json" };
+
 	std::vector<GameObject*> pEnemies;
 	pEnemies.push_back(m_BossEnemy.AddToScene(m_pParent->GetContainingScene()));
 	pEnemies.push_back(m_ButterflyEnemy.AddToScene(m_pParent->GetContainingScene()));
 	pEnemies.push_back(m_BeeEnemy.AddToScene(m_pParent->GetContainingScene()));
 	m_NumberEnemies = static_cast<int>(pEnemies.size());
+
+	m_CurrentStage = (m_CurrentStage + 1) % m_NumFormations;
 }
