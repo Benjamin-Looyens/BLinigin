@@ -37,19 +37,7 @@ void dae::Scene::LateUpdate()
 		object->LateUpdate();
 	}
 
-	// NOTE : Maybe move removal System to own function most likely
-	//const size_t curSize{ m_pObjects.size() };
-	//
-	//for (size_t index{ }; index < curSize; ++index) {
-	//	const size_t trueIndex{ (curSize - index) - 1 };
-	//	auto& pObject = m_pObjects[trueIndex];
-	//
-	//	if (pObject->IsDestroyed()) {
-	//		std::cout << "Object " << trueIndex << " removed.\n";
-	//		m_pObjects.erase(std::remove(m_pObjects.begin(), m_pObjects.end(), pObject), m_pObjects.end());
-	//	}
-	//}
-
+	// Remove Objects Marked as Destroyed
 	m_pObjects.erase(std::remove_if(begin(m_pObjects), end(m_pObjects), [](const std::unique_ptr<GameObject>& obj) { return obj->IsDestroyed(); }), m_pObjects.end());
 
 	if (!m_pAddedObjects.empty()) {

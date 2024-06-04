@@ -7,6 +7,7 @@
 #include "DerivedComponents.h"
 #include "ObserverComponents.h"
 #include "PlayerComponents.h"
+#include "SceneManager.h"
 
 dae::GameObjectCommand::GameObjectCommand(GameObject* pActor)
 	: m_pGameObject{ pActor }
@@ -20,11 +21,13 @@ dae::MoveCommand::MoveCommand(GameObject* pGameObject, glm::vec2 movDirection, f
 void dae::MoveCommand::Execute()
 {
 	auto pGameObject = GetGameObject();
+	
+	if (SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene())) {
+		auto pos = pGameObject->GetLocalPosition();
+		pos += (m_MoveDirection * m_SpawnSpeed) * dae::Timer::GetInstance().GetDeltaTime();
 
-	auto pos = pGameObject->GetLocalPosition();
-	pos += (m_MoveDirection * m_SpawnSpeed) * dae::Timer::GetInstance().GetDeltaTime();
-
-	pGameObject->SetLocalTranslation(pos);
+		pGameObject->SetLocalTranslation(pos);
+	}
 }
 #pragma endregion MoveCommand
 
