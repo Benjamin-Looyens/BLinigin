@@ -7,11 +7,21 @@ void dae::SDL_SoundSystem::PlaySound(const sound_id id, const float volume)
 	std::cout << "Adding sound [" << id << "] to queue...\n";
 #endif 
 	std::lock_guard<std::mutex> lock{ m_SoundSysMutex };
-	m_SoundQueue.push({ id, volume });
+	m_SoundQueue.push({ id, volume, true });
 	m_SoundAddedCondition.notify_one();
 }
 
-bool dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfExists) // TODO: Add result to LoadSound as a bool, so I can stop checking if it exists manually
+void dae::SDL_SoundSystem::LoadSound(const sound_id id)
+{
+#ifndef NDEBUG
+	std::cout << "Adding sound [" << id << "] to queue...\n";
+#endif 
+	std::lock_guard<std::mutex> lock{ m_SoundSysMutex };
+	m_SoundQueue.push({ id, 0.0f, false });
+	m_SoundAddedCondition.notify_one();
+}
+
+bool dae::SDL_SoundSystem::InitSound(const sound_id id, const bool overwriteIfExists) // TODO: Add result to LoadSound as a bool, so I can stop checking if it exists manually
 {
 	auto sound = m_LoadedSounds[id];
 
@@ -27,7 +37,7 @@ bool dae::SDL_SoundSystem::LoadSound(const sound_id id, const bool overwriteIfEx
 			Mix_FreeChunk(m_LoadedSounds[id]);
 			m_LoadedSounds.erase(id);
 
-			return LoadSound(id);
+			return InitSound(id);
 		}
 		else std::cout << "\n";
 	}
@@ -78,16 +88,17 @@ void dae::SDL_SoundSystem::PlaySoundFromQueue()
 		
 		lock.unlock();
 		
-		sound_id id{ nextSound.first };
-		float volume{ nextSound.second };
+		sound_id id{ std::get<sound_id>(nextSound) };
+		float volume{ std::get<float>(nextSound) };
+		bool play{ std::get<bool>(nextSound) };
 		auto sound = m_LoadedSounds[id];
-
+		
 		// See if sound is loaded
 		if (!sound) {
-			if (LoadSound(id)) sound = m_LoadedSounds[id]; // reload now that it *is* loaded
+			if (InitSound(id)) sound = m_LoadedSounds[id]; // reload now that it *is* loaded
 		}
 
-		if (sound) {
+		if (sound && play) {
 #ifndef NDEBUG
 			std::cout << "Playing sound [" << id << "] at volume " << volume * 100 << "...\n";
 #endif 
