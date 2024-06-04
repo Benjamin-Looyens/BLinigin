@@ -82,5 +82,6 @@ namespace dae
 		void HandleMouseInput(InputState state, SDL_Event& e);
 		void HandleKeyboardInput(InputState state, SDL_Event& e);
 	};
-
 }
+
+#define BL_INPUT dae::InputManager::GetInstance()

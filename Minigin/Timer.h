@@ -32,3 +32,5 @@ namespace dae {
 		std::deque<float> m_DeltaTimeDeque{};
 	};
 }
+
+#define BL_TIMER dae::Timer::GetInstance()

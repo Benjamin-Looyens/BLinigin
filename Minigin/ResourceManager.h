@@ -37,3 +37,5 @@ namespace dae
 		std::vector<std::unique_ptr<Font>> m_LoadedFonts;
 	};
 }
+
+#define BL_RESOURCE dae::ResourceManager::GetInstance()
