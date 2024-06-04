@@ -33,6 +33,7 @@ namespace dae
 
 		std::string m_Name;
 		std::vector <std::unique_ptr<GameObject>> m_pObjects{};
+		std::vector <std::unique_ptr<GameObject>> m_pAddedObjects{};
 
 		static unsigned int m_idCounter; 
 	};

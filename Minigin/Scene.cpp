@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include <algorithm>
 
 using namespace dae;
 
@@ -37,16 +38,26 @@ void dae::Scene::LateUpdate()
 	}
 
 	// NOTE : Maybe move removal System to own function most likely
-	const size_t curSize{ m_pObjects.size() };
+	//const size_t curSize{ m_pObjects.size() };
+	//
+	//for (size_t index{ }; index < curSize; ++index) {
+	//	const size_t trueIndex{ (curSize - index) - 1 };
+	//	auto& pObject = m_pObjects[trueIndex];
+	//
+	//	if (pObject->IsDestroyed()) {
+	//		std::cout << "Object " << trueIndex << " removed.\n";
+	//		m_pObjects.erase(std::remove(m_pObjects.begin(), m_pObjects.end(), pObject), m_pObjects.end());
+	//	}
+	//}
 
-	for (size_t index{ }; index < curSize; ++index) {
-		const size_t trueIndex{ (curSize - index) - 1 };
-		auto& pObject = m_pObjects[trueIndex];
+	m_pObjects.erase(std::remove_if(begin(m_pObjects), end(m_pObjects), [](const std::unique_ptr<GameObject>& obj) { return obj->IsDestroyed(); }), m_pObjects.end());
 
-		if (pObject->IsDestroyed()) {
-			std::cout << "Component " << trueIndex << " removed.\n";
-			m_pObjects.erase(std::remove(m_pObjects.begin(), m_pObjects.end(), pObject), m_pObjects.end());
+	if (!m_pAddedObjects.empty()) {
+		for (auto& pObject : m_pAddedObjects) {
+			m_pObjects.push_back(std::move(pObject));
 		}
+
+		m_pAddedObjects.clear();
 	}
 }
 
@@ -60,9 +71,9 @@ void Scene::Render() const
 
 GameObject* dae::Scene::AddGameObject()
 {
-	m_pObjects.push_back(std::make_unique<GameObject>(this));
+	m_pAddedObjects.push_back(std::make_unique<GameObject>(this));
 
-	return m_pObjects[m_pObjects.size() - 1].get();
+	return m_pAddedObjects[m_pAddedObjects.size() - 1].get();
 }
 
 void dae::Scene::RemoveObject(size_t objectIndex)

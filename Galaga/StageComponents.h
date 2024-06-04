@@ -27,7 +27,7 @@ namespace dae {
 		float m_TimeBetweenStages{ 1.0f };
 		float m_ElapsedTime{};
 
-		bool m_StageActive = false;
+		bool m_StageActive = false; // TODO : Implement state pattern here
 
 		void NextStage();
 	};

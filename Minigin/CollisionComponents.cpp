@@ -47,8 +47,8 @@ bool dae::CollisionComponent::DoesOverlap(SDL_FRect rectangle) const
 /// <returns>A vector of GameObject* containing the overlapping objects</returns>
 std::vector<dae::GameObject*> dae::CollisionComponent::GetAllOverlappingObjects()
 {
-	auto pScene = m_pParent->GetContainingScene();
 	std::vector<GameObject*> pOverlappingObjects{};
+	auto pScene = m_pParent->GetContainingScene();
 
 	auto pAllObjects = pScene->GetAllObjects();
 	for (auto& pObject : pAllObjects) {

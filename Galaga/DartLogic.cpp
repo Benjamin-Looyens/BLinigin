@@ -22,7 +22,8 @@ void dae::DartLogic::Update()
 			if (pEnemyLogic) {
 				if (pEnemyLogic->Damaged()) continue;
 				pEnemyLogic->GetHit();
-				m_pParent->Destroy(); 
+				
+				if (m_pParent) m_pParent->Destroy();
 			}
 		}
 	}
@@ -34,6 +35,6 @@ void dae::DartLogic::Update()
 #ifndef NDEBUG
 		std::cout << "Dart Destroyed.\n";
 #endif 
-		m_pParent->Destroy();
+		if (m_pParent) m_pParent->Destroy();
 	}
 }

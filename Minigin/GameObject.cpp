@@ -58,7 +58,7 @@ void dae::GameObject::LateUpdate()
 		
 		if (pComponent->IsRemoved()) {
 #ifndef NDEBUG
-			std::cout << "Component " << trueIndex << " removed.\n";
+			std::cout << "Component [" << trueIndex << "] " << pComponent->GetName() << " removed.\n";
 #endif 
 			m_pComponents.erase(std::remove(m_pComponents.begin(), m_pComponents.end(), pComponent), m_pComponents.end());
 		}

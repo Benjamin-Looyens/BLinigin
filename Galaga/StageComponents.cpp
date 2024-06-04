@@ -44,10 +44,10 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 	case Event::BOSS_DIED_KAMIKAZE:
 		if (dynamic_cast<const dae::EnemyLogic*>(pSubject)) {
 			std::cout << "Enemy died!\n";
-		}
 
-		if (--m_NumberEnemies <= 0) {
-			m_StageActive = false;
+			if (--m_NumberEnemies <= 0) {
+				m_StageActive = false;
+			}
 		}
 
 		break;

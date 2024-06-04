@@ -45,7 +45,7 @@ void dae::EnemyLogic::GetHit()
 {
 	// TODO : Implement more logic for get hit
 	if (--m_Health <= 0) {
-		if (dynamic_cast<EnemyKamikazeState*>(m_pState.get())) NotifyObservers(Event::BOSS_DIED_KAMIKAZE);
+		if (m_pState != nullptr && dynamic_cast<EnemyKamikazeState*>(m_pState.get())) NotifyObservers(Event::BOSS_DIED_KAMIKAZE);
 		else NotifyObservers(Event::BOSS_DIED_FORMATION);
 
 		SetState(std::make_unique<dae::EnemyDeathState>());
