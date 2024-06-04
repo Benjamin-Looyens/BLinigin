@@ -110,7 +110,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = BL_SCENE_MANAGER;
 	auto& input = BL_INPUT;
 	auto& timer = BL_TIMER;
-	auto& soundSys = ServiceLocator::GetSoundSystem();
+	auto& soundSys = BL_SOUND;
 
 	// Init sound queue
 	auto pSoundThread = std::unique_ptr<std::thread>(soundSys.InitQueue());

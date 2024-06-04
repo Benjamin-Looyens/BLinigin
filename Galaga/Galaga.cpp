@@ -63,7 +63,7 @@ void load()
 	auto pPlayerTwoObject = playerTwo.AddToScene(&scene);
 
 	// Sound
-	auto& soundSys = dae::ServiceLocator::GetSoundSystem();
+	auto& soundSys = BL_SOUND;
 
 	soundSys.LinkIDToFilePath(1,  "../Data/Sound/01. Stage Intro.mp3");
 	soundSys.LinkIDToFilePath(2,  "../Data/Sound/02. Fighter Captured.mp3");

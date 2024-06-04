@@ -42,8 +42,7 @@ void dae::PlayerLogic::Fire()
 		}
 	}
 
-	auto& soundSys = ServiceLocator::GetSoundSystem();
-	soundSys.PlaySound(13, 0.3f);
+	BL_SOUND.PlaySound(13, 0.3f);
 }
 
 #pragma region LivesComponent
