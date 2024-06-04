@@ -83,11 +83,11 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
-	Renderer::GetInstance().Init(g_window);
+	BL_RENDERER.Init(g_window);
 
-	ResourceManager::GetInstance().Init(dataPath);
+	BL_RESOURCE.Init(dataPath);
 
-	Timer::GetInstance().Init();
+	BL_TIMER.Init();
 
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SDL_SoundSystem>());
 	//dae::ServiceLocator::RegisterSoundSystem(nullptr);
@@ -95,7 +95,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 
 dae::Minigin::~Minigin()
 {
-	Renderer::GetInstance().Destroy();
+	BL_RENDERER.Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	Mix_CloseAudio();
@@ -106,10 +106,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 
-	auto& renderer = Renderer::GetInstance();
-	auto& sceneManager = SceneManager::GetInstance();
-	auto& input = InputManager::GetInstance();
-	auto& timer = Timer::GetInstance();
+	auto& renderer = BL_RENDERER;
+	auto& sceneManager = BL_SCENE_MANAGER;
+	auto& input = BL_INPUT;
+	auto& timer = BL_TIMER;
 	auto& soundSys = ServiceLocator::GetSoundSystem();
 
 	// Init sound queue

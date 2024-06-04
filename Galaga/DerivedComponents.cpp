@@ -24,7 +24,7 @@ dae::TextComponent::TextComponent(dae::GameObject* pParent, const std::string& t
 void dae::TextComponent::Update()
 {
 	if (m_NeedsUpdate) {
-		auto& resourceManager = ResourceManager::GetInstance();
+		auto& resourceManager = BL_RESOURCE;
 
 		if (resourceManager.IsTextureLoaded(m_ResourceFile)) resourceManager.UnLoadTexture(m_ResourceFile);
 
@@ -32,7 +32,7 @@ void dae::TextComponent::Update()
 		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), color);
 		if (surf == nullptr) throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 		
-		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
+		auto texture = SDL_CreateTextureFromSurface(BL_RENDERER.GetSDLRenderer(), surf);
 		if (texture == nullptr) throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 
 		SDL_FreeSurface(surf);
@@ -48,7 +48,7 @@ void dae::TextComponent::Render() const
 	if (m_pTextTexture != nullptr)
 	{
 		const auto& pos = m_pParent->GetWorldPosition();
-		Renderer::GetInstance().RenderTexture(*m_pTextTexture, pos.x, pos.y);
+		BL_RENDERER.RenderTexture(*m_pTextTexture, pos.x, pos.y);
 	}
 }
 
@@ -95,13 +95,13 @@ void dae::TextureComponent::Render() const
 	const auto& scaledWidthHeight = static_cast<glm::ivec2>(static_cast<glm::vec2>(widthHeight) * scale); // HACK : holy static_cast 
 	//const auto& iPos = static_cast<glm::ivec2>(pos);
 
-	//Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
-	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, static_cast<float>(scaledWidthHeight.x), static_cast<float>(scaledWidthHeight.y));
+	//BL_RENDERER.RenderTexture(*m_pTexture, pos.x, pos.y);
+	BL_RENDERER.RenderTexture(*m_pTexture, pos.x, pos.y, static_cast<float>(scaledWidthHeight.x), static_cast<float>(scaledWidthHeight.y));
 }
 
 void dae::TextureComponent::SetTexture(const std::string& filename)
 {
-	m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
+	m_pTexture = BL_RESOURCE.LoadTexture(filename);
 }
 #pragma endregion TextureComponent
 
@@ -115,7 +115,7 @@ void dae::AnimatedTextureComponent::Update()
 {
 	if (!m_DoAnimation) return;
 
-	float deltaTime = Timer::GetInstance().GetDeltaTime();
+	float deltaTime = BL_TIMER.GetDeltaTime();
 
 	m_ElapsedTime += deltaTime;
 	const float frameAdvanceTime = static_cast<float>(m_NumFrames) / m_FPS;
@@ -137,7 +137,7 @@ void dae::AnimatedTextureComponent::Render() const
 	SDL_Rect dstRect = { iPos.x, iPos.y,
 						 static_cast<int>(m_FrameWidthHeight.x * scale.x), static_cast<int>(m_FrameWidthHeight.y * scale.y) };
 
-	Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, dstRect);
+	BL_RENDERER.RenderTexture(*m_pTexture, srcRect, dstRect);
 }
 
 glm::vec2 dae::AnimatedTextureComponent::GetAppliedTextureSize() const
@@ -174,11 +174,11 @@ dae::FPSComponent::FPSComponent(dae::GameObject* pParent, float displayUpdateInt
 
 void dae::FPSComponent::Update()
 {
-	m_Counter += Timer::GetInstance().GetDeltaTime();
+	m_Counter += BL_TIMER.GetDeltaTime();
 
 	if (m_pTextLocation && m_Counter >= m_CounterInterval) {
-		//const float fps{ std::clamp(Timer::GetInstance().GetFPS(), 0.0f, g_MaxFPS) }; // Not currently using g_MaxFPS
-		const float fps{ Timer::GetInstance().GetFPS() };
+		//const float fps{ std::clamp(BL_TIMER.GetFPS(), 0.0f, g_MaxFPS) }; // Not currently using g_MaxFPS
+		const float fps{ BL_TIMER.GetFPS() };
 		
 		std::stringstream fpsString;
 		fpsString << std::fixed << std::setprecision(1) << "FPS: " << fps;
@@ -198,7 +198,7 @@ dae::WaveMovementYComponent::WaveMovementYComponent(GameObject* pParent, float w
 
 void dae::WaveMovementYComponent::Update()
 {
-	m_WaveTime += Timer::GetInstance().GetDeltaTime() * m_WaveSpeed;
+	m_WaveTime += BL_TIMER.GetDeltaTime() * m_WaveSpeed;
 
 	m_WaveTime = static_cast<float>(std::fmod(m_WaveTime, M_PI * 2));
 
@@ -239,7 +239,7 @@ dae::FollowMouseComponent::FollowMouseComponent(GameObject* pParent)
 
 void dae::FollowMouseComponent::Update()
 {
-	m_pParent->SetLocalTranslation(InputManager::GetInstance().GetMousePos());
+	m_pParent->SetLocalTranslation(BL_INPUT.GetMousePos());
 }
 
 dae::ConstantMovementComponent::ConstantMovementComponent(GameObject* pParent, float speed, glm::vec2 movDir)
@@ -248,7 +248,7 @@ dae::ConstantMovementComponent::ConstantMovementComponent(GameObject* pParent, f
 
 void dae::ConstantMovementComponent::Update()
 {
-	const float& deltaTime = Timer::GetInstance().GetDeltaTime();
+	const float& deltaTime = BL_TIMER.GetDeltaTime();
 
 	m_pParent->AddLocalTranslation(deltaTime * m_Speed * m_MovDir);
 }
@@ -259,7 +259,7 @@ dae::TimedDestroyComponent::TimedDestroyComponent(GameObject* pParent, float tim
 
 void dae::TimedDestroyComponent::Update()
 {
-	m_ElapsedTime += Timer::GetInstance().GetDeltaTime();
+	m_ElapsedTime += BL_TIMER.GetDeltaTime();
 
 	if (m_ElapsedTime >= m_TimeTillDestroy) m_pParent->Destroy();
 }

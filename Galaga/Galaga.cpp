@@ -32,7 +32,7 @@ void load()
 	int screenHeight;
 	SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight); // HACK : **NEED TO FIND ALTERNATIVE** Window size may not be made if the window is not in focus currently
 
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	auto& scene = BL_SCENE_MANAGER.CreateScene("Demo");
 
 	// Raw Object Initializations
 	auto pBackgroundObject = scene.AddGameObject();

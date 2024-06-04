@@ -30,7 +30,7 @@ void dae::DartLogic::Update()
 		}
 	}
 
-	const float& deltaTime = Timer::GetInstance().GetDeltaTime();
+	const float& deltaTime = BL_TIMER.GetDeltaTime();
 
 	m_ElapsedTime += deltaTime;
 	if (m_ElapsedTime > MAX_LIFETIME) {

@@ -22,9 +22,9 @@ void dae::MoveCommand::Execute()
 {
 	auto pGameObject = GetGameObject();
 	
-	if (SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene())) {
+	if (BL_SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene())) {
 		auto pos = pGameObject->GetLocalPosition();
-		pos += (m_MoveDirection * m_SpawnSpeed) * dae::Timer::GetInstance().GetDeltaTime();
+		pos += (m_MoveDirection * m_SpawnSpeed) * BL_TIMER.GetDeltaTime();
 
 		pGameObject->SetLocalTranslation(pos);
 	}

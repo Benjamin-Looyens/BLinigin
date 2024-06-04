@@ -31,3 +31,4 @@ namespace dae
 	};
 }
 
+#define BL_RENDERER dae::Renderer::GetInstance()

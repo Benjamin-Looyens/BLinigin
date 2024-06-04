@@ -21,10 +21,10 @@ dae::StageManagerLogic::StageManagerLogic(GameObject* pParent, dae::Enemy boss, 
 
 void dae::StageManagerLogic::Update()
 {
-	//float deltaTime = Timer::GetInstance().GetDeltaTime();
+	//float deltaTime = BL_TIMER.GetDeltaTime();
 	
 	if (!m_StageActive) {
-		m_ElapsedTime += Timer::GetInstance().GetDeltaTime();
+		m_ElapsedTime += BL_TIMER.GetDeltaTime();
 
 		if (m_ElapsedTime >= m_TimeBetweenStages) {
 			m_StageActive = true;

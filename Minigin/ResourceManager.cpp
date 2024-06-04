@@ -24,7 +24,7 @@ dae::Texture2D* dae::ResourceManager::LoadTexture(const std::string& file)
 
 	if (loadedTexture) return loadedTexture;
 	else {
-		auto sdlTexture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+		auto sdlTexture = IMG_LoadTexture(BL_RENDERER.GetSDLRenderer(), fullPath.c_str());
 
 		if (sdlTexture == nullptr) throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 		

@@ -75,7 +75,7 @@ void dae::LivesComponent::Render() const
 	};
 
 	for (int index{ }; index < m_NumLives; ++index) {
-		Renderer::GetInstance().RenderTexture(*m_pLifeTexture, m_DisplayPos.x + (offset.x * static_cast<float>(index) * m_LivesStackDir.x),
+		BL_RENDERER.RenderTexture(*m_pLifeTexture, m_DisplayPos.x + (offset.x * static_cast<float>(index) * m_LivesStackDir.x),
 			m_DisplayPos.y + (offset.y * static_cast<float>(index) * m_LivesStackDir.y),
 			static_cast<float>(widthHeight.x), static_cast<float>(widthHeight.y));
 	}
@@ -118,7 +118,7 @@ void dae::ScoreComponent::Update()
 {
 	// TODO : Use Text Component instead but ughfnhghng
 	if (m_TextDirty) {
-		auto& resourceManager = ResourceManager::GetInstance();
+		auto& resourceManager = BL_RESOURCE;
 
 		if (resourceManager.IsTextureLoaded(m_ResourceFileStr)) resourceManager.UnLoadTexture(m_ResourceFileStr);
 
@@ -128,7 +128,7 @@ void dae::ScoreComponent::Update()
 		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), text.c_str(), color);
 		if (surf == nullptr) throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 
-		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
+		auto texture = SDL_CreateTextureFromSurface(BL_RENDERER.GetSDLRenderer(), surf);
 		if (texture == nullptr) throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 
 		SDL_FreeSurface(surf);
@@ -139,7 +139,7 @@ void dae::ScoreComponent::Update()
 
 void dae::ScoreComponent::Render() const
 {
-	if (m_pTextTexture != nullptr) Renderer::GetInstance().RenderTexture(*m_pTextTexture, m_DisplayPos.x, m_DisplayPos.y);
+	if (m_pTextTexture != nullptr) BL_RENDERER.RenderTexture(*m_pTextTexture, m_DisplayPos.x, m_DisplayPos.y);
 }
 
 void dae::ScoreComponent::OnNotify(const ISubject*, Event event)

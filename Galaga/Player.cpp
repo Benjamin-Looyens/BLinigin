@@ -49,7 +49,7 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 	else				pLivesComp = pPlayer->AddComponent<dae::LivesComponent>(m_StartingLives, m_LivesCounterPos, glm::vec2{ 1, 0 });
 
 	// Score Counter
-	auto pFont = dae::ResourceManager::GetInstance().LoadFont("Emulogic.ttf", 25);
+	auto pFont = BL_RESOURCE.LoadFont("Emulogic.ttf", 25);
 	auto pScoreComp = pPlayer->AddComponent<dae::ScoreComponent>(m_ScoreCounterPos, pFont, std::string{ "playerScore" + std::to_string(m_PlayerIndex) });
 
 	// Observers
@@ -58,7 +58,7 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 	pSubject->AddObserver(pLivesComp);
 
 	// Input
-	auto& input = InputManager::GetInstance();
+	auto& input = BL_INPUT;
 
 	switch (m_UseController) {
 	case true:

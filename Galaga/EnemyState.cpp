@@ -35,7 +35,7 @@ dae::EnemySpawnInState::EnemySpawnInState(std::vector<glm::vec2> path, glm::vec2
 
 void dae::EnemySpawnInState::Update(EnemyLogic& enemy)
 {
-    float deltaTime = Timer::GetInstance().GetDeltaTime();
+    float deltaTime = BL_TIMER.GetDeltaTime();
     glm::vec2 curLocation = enemy.GetLocation();
 
     glm::vec2 dir{ m_Path[m_CurrentWayPoint] - curLocation };
@@ -65,7 +65,7 @@ void dae::EnemySpawnInState::OnExit(EnemyLogic&)
 
 void dae::EnemyPatrolState::Update(EnemyLogic& enemy)
 {
-    const float deltaTime = Timer::GetInstance().GetDeltaTime();
+    const float deltaTime = BL_TIMER.GetDeltaTime();
     const glm::vec2 curLocation = enemy.GetLocation();
 
     if (curLocation.x >= m_MaxPos.x || curLocation.x <= m_MinPos.x) m_CurDirection *= -1.0f;
@@ -107,7 +107,7 @@ void dae::EnemyPatrolState::OnExit(EnemyLogic&)
 
 void dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
 {
-    float deltaTime = Timer::GetInstance().GetDeltaTime();
+    float deltaTime = BL_TIMER.GetDeltaTime();
     glm::vec2 curLocation = enemy.GetLocation();
     
     glm::vec2 dir{};
@@ -166,7 +166,7 @@ void dae::EnemyKamikazeState::OnExit(EnemyLogic&)
 
 void dae::EnemyDeathState::Update(EnemyLogic& enemy)
 {
-    m_ElapsedTime += Timer::GetInstance().GetDeltaTime();
+    m_ElapsedTime += BL_TIMER.GetDeltaTime();
 
     if (m_ElapsedTime > DEATH_TIMER) {
         enemy.Die();
