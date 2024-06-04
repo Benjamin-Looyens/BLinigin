@@ -119,8 +119,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	float lag{ };
 
 	while (doContinue) {
-		const auto currentTime{ std::chrono::high_resolution_clock::now() };
-		//const auto& prevTime{ timer.GetPrevFrame() };
 		const float deltaTime{ std::clamp(timer.GetDeltaTime(), 0.0f, 1.0f) }; // clamp to max 1.0f in case lag spike
 		const float fixedTimeStep{ timer.GetFixedTimeStep() };
 

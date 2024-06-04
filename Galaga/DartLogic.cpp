@@ -26,6 +26,7 @@ void dae::DartLogic::Update()
 				NotifyObservers(pEnemyLogic->GetDeathEvent());
 				
 				if (m_pParent) m_pParent->Destroy();
+				break;
 			}
 		}
 	}
