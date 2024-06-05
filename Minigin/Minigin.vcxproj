@@ -219,6 +219,7 @@
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SoundSystem_Impl.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TextureComponents.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
@@ -244,6 +245,7 @@
     <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="SoundSystem_Impl.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="TextureComponents.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>

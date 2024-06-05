@@ -6,6 +6,7 @@
 #include "CollisionComponents.h"
 #include "Observer.h"
 #include "ServiceLocator.h"
+#include "TextureComponents.h"
 
 dae::Enemy::Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed, std::vector<IObserver*>& observers, float& animFPS, int& animFrames, int& health, sound_id& damageSoundID, sound_id& deathSoundID)
 	: m_StartPos{ startPos }, m_SpriteLocation{ spriteLocation }, m_SpawnMovSpeed{ spawnMovSpeed }, m_PatrolMovSpeed{ patrolSpeed }, m_Observers{ observers }, 

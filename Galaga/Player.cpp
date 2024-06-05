@@ -10,6 +10,7 @@
 #include "CollisionComponents.h"
 #include "PlayerComponents.h"
 #include "GameplayCommands.h"
+#include "TextureComponents.h"
 
 dae::Player::Player(glm::vec2& playerStartPos, glm::vec2& livesCounterPos, glm::vec2& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController)
 	: m_PlayerStartPos{ playerStartPos }, m_LivesCounterPos{ livesCounterPos }, m_ScoreCounterPos{ scoreCounterPos },

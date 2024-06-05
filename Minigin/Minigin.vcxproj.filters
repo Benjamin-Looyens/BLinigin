@@ -128,6 +128,9 @@
     <ClInclude Include="Prefab.h">
       <Filter>Classes To Derive From</Filter>
     </ClInclude>
+    <ClInclude Include="TextureComponents.h">
+      <Filter>Engine Included Derived Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Minigin.cpp">
@@ -197,6 +200,9 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="CollisionComponents.cpp">
+      <Filter>Engine Included Derived Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponents.cpp">
       <Filter>Engine Included Derived Classes</Filter>
     </ClCompile>
   </ItemGroup>

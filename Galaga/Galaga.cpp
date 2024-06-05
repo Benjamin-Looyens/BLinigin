@@ -23,6 +23,7 @@
 #include "Enemy.h"
 #include "PlayerComponents.h"
 #include "StageManager.h"
+#include "TextureComponents.h"
 
 #include "TEMP_PlayerGlobal.h"
 
@@ -32,8 +33,9 @@ void load()
 	int screenHeight;
 	SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight); // HACK : **NEED TO FIND ALTERNATIVE** Window size may not be made if the window is not in focus currently
 
-	auto& scene = BL_SCENE_MANAGER.CreateScene("Demo");
-	auto& sceneObjectTest = BL_SCENE_MANAGER.CreateScene("ObjectScaleTest");
+	//auto& title   = BL_SCENE_MANAGER.CreateScene("Title");
+	auto& scene	  = BL_SCENE_MANAGER.CreateScene("Galaga");
+	//auto& results = BL_SCENE_MANAGER.CreateScene("Results");
 
 	// Raw Object Initializations
 	auto pBackgroundObject = scene.AddGameObject();
@@ -51,6 +53,7 @@ void load()
 	pBackgroundTileBR->AddComponent<dae::TextureComponent>("GalagaBackground.png");
 	pBackgroundTileBR->SetLocalTranslation(pTextureCompR->GetTextureWidth(), pTextureCompR->GetTextureHeight());
 
+	// TODO : Make better background tiling system
 	pBackgroundObject->AddChild(pBackgroundTileR);
 	pBackgroundObject->AddChild(pBackgroundTileB);
 	pBackgroundObject->AddChild(pBackgroundTileBR);
@@ -98,25 +101,6 @@ void load()
 	dae::PlayerLocator::RegisterPlayer(pPlayerTwoObject);
 
 	pPlayerOneObject->PrintComponents();
-
-	BL_SCENE_MANAGER.SetActiveScene("ObjectScaleTest");
-	auto first = sceneObjectTest.AddGameObject();
-	first->AddLocalTranslation({ screenWidth / 2, 100 });
-	first->AddComponent<dae::IncrementingScaleComponent>();
-
-	auto second = sceneObjectTest.AddGameObject();
-	second->AddComponent<dae::TextureComponent>("GalagaP2.tga");
-	first->AddChild(second);
-	second->SetLocalTranslation({ 100, 100 });
-	//second->SetApplyParentScaleOnTranslation(false);
-	second->SetApplyParentScaleOnScale(false);
-
-	auto third = sceneObjectTest.AddGameObject();
-	third->AddComponent<dae::TextureComponent>("GalagaP1.tga");
-	first->AddChild(third);
-	third->SetLocalTranslation({ -100, 100 });
-	//third->SetApplyParentScaleOnTranslation(false);
-	third->SetApplyParentScaleOnScale(false);
 }
 
 // GENERAL TODOS

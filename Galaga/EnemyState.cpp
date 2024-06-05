@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include <SDL.h>
 #include "DerivedComponents.h"
+#include "TextureComponents.h"
 
 dae::EnemySpawnInState::EnemySpawnInState()
 {

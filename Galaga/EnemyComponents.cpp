@@ -6,6 +6,7 @@
 #include "DerivedComponents.h"
 #include <SDL.h>
 #include "ServiceLocator.h"
+#include "TextureComponents.h"
 
 #include "TEMP_PlayerGlobal.h"
 

@@ -3,6 +3,7 @@
 #include "DerivedComponents.h"
 #include "CollisionComponents.h"
 #include "DartLogic.h"
+#include "TextureComponents.h"
 
 dae::Dart::Dart(float speed, glm::vec2 startPos, glm::vec2 movDir, std::string spriteLocation)
     : m_Speed{ speed }, m_Startpos{ startPos }, m_MovDirection{ movDir }, m_SpriteLocation{ spriteLocation }

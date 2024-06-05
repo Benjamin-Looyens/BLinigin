@@ -10,6 +10,7 @@
 #include <algorithm>
 #include "GameObject.h"
 #include "DartLogic.h"
+#include "TextureComponents.h"
 
 dae::PlayerLogic::PlayerLogic(GameObject* pParent)
 	: Component(pParent)

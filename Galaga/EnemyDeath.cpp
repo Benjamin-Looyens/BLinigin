@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Scene.h"
 #include "DerivedComponents.h"
+#include "TextureComponents.h"
 
 dae::GameObject* dae::EnemyDeath::AddToScene(Scene* pSceneToAddTo)
 {
