@@ -33,6 +33,8 @@ namespace dae {
 
 		std::vector<GameObject*> m_FormationPositions;
 
+		void ParseEnemies();
+
 		void NextStage();
 	};
 

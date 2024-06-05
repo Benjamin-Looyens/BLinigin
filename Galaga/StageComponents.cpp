@@ -7,6 +7,8 @@
 #include "GameObject.h"
 #include <string>
 #include "Scene.h"
+#include "ResourceManager.h"
+#include <json.hpp>
 
 // TODO : Fix Math Defines
 #define _USE_MATH_DEFINES
@@ -66,48 +68,100 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 	}
 }
 
+void dae::StageManagerLogic::ParseEnemies()
+{
+	std::string formationString{ "Formations/Formation" + std::to_string((m_CurrentStage) % (m_NumFormations) + 1) + ".json" };
+	//std::string formationString{ "Formations/Formation1.json" };
+
+	nlohmann::json* pFormation = BL_RESOURCE.LoadJSON(formationString);
+
+	if (pFormation->contains("Bees") && pFormation->at("Bees").is_array() && !pFormation->at("Bees").empty()) {
+		auto& jsonDataBees = pFormation->at("Bees");
+
+		for (auto& jsonDataBee : jsonDataBees) {
+			if (jsonDataBee.contains("X") && jsonDataBee.contains("Y")) {
+				auto x = jsonDataBee.at("X");
+				auto y = jsonDataBee.at("Y");
+
+				if (!x.is_number() || !y.is_number()) {
+#ifndef NDEBUG
+					std::cerr << "X or Y in a bee in [" << formationString << "] was not a number!\n";
+#endif 
+					continue;
+				}
+
+				auto pBee = m_BeeEnemy.AddToScene(m_pParent->GetContainingScene());
+				auto pBeeFormation = m_pParent->GetContainingScene()->AddGameObject();
+				m_pParent->AddChild(pBeeFormation);
+				pBeeFormation->SetLocalTranslation({ x, y });
+				pBee->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pBeeFormation);
+				m_FormationPositions.push_back(pBeeFormation);
+			}
+			
+		}
+	}
+
+	if (pFormation->contains("Butterflies") && pFormation->at("Butterflies").is_array() && !pFormation->at("Butterflies").empty()) {
+		auto& jsonDataBFlies = pFormation->at("Butterflies");
+
+		for (auto& jsonDataBFly : jsonDataBFlies) {
+			if (jsonDataBFly.contains("X") && jsonDataBFly.contains("Y")) {
+				auto x = jsonDataBFly.at("X");
+				auto y = jsonDataBFly.at("Y");
+
+				if (!x.is_number() || !y.is_number()) {
+#ifndef NDEBUG
+					std::cerr << "X or Y in a butterfly in [" << formationString << "] was not a number!\n";
+#endif 
+					continue;
+				}
+
+				auto pButterfly = m_ButterflyEnemy.AddToScene(m_pParent->GetContainingScene());
+				auto pButterflyFormation = m_pParent->GetContainingScene()->AddGameObject();
+				m_pParent->AddChild(pButterflyFormation);
+				pButterflyFormation->SetLocalTranslation({ x, y });
+				pButterfly->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pButterflyFormation);
+				m_FormationPositions.push_back(pButterflyFormation);
+			}
+		}
+	}
+
+	if (pFormation->contains("Bosses") && pFormation->at("Bosses").is_array() && !pFormation->at("Bosses").empty()) {
+		auto& jsonDataBosses = pFormation->at("Bosses");
+
+		for (auto& jsonDataBoss : jsonDataBosses) {
+			if (jsonDataBoss.contains("X") && jsonDataBoss.contains("Y")) {
+				auto x = jsonDataBoss.at("X");
+				auto y = jsonDataBoss.at("Y");
+
+				if (!x.is_number() || !y.is_number()) {
+#ifndef NDEBUG
+					std::cerr << "X or Y in a boss in [" << formationString << "] was not a number!\n";
+#endif 
+					continue;
+				}
+
+				auto pBoss = m_BossEnemy.AddToScene(m_pParent->GetContainingScene());
+				auto pBossFormation = m_pParent->GetContainingScene()->AddGameObject();
+				m_pParent->AddChild(pBossFormation);
+				pBossFormation->SetLocalTranslation({ x, y });
+				pBoss->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pBossFormation);
+				m_FormationPositions.push_back(pBossFormation);
+			}
+		}
+	}
+}
+
 void dae::StageManagerLogic::NextStage()
 {
 	std::cout << "NEXT STAGE\n";
-	//std::string formationString{ "Formation" + std::to_string((m_CurrentStage + 1) % m_NumFormations) + ".json" };
-
 	m_FormationPositions.clear();
 
-	std::cout << "[StageManager Formation] X: " << m_pParent->GetWorldPosition().x << ", Y: " << m_pParent->GetWorldPosition().y << "\n";
+	ParseEnemies();
+
 
 	// TODO : Parse information from file
 	// TODO : pass formation object to the enemies directly
-	auto pBoss = m_BossEnemy.AddToScene(m_pParent->GetContainingScene());
-	auto pBossFormation = m_pParent->GetContainingScene()->AddGameObject();
-	m_pParent->AddChild(pBossFormation);
-	pBossFormation->SetLocalTranslation({ 0, 50 });
-	std::cout << "[BossForm] X: " << pBossFormation->GetWorldPosition().x << ", Y: " << pBossFormation->GetWorldPosition().y << "\n";
-	pBoss->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pBossFormation);
-	m_FormationPositions.push_back(pBossFormation);
-
-	auto pButterfly = m_ButterflyEnemy.AddToScene(m_pParent->GetContainingScene());
-	auto pButterflyFormation = m_pParent->GetContainingScene()->AddGameObject();
-	m_pParent->AddChild(pButterflyFormation);
-	pButterflyFormation->SetLocalTranslation({ 0, 100 });
-	std::cout << "[BFlyForm] X: " << pButterflyFormation->GetWorldPosition().x << ", Y: " << pButterflyFormation->GetWorldPosition().y << "\n";
-	pButterfly->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pButterflyFormation);
-	m_FormationPositions.push_back(pButterflyFormation);
-
-	auto pButterfly2 = m_ButterflyEnemy.AddToScene(m_pParent->GetContainingScene());
-	auto pButterflyFormation2 = m_pParent->GetContainingScene()->AddGameObject();
-	m_pParent->AddChild(pButterflyFormation2);
-	pButterflyFormation2->SetLocalTranslation({ 30, 100 });
-	std::cout << "[BFlyForm2] X: " << pButterflyFormation2->GetWorldPosition().x << ", Y: " << pButterflyFormation2->GetWorldPosition().y << "\n";
-	pButterfly2->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pButterflyFormation2);
-	m_FormationPositions.push_back(pButterflyFormation2);
-
-	auto pBee = m_BeeEnemy.AddToScene(m_pParent->GetContainingScene());
-	auto pBeeFormation = m_pParent->GetContainingScene()->AddGameObject();
-	m_pParent->AddChild(pBeeFormation);
-	pBeeFormation->SetLocalTranslation({ 0, 150 });
-	std::cout << "[BeeForm] X: " << pBeeFormation->GetWorldPosition().x << ", Y: " << pBeeFormation->GetWorldPosition().y << "\n";
-	pBee->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pBeeFormation);
-	m_FormationPositions.push_back(pBeeFormation);
 
 	m_NumberEnemies = static_cast<int>(m_FormationPositions.size());
 	

@@ -7,6 +7,7 @@
 #include <vector>
 #include "Texture2D.h"
 #include "Font.h"
+#include <json.hpp>
 
 namespace dae
 {
@@ -25,6 +26,10 @@ namespace dae
 		void UnLoadFont(const std::string& file, unsigned int size);
 		bool IsFontLoaded(const std::string& file, unsigned int size);
 
+		nlohmann::json* LoadJSON(const std::string& fileName);
+		bool IsJSONLoaded(const std::string& fileName);
+		void UnLoadJSON(const std::string& fileName);
+
 	private:
 		friend class Singleton<ResourceManager>;
 		ResourceManager() = default;
@@ -32,9 +37,12 @@ namespace dae
 
 		std::map<std::string, Texture2D*> m_LoadedTexturesMap;
 		std::map<std::pair<std::string, unsigned int>, Font*> m_LoadedFontsMap;
+		std::map<std::string, nlohmann::json*> m_LoadedJSONMap;
 
 		std::vector<std::unique_ptr<Texture2D>> m_LoadedTextures;
 		std::vector<std::unique_ptr<Font>> m_LoadedFonts;
+
+		std::vector<std::unique_ptr<nlohmann::json>> m_LoadedJSON;
 	};
 }
 

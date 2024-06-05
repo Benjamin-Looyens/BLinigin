@@ -6,6 +6,8 @@
 #include "Texture2D.h"
 #include "Font.h"
 #include <iostream>
+#include <json.hpp>
+#include <fstream>
 
 void dae::ResourceManager::Init(const std::string& dataPath)
 {
@@ -111,4 +113,48 @@ bool dae::ResourceManager::IsFontLoaded(const std::string& file, unsigned int si
 	auto loadedFont = m_LoadedFontsMap[{fullPath, size}];
 
 	return loadedFont;
+}
+
+nlohmann::json* dae::ResourceManager::LoadJSON(const std::string& fileName)
+{
+	const auto fullPath = m_DataPath + fileName;
+
+	auto pLoadedJSON = m_LoadedJSONMap[fullPath];
+	if (pLoadedJSON) return pLoadedJSON;
+
+
+	std::ifstream jsonFile{ fullPath };
+
+	if (!jsonFile.is_open()) {
+#ifndef NDEBUG
+		std::cerr << fileName << " could not be opened!\n";
+#endif
+		return nullptr;
+	}
+
+	nlohmann::json jsonData;
+	jsonFile >> jsonData;
+
+	jsonFile.close();
+
+	m_LoadedJSON.push_back(std::make_unique<nlohmann::json>(jsonData));
+
+	auto pRawJSON = m_LoadedJSON[m_LoadedJSON.size() - 1].get();
+	if (pRawJSON) {
+		m_LoadedJSONMap[fullPath] = pRawJSON;
+	}
+
+
+	return pRawJSON;
+}
+
+bool dae::ResourceManager::IsJSONLoaded(const std::string& fileName)
+{
+	fileName;
+	return false;
+}
+
+void dae::ResourceManager::UnLoadJSON(const std::string& fileName)
+{
+	fileName;
 }

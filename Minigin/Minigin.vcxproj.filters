@@ -30,6 +30,9 @@
     <Filter Include="Classes To Derive From">
       <UniqueIdentifier>{f6bd499c-563b-4422-bc9c-b96f240e3062}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External Includes\nlohmann">
+      <UniqueIdentifier>{367e0c63-ba0d-48de-89c0-406494de81f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdParty\imgui\imconfig.h">
@@ -130,6 +133,12 @@
     </ClInclude>
     <ClInclude Include="TextureComponents.h">
       <Filter>Engine Included Derived Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\nlohmann\include\single_include\json.hpp">
+      <Filter>External Includes\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\nlohmann\include\single_include\json_fwd.hpp">
+      <Filter>External Includes\nlohmann</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
