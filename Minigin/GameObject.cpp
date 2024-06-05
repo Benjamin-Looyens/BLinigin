@@ -14,25 +14,6 @@ dae::GameObject::GameObject(Scene* pScene, GameObject* pParentObject)
 
 dae::GameObject::~GameObject() = default;
 
-void dae::GameObject::SetPositionDirty()
-{
-	m_PositionDirty = true;
-
-	for (auto& childObject : m_pChildObjects)
-		childObject->SetPositionDirty();
-}
-
-void dae::GameObject::SetScaleDirty()
-{
-	m_ScaleDirty = true;
-
-	for (auto& childObject : m_pChildObjects) {
-		if (childObject->GetApplyParentScaleOnTranslation()) childObject->SetPositionDirty();
-		
-		childObject->SetScaleDirty();
-	}
-}
-
 void dae::GameObject::Update()
 {
 	for (auto& pComponent : m_pComponents) 
@@ -72,6 +53,31 @@ void dae::GameObject::Render() const
 {
 	for (auto& pComponent : m_pComponents)
 		if (pComponent != nullptr) pComponent->Render(); // if component has a rendering section, it will render using game object transform
+}
+
+void dae::GameObject::SetPositionDirty()
+{
+	m_PositionDirty = true;
+
+	for (auto& childObject : m_pChildObjects)
+		childObject->SetPositionDirty();
+}
+
+void dae::GameObject::SetScaleDirty()
+{
+	m_ScaleDirty = true;
+
+	for (auto& childObject : m_pChildObjects) {
+		if (childObject->GetApplyParentScaleOnTranslation()) childObject->SetPositionDirty();
+
+		childObject->SetScaleDirty();
+	}
+}
+
+void dae::GameObject::SetTransformDirty()
+{
+	SetPositionDirty();
+	SetScaleDirty();
 }
 
 void dae::GameObject::SetLocalTranslation(const float x, const float y)
@@ -125,8 +131,10 @@ void dae::GameObject::UpdateWorldPosition()
 		if (m_pParentObject == nullptr || !m_ParentAsOrigin) m_WorldTransform.SetTranslation(localPos);
 		else {
 			dae::Transform parentTransform = m_pParentObject->GetWorldTransform();
+
 			if (m_ApplyParentScaleOnTranslation) m_WorldTransform.SetTranslation(parentTransform.GetTranslation() + (localPos * parentTransform.GetScale()));
-			else m_WorldTransform.SetTranslation(parentTransform.GetTranslation() + localPos);
+			else 
+				m_WorldTransform.SetTranslation(parentTransform.GetTranslation() + localPos);
 		}
 	}
 
@@ -143,8 +151,8 @@ void dae::GameObject::UpdateWorldScale()
 			auto& parentScale = m_pParentObject->GetWorldTransform().GetScale();
 			glm::vec2 newScale{ localScale };
 
-			if (parentScale.x != 0.0f) newScale.x *= parentScale.x;
-			if (parentScale.y != 0.0f) newScale.y *= parentScale.y;
+			newScale.x *= parentScale.x;
+			newScale.y *= parentScale.y;
 
 			m_WorldTransform.SetScale(newScale);
 		}
@@ -176,6 +184,10 @@ void dae::GameObject::PrintComponents() const
 
 void dae::GameObject::AddChild(GameObject* pNewChild)
 {
+	if (pNewChild->m_pParentObject == this) {
+		std::cerr << "Child that is being attempted to add is already a child!\n";
+		return;
+	}
 	if (pNewChild == nullptr) {
 		std::cerr << "Child that is being attempted to add is nullptr!\n";
 		return;
@@ -192,15 +204,18 @@ void dae::GameObject::AddChild(GameObject* pNewChild)
 
 	// Remove from prior parent
 	if (pNewChild->HasParent())
-		pNewChild->m_pParentObject->RemoveChild(pNewChild);
+		pNewChild->SeperateFromParent();
+		//pNewChild->m_pParentObject->RemoveChild(pNewChild);
 	
 	// newChild is not owning of self, thus is allowed to be a child
 	m_pChildObjects.push_back(pNewChild);
 	pNewChild->m_pParentObject = this;
 
+	SetTransformDirty();
+	
 #ifndef NDEBUG
 	std::cout << "Child object has been added.\n";
-#endif 
+#endif
 }
 
 void dae::GameObject::RemoveChild(GameObject* pChildToRemove)
@@ -218,7 +233,7 @@ void dae::GameObject::RemoveChild(GameObject* pChildToRemove)
 
 	// Update position (keep pos)
 	pChildToRemove->SetLocalTranslation(pChildToRemove->GetWorldPosition());
-	pChildToRemove->m_PositionDirty = true;
+	pChildToRemove->SetTransformDirty();
 
 	// Remove from children vector
 	m_pChildObjects.erase(std::remove(begin(m_pChildObjects), end(m_pChildObjects), pChildToRemove));
@@ -259,10 +274,12 @@ void dae::GameObject::SeperateFromParent()
 		return;
 	}
 
-	// HACK : This implementation is pretty scuffed
-	for (auto& object : m_pParentObject->m_pChildObjects) {
-		if (object == this) {
-			m_pParentObject->RemoveChild(object);
-		}
-	}
+	m_pParentObject->RemoveChild(this);
+
+	//// HACK : This implementation is pretty scuffed
+	//for (auto& object : m_pParentObject->m_pChildObjects) {
+	//	if (object == this) {
+	//		m_pParentObject->RemoveChild(object);
+	//	}
+	//}
 }

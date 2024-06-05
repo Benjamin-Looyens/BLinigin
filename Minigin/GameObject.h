@@ -30,7 +30,7 @@ namespace dae
 
 		void SetLocalScale(const float x, const float y);
 		void SetLocalScale(glm::vec2 newScale) { SetLocalScale(newScale.x, newScale.y); };
-		void MultiplyScale(const float multiplier) { m_LocalTransform.MultiplyScale(multiplier); };
+		void MultiplyScale(const float multiplier) { SetLocalScale(GetLocalScale() * multiplier); };
 
 		glm::vec2 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
 		glm::vec2 GetLocalScale() const { return m_LocalTransform.GetScale(); };
@@ -113,8 +113,9 @@ namespace dae
 	private:
 		void SetPositionDirty();
 		void SetScaleDirty();
+		void SetTransformDirty();
 
-		Transform m_LocalTransform{ };
+		Transform m_LocalTransform{ glm::vec2{}, glm::vec2{}, glm::vec2{ 1.0f, 1.0f } };
 		Transform m_WorldTransform{ };
 
 		bool m_PositionDirty{ true };

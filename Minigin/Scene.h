@@ -11,6 +11,7 @@ namespace dae
 	public:
 		void RemoveAll();
 
+		// TODO : Make it so that only SceneManager can call update, render, etc
 		void Update();
 		void FixedUpdate();
 		void LateUpdate();
