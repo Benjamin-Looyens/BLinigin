@@ -47,7 +47,7 @@ namespace dae
 		void RemoveComponent(size_t componentIndex);
 		void PrintComponents() const; // for debug
 
-		void Destroy() { m_Destroyed = true; };
+		void Destroy();
 		bool IsDestroyed() const { return m_Destroyed; };
 
 		// Makes the GameObject use the parent as the origin where it moves from; If it has no parent, this value will be ignored

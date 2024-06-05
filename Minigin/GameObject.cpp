@@ -182,6 +182,22 @@ void dae::GameObject::PrintComponents() const
 #endif 
 }
 
+void dae::GameObject::Destroy()
+{
+	if (m_pParentObject) SeperateFromParent();
+	if (!m_pChildObjects.empty()) {
+		size_t size = m_pChildObjects.size();
+		if (size != 0) {
+			for (size_t index{}; index < size; ++index) {
+				if (m_pChildObjects[(size - 1) - index])
+					m_pChildObjects[(size - 1) - index]->SeperateFromParent();
+			}
+		}
+	}
+
+	m_Destroyed = true;
+}
+
 void dae::GameObject::AddChild(GameObject* pNewChild)
 {
 	if (pNewChild->m_pParentObject == this) {
