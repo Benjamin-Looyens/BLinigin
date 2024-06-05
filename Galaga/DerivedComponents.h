@@ -185,5 +185,17 @@ namespace dae {
 		float m_ElapsedTime{};
 		float m_TimeTillDestroy;
 	};
+
+	class IncrementingScaleComponent final : public Component
+	{
+	public:
+		IncrementingScaleComponent(GameObject* pParent, float incrementPerSecond = 1.0f);
+
+		void Update() override;
+
+	private:
+		float m_IncrPerSecond;
+	};
+
 }
 

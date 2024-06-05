@@ -263,3 +263,18 @@ void dae::TimedDestroyComponent::Update()
 
 	if (m_ElapsedTime >= m_TimeTillDestroy) m_pParent->Destroy();
 }
+
+
+dae::IncrementingScaleComponent::IncrementingScaleComponent(GameObject* pParent, float incrementPerSecond)
+	: Component(pParent), m_IncrPerSecond{ incrementPerSecond }
+{}
+
+void dae::IncrementingScaleComponent::Update()
+{
+	glm::vec2 curScale = m_pParent->GetLocalScale();
+	
+	curScale.y += m_IncrPerSecond * BL_TIMER.GetDeltaTime(); 
+	curScale.x += m_IncrPerSecond * BL_TIMER.GetDeltaTime(); 
+
+	m_pParent->SetLocalScale(curScale);
+}

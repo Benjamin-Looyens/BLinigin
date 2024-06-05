@@ -35,8 +35,8 @@ namespace dae
 		glm::vec2 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
 		glm::vec2 GetLocalScale() const { return m_LocalTransform.GetScale(); };
 
-		Transform GetLocalTransform() const { return m_LocalTransform; };
-		Transform GetWorldTransform();
+		dae::Transform GetLocalTransform() const { return m_LocalTransform; };
+		dae::Transform GetWorldTransform();
 
 		glm::vec2 GetWorldPosition();
 		glm::vec2 GetWorldScale();
@@ -50,7 +50,15 @@ namespace dae
 		void Destroy() { m_Destroyed = true; };
 		bool IsDestroyed() const { return m_Destroyed; };
 
-		void SetUseParentWorld(const bool newUse) { m_UseParentWorld = newUse; };
+		// Makes the GameObject use the parent as the origin where it moves from; If it has no parent, this value will be ignored
+		inline void SetUseParentAsOrigin(const bool newUse) { m_ParentAsOrigin = newUse; }; 
+		inline bool GetUseParentAsOrigin() const { return m_ParentAsOrigin; }; 
+		// Makes the GameObject use the parent scale as the base scale; If it has no parent, this value will be ignored
+		inline void SetApplyParentScaleOnScale(const bool newApply) { m_ApplyParentScale = newApply; };
+		inline bool GetApplyParentScaleOnScale() const { return m_ApplyParentScale; };
+		// Makes the GameObject apply the parent's scale to their local translation; If it has no parent, this value will be ignored
+		inline void SetApplyParentScaleOnTranslation(const bool newApply) { m_ApplyParentScaleOnTranslation = newApply; };
+		inline bool GetApplyParentScaleOnTranslation() const { return m_ApplyParentScaleOnTranslation; };
 
 		GameObject* GetChildAtIndex(size_t index) { if (m_pChildObjects.size() <= index) return nullptr; return m_pChildObjects[index]; };
 
@@ -88,9 +96,11 @@ namespace dae
 		void AddChild(GameObject* pNewChild);
 		void RemoveChild(GameObject* pChildToRemove);
 		bool ValidParent(GameObject* pParent);
+
 		void SeperateFromParent();
 		int GetChildCount() const { return static_cast<int>(m_pChildObjects.size()); };
 		bool HasParent() const { return (m_pParentObject != nullptr); };
+
 		dae::Scene* GetContainingScene() { return m_pContainingScene; };
 
 		GameObject(Scene* pScene, GameObject* pParent = nullptr);
@@ -115,7 +125,9 @@ namespace dae
 		std::vector<std::unique_ptr<Component>>	 m_pComponents;
 		std::vector<GameObject*> m_pChildObjects;
 
-		bool m_UseParentWorld{ true };
+		bool m_ParentAsOrigin{ true };
+		bool m_ApplyParentScale{ true };
+		bool m_ApplyParentScaleOnTranslation{ true };
 
 		bool m_Destroyed{ false };
 

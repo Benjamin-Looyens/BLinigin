@@ -26,8 +26,11 @@ void dae::GameObject::SetScaleDirty()
 {
 	m_ScaleDirty = true;
 
-	for (auto& childObject : m_pChildObjects)
+	for (auto& childObject : m_pChildObjects) {
+		if (childObject->GetApplyParentScaleOnTranslation()) childObject->SetPositionDirty();
+		
 		childObject->SetScaleDirty();
+	}
 }
 
 void dae::GameObject::Update()
@@ -119,8 +122,12 @@ void dae::GameObject::UpdateWorldPosition()
 	if (m_PositionDirty) {
 		auto& localPos = m_LocalTransform.GetTranslation();
 
-		if (m_pParentObject == nullptr) m_WorldTransform.SetTranslation(localPos);
-		else m_WorldTransform.SetTranslation(m_pParentObject->GetWorldTransform().GetTranslation() + localPos);
+		if (m_pParentObject == nullptr || !m_ParentAsOrigin) m_WorldTransform.SetTranslation(localPos);
+		else {
+			dae::Transform parentTransform = m_pParentObject->GetWorldTransform();
+			if (m_ApplyParentScaleOnTranslation) m_WorldTransform.SetTranslation(parentTransform.GetTranslation() + (localPos * parentTransform.GetScale()));
+			else m_WorldTransform.SetTranslation(parentTransform.GetTranslation() + localPos);
+		}
 	}
 
 	m_PositionDirty = false;
@@ -131,7 +138,7 @@ void dae::GameObject::UpdateWorldScale()
 	if (m_ScaleDirty) {
 		auto& localScale = m_LocalTransform.GetScale();
 
-		if (m_pParentObject == nullptr) m_WorldTransform.SetScale(localScale);
+		if (m_pParentObject == nullptr || !m_ApplyParentScale) m_WorldTransform.SetScale(localScale);
 		else {
 			auto& parentScale = m_pParentObject->GetWorldTransform().GetScale();
 			glm::vec2 newScale{ localScale };
