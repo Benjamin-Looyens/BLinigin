@@ -27,6 +27,7 @@ dae::GameObject* dae::Enemy::AddToScene(Scene* pSceneToAddTo)
 
 	pEnemy->SetLocalTranslation(m_StartPos);
 	pEnemy->SetLocalScale(2.0f, 2.0f);
+	pEnemy->SetApplyParentScaleOnScale(false);
 
 	for (auto& observer : m_Observers) {
 		pLogic->AddObserver(observer);

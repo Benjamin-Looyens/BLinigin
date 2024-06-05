@@ -45,7 +45,7 @@ void dae::EnemySpawnInState::Update(EnemyLogic& enemy)
     if (lenSqr < EPSILON) m_CurrentWayPoint++;
 
     if (static_cast<size_t>(m_CurrentWayPoint) < m_Path.size()) enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()) });
-    else enemy.SetState(std::make_unique<EnemyPatrolState>());
+    else enemy.SetState(std::make_unique<EnemyReturnToPatrolState>());
 }
 
 void dae::EnemySpawnInState::OnEnter(EnemyLogic& enemy)
@@ -66,17 +66,15 @@ void dae::EnemySpawnInState::OnExit(EnemyLogic&)
 
 void dae::EnemyPatrolState::Update(EnemyLogic& enemy)
 {
-    const float deltaTime = BL_TIMER.GetDeltaTime();
-    const glm::vec2 curLocation = enemy.GetLocation();
-
-    if (curLocation.x >= m_MaxPos.x || curLocation.x <= m_MinPos.x) m_CurDirection *= -1.0f;
-
-    enemy.SetLocation({ curLocation + (deltaTime * m_CurDirection * enemy.GetPatrolSpeed()) });
-
     if (m_ElapsedTime >= m_MaxTime) {
-        if (rand() % 2) enemy.SetState(std::make_unique<EnemyKamikazeState>());
+        if ((rand() % 10) == 1) enemy.SetState(std::make_unique<EnemyKamikazeState>());
+        m_ElapsedTime = 0;
     }
-    else m_ElapsedTime += deltaTime;
+    else {
+        m_ElapsedTime += BL_TIMER.GetDeltaTime();
+    }
+    
+    //std::cout << "[Enemy] X: " << enemy.GetLocation().x << ", Y: " << enemy.GetLocation().y << "\n";
 }
 
 void dae::EnemyPatrolState::OnEnter(EnemyLogic& enemy)
@@ -97,6 +95,8 @@ void dae::EnemyPatrolState::OnEnter(EnemyLogic& enemy)
     // TODO : Calculate proper min and max pos using formation reference
     m_MinPos = { BORDER_OFFSET, BORDER_OFFSET };
     m_MaxPos = { static_cast<float>(screenWidth) - BORDER_OFFSET - (size.x * scale.x), static_cast<float>(screenHeight) - BORDER_OFFSET };
+
+    //enemy.DetachFromFormation();
 }
 
 void dae::EnemyPatrolState::OnExit(EnemyLogic&)
@@ -106,6 +106,7 @@ void dae::EnemyPatrolState::OnExit(EnemyLogic&)
 #endif
 }
 
+// TODO : Probably split Kamikaze state into 2 different states: dive & rise
 void dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
 {
     float deltaTime = BL_TIMER.GetDeltaTime();
@@ -138,7 +139,7 @@ void dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
             enemy.SetLocation({ m_StartPosition.x, newPos.y });
         }
         else {
-            enemy.SetState(std::make_unique<EnemyPatrolState>());
+            enemy.SetState(std::make_unique<EnemyReturnToPatrolState>());
         }
     }
 }
@@ -156,6 +157,8 @@ void dae::EnemyKamikazeState::OnEnter(EnemyLogic& enemy)
     // TODO : Calculate kamikaze position based on player positions
     m_KamikazePosition = { static_cast<float>(screenWidth / 2), screenHeight};
     m_StartPosition = enemy.GetLocation();
+
+    enemy.DetachFromFormation();
 }
 
 void dae::EnemyKamikazeState::OnExit(EnemyLogic&)
@@ -193,13 +196,16 @@ void dae::EnemyDeathState::OnExit(EnemyLogic&)
 void dae::EnemyReturnToPatrolState::Update(EnemyLogic& enemy)
 {
     enemy;
+    enemy.SetState(std::make_unique<EnemyPatrolState>());
 }
 
-void dae::EnemyReturnToPatrolState::OnEnter(EnemyLogic&)
+void dae::EnemyReturnToPatrolState::OnEnter(EnemyLogic& enemy)
 {
 #ifndef NDEBUG
     std::cout << "ReturnToPatrol State Entering.\n";
 #endif
+
+    enemy.SyncToFormation();
 }
 
 void dae::EnemyReturnToPatrolState::OnExit(EnemyLogic&)

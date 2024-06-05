@@ -31,8 +31,22 @@ namespace dae {
 
 		bool m_StageActive = false; // TODO : Implement state pattern here
 
-		std::vector<std::unique_ptr<glm::vec2>> m_FormationPositions;
+		std::vector<GameObject*> m_FormationPositions;
 
 		void NextStage();
+	};
+
+	class ScalePulseComponent final : public Component
+	{
+	public:
+		ScalePulseComponent(GameObject* pParent, float frequency, float amplitude, float offset);
+		
+		void Update() override;
+
+	private:
+		float m_Frequency;
+		float m_Amplitude;
+		float m_Offset;
+		float m_ElapsedTime{};
 	};
 }

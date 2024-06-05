@@ -19,9 +19,14 @@ namespace dae {
 		
 		void SetState(std::unique_ptr<EnemyState> pNewState);
 		void SetLocation(glm::vec2 pos);
+		void AddLocation(glm::vec2 movement);
 		bool GetHit(); // Returns boolean for if it died or not
 		void Die();
 		bool Damaged() const { return m_TookDamage; };
+
+		void SyncToFormation();
+		void DetachFromFormation();
+		inline void SetFormationRoot(GameObject* pFormationRootObject) { m_pFormationLocationRoot = pFormationRootObject; };
 
 		glm::vec2 GetLocation();
 		glm::vec2 GetScale();
@@ -51,5 +56,7 @@ namespace dae {
 
 		sound_id m_DamageSound;
 		sound_id m_DeathSound;
+
+		GameObject* m_pFormationLocationRoot;
 	};
 }

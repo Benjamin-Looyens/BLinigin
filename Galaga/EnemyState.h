@@ -93,7 +93,7 @@ namespace dae {
 		glm::vec2 m_CurDirection{ 1.0f, 0.0f }; 
 
 		float m_ElapsedTime{};
-		float m_MaxTime{ 15.0f }; // TODO : Define value in constructor (or OnEnter)
+		float m_MaxTime{ 5.0f }; // TODO : Define value in constructor (or OnEnter)
 	};
 
 	class EnemyKamikazeState final : public EnemyState

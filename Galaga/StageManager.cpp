@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "DerivedComponents.h"
 #include "StageComponents.h"
+#include <SDL.h>
 
 dae::StageManager::StageManager(std::vector<IObserver*>& enemyObservers)
 {
@@ -16,6 +17,11 @@ dae::GameObject* dae::StageManager::AddToScene(dae::Scene* pSceneToAddTo)
                                                                 dae::Enemy{ glm::vec2{}, "Butterfly.png", 300.0f, 50.0f, m_EnemyObservers, 3.0f, 2, 1, 17, 17  },
                                                                 dae::Enemy{ glm::vec2{}, "Bee.png", 250.0f, 50.0f, m_EnemyObservers, 3.0f, 2, 1, 16, 16 });
     
+    int screenWidth;
+    int screenHeight;
+    SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight);
+
+    pStageManagerObject->SetLocalTranslation({ screenWidth / 2, 100 });
 
     return pStageManagerObject;
 }

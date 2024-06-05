@@ -40,7 +40,12 @@ void dae::EnemyLogic::SetState(std::unique_ptr<EnemyState> pNewState)
 
 void dae::EnemyLogic::SetLocation(glm::vec2 pos)
 {
-	m_pParent->SetLocalTranslation(pos);
+	m_pParent->SetLocalTranslation(pos); // BAD BAD BAD, I AM SETTING LOCAL POSITION BASED ON WORLD POSITION
+}
+
+void dae::EnemyLogic::AddLocation(glm::vec2 movement)
+{
+	m_pParent->AddLocalTranslation(movement);
 }
 
 bool dae::EnemyLogic::GetHit()
@@ -90,6 +95,19 @@ void dae::EnemyLogic::Die()
 	pDeathObj->SetLocalScale(m_pParent->GetWorldScale());
 
 	m_pParent->Destroy();
+}
+
+void dae::EnemyLogic::SyncToFormation()
+{
+	// Return to formation
+	m_pFormationLocationRoot->AddChild(m_pParent);
+	m_pParent->SetLocalTranslation({ 0, 0 });
+	std::cout << "[Enemy] X: " << m_pParent->GetWorldPosition().x << ", Y: " << m_pParent->GetWorldPosition().y << "\n";
+}
+
+void dae::EnemyLogic::DetachFromFormation()
+{
+	m_pParent->SeperateFromParent();
 }
 
 glm::vec2 dae::EnemyLogic::GetLocation()

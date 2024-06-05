@@ -99,8 +99,6 @@ void load()
 	// TEMP
 	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);
 	dae::PlayerLocator::RegisterPlayer(pPlayerTwoObject);
-
-	pPlayerOneObject->PrintComponents();
 }
 
 // GENERAL TODOS
@@ -113,6 +111,8 @@ void load()
 // TODO : Make inlines explicit where I use them
 // TODO : Write explanations/summaries for functions 
 // TODO : Check where getters and setters are necessary
+// TODO : Add easy way to get screen size (as a global probably)
+// TODO : Check for if destroyed objects remove themselves from their parents
 
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");
