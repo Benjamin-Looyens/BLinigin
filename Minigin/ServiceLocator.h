@@ -21,7 +21,7 @@ namespace dae {
 	class ServiceLocator final
 	{
 	public:
-		static dae::ISoundSystem& GetSoundSystem();
+		inline static dae::ISoundSystem& GetSoundSystem() { return *m_pSoundSysInstance; };
 		static void RegisterSoundSystem(std::unique_ptr<dae::ISoundSystem>&& soundSys);
 
 	private:

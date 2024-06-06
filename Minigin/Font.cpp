@@ -2,10 +2,6 @@
 #include <SDL_ttf.h>
 #include "Font.h"
 
-TTF_Font* dae::Font::GetFont() const {
-	return m_pFont;
-}
-
 dae::Font::Font(const std::string& fullPath, unsigned int size) : m_pFont(nullptr)
 {
 	m_pFont = TTF_OpenFont(fullPath.c_str(), size);

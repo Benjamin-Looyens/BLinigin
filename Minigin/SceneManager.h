@@ -19,7 +19,6 @@ namespace dae
 		bool IsActiveScene(const Scene* pScene) const;
 
 		void Update();
-		void FixedUpdate();
 		void LateUpdate();
 		void Render();
 

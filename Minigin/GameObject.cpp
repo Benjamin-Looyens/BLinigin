@@ -20,11 +20,6 @@ void dae::GameObject::Update()
 		if (pComponent != nullptr) pComponent->Update();
 }
 
-void dae::GameObject::FixedUpdate()
-{
-
-}
-
 void dae::GameObject::LateUpdate()
 {
 	for (auto& pComponent : m_pComponents) {
@@ -265,8 +260,6 @@ void dae::GameObject::RemoveChild(GameObject* pChildToRemove)
 bool dae::GameObject::ValidParent(GameObject* pParent)
 {
 	if (this == pParent) return false;
-
-	//auto pParentShared = std::make_shared<GameObject>(pParent); // I dont like this but cant think of any other way to do it 
 
 	// Check within current child objects
  	bool withinChildVector{ std::find(begin(m_pChildObjects), end(m_pChildObjects), pParent) != end(m_pChildObjects) };

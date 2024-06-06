@@ -8,13 +8,6 @@ void dae::SceneManager::Update()
 	m_pScenes[m_ActiveSceneIndex]->Update();
 }
 
-void dae::SceneManager::FixedUpdate()
-{
-	if (m_pScenes.empty()) return;
-
-	m_pScenes[m_ActiveSceneIndex]->FixedUpdate();
-}
-
 void dae::SceneManager::LateUpdate()
 {
 	if (m_pScenes.empty()) return;

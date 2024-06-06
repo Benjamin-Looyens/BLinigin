@@ -128,7 +128,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		
 		while (lag >= fixedTimeStep) {
 			lag -= fixedTimeStep;
-			sceneManager.FixedUpdate();
 		}
 
 		timer.Update();

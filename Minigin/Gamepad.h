@@ -21,7 +21,7 @@ namespace dae
 		bool ButtonReleasedThisFrame(const int& buttonCode) const;
 		bool ButtonHeld(const int& buttonCode) const;
 
-		int GetPlayerIndex() const { return m_ControllerIndex; };
+		inline int GetPlayerIndex() const { return m_ControllerIndex; };
 
 		static int TranslateToUsedGamepadCode(const int& code);
 

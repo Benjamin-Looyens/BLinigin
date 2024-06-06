@@ -21,6 +21,8 @@ void dae::Transform::AddTranslation(glm::vec2 addition)
 
 void dae::Transform::AddRotation(glm::vec2 addition)
 {
-	m_Rotation += addition; 
-	// TODO: probably do a check for if exceeds 360 degree rotation, and do fmod for it
+	m_Rotation += addition;
+
+	m_Rotation.x = std::fmod(m_Rotation.x, 360.0f);
+	m_Rotation.y = std::fmod(m_Rotation.y, 360.0f);
 }

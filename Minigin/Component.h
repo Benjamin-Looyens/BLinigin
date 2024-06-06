@@ -17,9 +17,9 @@ namespace dae {
 		virtual void Render() const {};
 
 		void Remove() { m_Removed = true; };
-		bool IsRemoved() { return m_Removed; };
-		const GameObject* GetParent() const { return m_pParent; };
-		const std::string GetName() const { return typeid(*this).name(); };
+		inline bool IsRemoved() const { return m_Removed; };
+		inline const GameObject* GetParent() const { return m_pParent; };
+		inline const std::string GetName() const { return typeid(*this).name(); };
 
 		//Component() = default;
 		Component(GameObject* pParent) {

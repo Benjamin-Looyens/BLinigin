@@ -22,14 +22,6 @@ void Scene::Update()
 	}
 }
 
-void Scene::FixedUpdate()
-{
-	for (auto& object : m_pObjects)
-	{
-		object->FixedUpdate();
-	}
-}
-
 void dae::Scene::LateUpdate()
 {
 	for (auto& object : m_pObjects)

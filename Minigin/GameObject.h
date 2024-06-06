@@ -19,7 +19,6 @@ namespace dae
 	{
 	public:
 		void Update();
-		void FixedUpdate();
 		void LateUpdate();
 		void Render() const;
 
@@ -29,13 +28,13 @@ namespace dae
 		void AddLocalTranslation(const glm::vec2& add);
 
 		void SetLocalScale(const float x, const float y);
-		void SetLocalScale(glm::vec2 newScale) { SetLocalScale(newScale.x, newScale.y); };
-		void MultiplyScale(const float multiplier) { SetLocalScale(GetLocalScale() * multiplier); };
+		inline void SetLocalScale(glm::vec2 newScale) { SetLocalScale(newScale.x, newScale.y); };
+		inline void MultiplyScale(const float multiplier) { SetLocalScale(GetLocalScale() * multiplier); };
 
-		glm::vec2 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
-		glm::vec2 GetLocalScale() const { return m_LocalTransform.GetScale(); };
+		inline glm::vec2 GetLocalPosition() const { return m_LocalTransform.GetTranslation(); };
+		inline glm::vec2 GetLocalScale() const { return m_LocalTransform.GetScale(); };
 
-		dae::Transform GetLocalTransform() const { return m_LocalTransform; };
+		inline dae::Transform GetLocalTransform() const { return m_LocalTransform; };
 		dae::Transform GetWorldTransform();
 
 		glm::vec2 GetWorldPosition();
@@ -98,10 +97,10 @@ namespace dae
 		bool ValidParent(GameObject* pParent);
 
 		void SeperateFromParent();
-		int GetChildCount() const { return static_cast<int>(m_pChildObjects.size()); };
-		bool HasParent() const { return (m_pParentObject != nullptr); };
+		inline int GetChildCount() const { return static_cast<int>(m_pChildObjects.size()); };
+		inline bool HasParent() const { return (m_pParentObject != nullptr); };
 
-		dae::Scene* GetContainingScene() const { return m_pContainingScene; };
+		inline dae::Scene* GetContainingScene() const { return m_pContainingScene; };
 
 		GameObject(Scene* pScene, GameObject* pParent = nullptr);
 		~GameObject();

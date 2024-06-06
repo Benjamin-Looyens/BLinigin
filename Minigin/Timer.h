@@ -12,11 +12,11 @@ namespace dae {
 		void Init();
 		void Update();
 		
-		void SetScale(float newScale) { m_TimeScale = newScale; };
-		void SetFPSAveragingCount(unsigned int newCount) { m_FPSAveragingCount = newCount; };
+		inline void SetScale(float newScale) { m_TimeScale = newScale; };
+		inline void SetFPSAveragingCount(unsigned int newCount) { m_FPSAveragingCount = newCount; };
 
-		float GetDeltaTime() const { return m_DeltaTime; };
-		float GetFixedTimeStep() const { return 1.0f / 60.0f * m_TimeScale; };
+		inline float GetDeltaTime() const { return m_DeltaTime; };
+		inline float GetFixedTimeStep() const { return 1.0f / 60.0f * m_TimeScale; };
 
 		std::chrono::high_resolution_clock::time_point GetPrevFrame() const { return m_PrevFrame; };
 

@@ -18,7 +18,7 @@ namespace dae {
 	public:
 		void PlaySound(const sound_id id, const float volume) override;
 		void LoadSound(const sound_id id) override;
-		void LinkIDToFilePath(const sound_id id, const char* filePath) override { m_SoundFileLinks[id] = filePath; };
+		inline void LinkIDToFilePath(const sound_id id, const char* filePath) override { m_SoundFileLinks[id] = filePath; };
 
 	private:
 		bool InitSound(const sound_id id, const bool overwriteIfExists = false) override;

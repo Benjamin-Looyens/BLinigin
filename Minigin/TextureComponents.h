@@ -62,9 +62,9 @@ namespace dae {
 		glm::vec2 GetAppliedTextureSize() const;
 		float GetTimeForLoop() const;
 		void NextLayer();
-		void ToggleAnimation() { m_DoAnimation = !m_DoAnimation; };
-		void StopAnimating() { m_DoAnimation = false; };
-		void StartAnimating() { m_DoAnimation = true; };
+		inline void ToggleAnimation() { m_DoAnimation = !m_DoAnimation; };
+		inline void StopAnimating() { m_DoAnimation = false; };
+		inline void StartAnimating() { m_DoAnimation = true; };
 
 		AnimatedTextureComponent(dae::GameObject* pParent, const std::string& fileName, int numFrames, float fps, int numLayers = 1);
 		AnimatedTextureComponent(const AnimatedTextureComponent& other) = delete;

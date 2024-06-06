@@ -10,20 +10,20 @@ namespace dae
 		Transform(glm::vec2 translation, glm::vec2 rotation, glm::vec2 scale);
 
 		// Getters
-		const glm::vec2& GetTranslation() const { return m_Translation; }
-		const glm::vec2& GetRotation()	  const { return m_Rotation; };
-		const glm::vec2& GetScale()		  const { return m_Scale; };
+		inline const glm::vec2& GetTranslation() const { return m_Translation; }
+		inline const glm::vec2& GetRotation()	 const { return m_Rotation; };
+		inline const glm::vec2& GetScale()		 const { return m_Scale; };
 
 		// Setters
-		void SetTranslation(glm::vec2 newPos) { m_Translation = newPos; };
-		void SetTranslation(float x, float y) { SetTranslation({ x, y }); };
+		inline void SetTranslation(glm::vec2 newPos) { m_Translation = newPos; };
+		inline void SetTranslation(float x, float y) { SetTranslation({ x, y }); };
 
-		void SetRotation(glm::vec2 newRotation) { m_Rotation = newRotation; };
-		void SetRotation(float xAngle, float yAngle) { SetRotation({ xAngle, yAngle }); };
+		inline void SetRotation(glm::vec2 newRotation) { m_Rotation = newRotation; };
+		inline void SetRotation(float xAngle, float yAngle) { SetRotation({ xAngle, yAngle }); };
 
-		void SetScale(glm::vec2 newScale) { m_Scale = newScale; };
-		void SetScale(float xScale, float yScale) { SetScale({ xScale, yScale}); };
-		void SetScale(float universalScale) { SetScale({ universalScale, universalScale }); };
+		inline void SetScale(glm::vec2 newScale) { m_Scale = newScale; };
+		inline void SetScale(float xScale, float yScale) { SetScale({ xScale, yScale}); };
+		inline void SetScale(float universalScale) { SetScale({ universalScale, universalScale }); };
 
 		// Modifiers
 		void MultiplyScale(float multiplier);
