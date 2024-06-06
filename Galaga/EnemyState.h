@@ -1,19 +1,14 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <vector>
+#include "State.h"
 
 namespace dae {
 	class EnemyLogic;
 
 	// TODO : consider template-izing the state pattern for easier reusing
-	class EnemyState
-	{
-	public:
-		virtual ~EnemyState() {};
-		virtual void Update(EnemyLogic& enemy) = 0;
-		virtual void OnEnter(EnemyLogic& enemy) = 0;
-		virtual void OnExit(EnemyLogic& enemy) = 0;
-	};
+
+	using EnemyState = State<EnemyLogic>;
 
 	class EnemySpawnInState final : public EnemyState
 	{
@@ -67,6 +62,7 @@ namespace dae {
 	public:
 		EnemySpawnInState();
 		EnemySpawnInState(std::vector<glm::vec2> path, glm::vec2 startLocation);
+		~EnemySpawnInState() override = default;
 
 		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
@@ -83,6 +79,8 @@ namespace dae {
 	class EnemyPatrolState final : public EnemyState
 	{
 	public:
+		~EnemyPatrolState() override = default;
+
 		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
@@ -95,6 +93,8 @@ namespace dae {
 	class EnemyKamikazeState final : public EnemyState
 	{
 	public:
+		~EnemyKamikazeState() override = default;
+
 		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
@@ -116,6 +116,8 @@ namespace dae {
 	class EnemyReturnToPatrolState final : public EnemyState
 	{
 	public: 
+		~EnemyReturnToPatrolState() override = default;
+
 		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
@@ -127,6 +129,8 @@ namespace dae {
 	class EnemyDeathState final : public EnemyState
 	{
 	public:
+		~EnemyDeathState() override = default;
+
 		void Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;

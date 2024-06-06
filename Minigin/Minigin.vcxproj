@@ -220,6 +220,7 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SoundSystem_Impl.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureComponents.h" />
     <ClInclude Include="Timer.h" />

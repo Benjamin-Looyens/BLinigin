@@ -140,6 +140,9 @@
     <ClInclude Include="..\3rdParty\nlohmann\include\single_include\json_fwd.hpp">
       <Filter>External Includes\nlohmann</Filter>
     </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Classes To Derive From</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Minigin.cpp">
