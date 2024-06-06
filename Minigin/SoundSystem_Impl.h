@@ -5,12 +5,9 @@
 #include <map>
 #include <string>
 #include <thread>
-
-#include <map>
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include <tuple>
 #include <string>
 
 namespace dae {
@@ -32,8 +29,7 @@ namespace dae {
 		std::map<sound_id, std::string> m_SoundFileLinks;
 
 		// Event Queue
-		//std::queue<std::pair<sound_id, float>> m_SoundQueue;
-		std::queue<std::tuple<sound_id, float, bool>> m_SoundQueue;
+		std::queue<std::pair<sound_id, float>> m_SoundQueue;
 		std::mutex m_SoundSysMutex;
 		std::condition_variable m_SoundAddedCondition;
 

@@ -7,7 +7,7 @@ void dae::SDL_SoundSystem::PlaySound(const sound_id id, const float volume)
 	std::cout << "Adding sound [" << id << "] to queue...\n";
 #endif 
 	std::lock_guard<std::mutex> lock{ m_SoundSysMutex };
-	m_SoundQueue.push({ id, volume, true });
+	m_SoundQueue.push({ id, volume });
 	m_SoundAddedCondition.notify_one();
 }
 
@@ -17,7 +17,7 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id)
 	std::cout << "Adding sound [" << id << "] to queue...\n";
 #endif 
 	std::lock_guard<std::mutex> lock{ m_SoundSysMutex };
-	m_SoundQueue.push({ id, 0.0f, false }); // HACK : Maybe instead of tuple with bool, just have it as a pair where it checks when the float is 0, then it doesnt play
+	m_SoundQueue.push({ id, 0.0f }); // HACK : Maybe instead of tuple with bool, just have it as a pair where it checks when the float is 0, then it doesnt play
 	m_SoundAddedCondition.notify_one();
 }
 
@@ -90,7 +90,7 @@ void dae::SDL_SoundSystem::PlaySoundFromQueue()
 		
 		sound_id id{ std::get<sound_id>(nextSound) };
 		float volume{ std::get<float>(nextSound) };
-		bool play{ std::get<bool>(nextSound) };
+		bool play{ volume > 0.0f };
 		auto sound = m_LoadedSounds[id];
 		
 		// See if sound is loaded
