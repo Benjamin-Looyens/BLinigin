@@ -7,6 +7,9 @@ dae::SubjectComponent::SubjectComponent(GameObject* pParent)
 	: Component(pParent)
 {}
 
+dae::SubjectComponent::~SubjectComponent()
+{}
+
 void dae::SubjectComponent::AddObserver(IObserver* pObserverToAdd)
 {
 	m_pObservers.push_back(pObserverToAdd);
@@ -34,11 +37,16 @@ void dae::SubjectComponent::NotifyObservers(Event&& eventToNotify)
 dae::ObservingComponent::ObservingComponent(GameObject* pParent)
 	: Component(pParent)
 {}
+dae::ObservingComponent::~ObservingComponent()
+{}
 #pragma endregion ObservingComponent
 
 #pragma region ObservingSubjectComponent
 dae::ObservingSubjectComponent::ObservingSubjectComponent(GameObject* pParent)
 	: Component(pParent)
+{}
+
+dae::ObservingSubjectComponent::~ObservingSubjectComponent()
 {}
 
 void dae::ObservingSubjectComponent::AddObserver(IObserver* pObserverToAdd)

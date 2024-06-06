@@ -10,7 +10,7 @@ namespace dae {
 	{
 	public:
 		SubjectComponent(GameObject* pParent);
-		virtual ~SubjectComponent() = default;
+		virtual ~SubjectComponent() = 0;
 
 		SubjectComponent(const SubjectComponent& other) = delete;
 		SubjectComponent(const SubjectComponent&& other) = delete;
@@ -30,7 +30,7 @@ namespace dae {
 	{
 	public:
 		ObservingComponent(GameObject* pParent);
-		virtual ~ObservingComponent() = default;
+		virtual ~ObservingComponent() = 0;
 
 		ObservingComponent(const ObservingComponent& other) = delete;
 		ObservingComponent(const ObservingComponent&& other) = delete;
@@ -42,7 +42,7 @@ namespace dae {
 	{
 	public:
 		ObservingSubjectComponent(GameObject* pParent);
-		virtual ~ObservingSubjectComponent() = default;
+		virtual ~ObservingSubjectComponent() = 0;
 
 		ObservingSubjectComponent(const ObservingSubjectComponent& other) = delete;
 		ObservingSubjectComponent(const ObservingSubjectComponent&& other) = delete;
