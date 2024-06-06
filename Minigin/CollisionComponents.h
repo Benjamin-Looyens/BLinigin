@@ -15,11 +15,11 @@ namespace dae {
 
 		SDL_FRect GetRect() const;
 
-		// NOTE : Check if need to inherit or not, if not, remove virtual destructor & update
+		// NOTE : Check if need to inherit or not, if yes, make virtual Update & Destructor
 		void Update() override;
 
 		CollisionComponent(GameObject* pParent, glm::vec2 widthHeight);
-		virtual ~CollisionComponent() = default; 
+		~CollisionComponent() = default; 
 		CollisionComponent(const CollisionComponent& other) = delete;
 		CollisionComponent(const CollisionComponent&& other) = delete;
 		CollisionComponent& operator=(const CollisionComponent& other) = delete;

@@ -7,8 +7,6 @@
 #include "Observer.h"
 #include "ObserverComponents.h"
 
-// TODO : Check & remove virtual where unnecessary (eg: virtual destructors in final)
-
 namespace dae {
 	// Class Forward Declarations
 	class Font;
@@ -23,10 +21,10 @@ namespace dae {
 	class FPSComponent final : public Component
 	{
 	public:
-		virtual void Update() override;
+		void Update() override;
 
 		FPSComponent(dae::GameObject* pParent, float displayUpdateInterval = 0.25f);
-		virtual ~FPSComponent() = default;
+		~FPSComponent() = default;
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) = delete;
 		FPSComponent& operator=(const FPSComponent& other) = delete;
@@ -42,10 +40,10 @@ namespace dae {
 	class WaveMovementYComponent final : public Component
 	{
 	public:
-		virtual void Update() override;
+		void Update() override;
 
 		WaveMovementYComponent(GameObject* pParent, float waveHeight = 10.0f, float waveSpeed = 1.0f);
-		virtual ~WaveMovementYComponent() = default;
+		~WaveMovementYComponent() = default;
 		WaveMovementYComponent(const WaveMovementYComponent& other) = delete;
 		WaveMovementYComponent(const WaveMovementYComponent&& other) = delete;
 		WaveMovementYComponent& operator=(const WaveMovementYComponent& other) = delete;
@@ -66,7 +64,7 @@ namespace dae {
 		void UpdateDisplay(std::string dataStr);
 
 		DisplayDataComponent(GameObject* pParent, std::string dataPrefix, std::string startData = "");
-		virtual ~DisplayDataComponent() = default;
+		~DisplayDataComponent() = default;
 		DisplayDataComponent(const DisplayDataComponent& other) = delete;
 		DisplayDataComponent(const DisplayDataComponent&& other) = delete;
 		DisplayDataComponent& operator=(const DisplayDataComponent& other) = delete;

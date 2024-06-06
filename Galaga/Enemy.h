@@ -14,13 +14,13 @@ namespace dae {
 		float movSpeed;
 	};
 
-	class Enemy : public Prefab
+	class Enemy final : public Prefab
 	{
 	public:
 		Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed, std::vector<IObserver*>& observers, float& animFPS, int& animFrames, int& health, sound_id& damageSoundID, sound_id& deathSoundID);
 		Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed, std::vector<IObserver*>& observers, float&& animFPS, int&& animFrames, int&& health, sound_id&& damageSoundID, sound_id&& deathSoundID);
 
-		virtual GameObject* AddToScene(Scene* pSceneToAddTo) override;
+		GameObject* AddToScene(Scene* pSceneToAddTo) override;
 
 		void SetObservers(std::vector<IObserver*> newObservers) { m_Observers = newObservers; };
 		std::vector<IObserver*> GetObservers() const { return m_Observers; };

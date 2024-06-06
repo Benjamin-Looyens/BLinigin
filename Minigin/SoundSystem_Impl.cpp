@@ -17,7 +17,7 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id)
 	std::cout << "Adding sound [" << id << "] to queue...\n";
 #endif 
 	std::lock_guard<std::mutex> lock{ m_SoundSysMutex };
-	m_SoundQueue.push({ id, 0.0f }); // HACK : Maybe instead of tuple with bool, just have it as a pair where it checks when the float is 0, then it doesnt play
+	m_SoundQueue.push({ id, 0.0f }); 
 	m_SoundAddedCondition.notify_one();
 }
 
