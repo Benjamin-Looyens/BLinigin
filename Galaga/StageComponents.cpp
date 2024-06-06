@@ -9,6 +9,9 @@
 #include "Scene.h"
 #include "ResourceManager.h"
 #include <json.hpp>
+#include "DerivedCommands.h"
+#include "InputManager.h"
+#include "Defines.h"
 
 // TODO : Fix Math Defines
 #define _USE_MATH_DEFINES
@@ -26,6 +29,8 @@ dae::StageManagerLogic::StageManagerLogic(GameObject* pParent, dae::Enemy boss, 
 	m_BeeEnemy.SetObservers(pFullObservers);
 
 	m_pParent->AddComponent<dae::ScalePulseComponent>(0.1f, 0.25f, 1.25f);
+
+	BL_INPUT.AddCommand<dae::SkipLevelCommand>(BL_KEYBOARD_F1, dae::InputState::PRESSED_THIS_FRAME, m_pParent);
 }
 
 void dae::StageManagerLogic::Update()
@@ -58,7 +63,7 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 			if (--m_NumberEnemies <= 0) {
 				m_StageActive = false;
 
-				for (auto& pFormationObject : m_FormationPositions) {
+				for (auto& pFormationObject : m_pFormationPositions) {
 					pFormationObject->Destroy();
 				}
 			}
@@ -99,7 +104,9 @@ void dae::StageManagerLogic::ParseEnemies()
 				m_pParent->AddChild(pBeeFormation);
 				pBeeFormation->SetLocalTranslation({ x, y });
 				pBee->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pBeeFormation);
-				m_FormationPositions.push_back(pBeeFormation);
+				m_pFormationPositions.push_back(pBeeFormation);
+
+				m_pEnemies.push_back(pBee);
 			}
 			
 		}
@@ -125,7 +132,9 @@ void dae::StageManagerLogic::ParseEnemies()
 				m_pParent->AddChild(pButterflyFormation);
 				pButterflyFormation->SetLocalTranslation({ x, y });
 				pButterfly->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pButterflyFormation);
-				m_FormationPositions.push_back(pButterflyFormation);
+				m_pFormationPositions.push_back(pButterflyFormation);
+
+				m_pEnemies.push_back(pButterfly);
 			}
 		}
 	}
@@ -150,7 +159,9 @@ void dae::StageManagerLogic::ParseEnemies()
 				m_pParent->AddChild(pBossFormation);
 				pBossFormation->SetLocalTranslation({ x, y });
 				pBoss->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pBossFormation);
-				m_FormationPositions.push_back(pBossFormation);
+				m_pFormationPositions.push_back(pBossFormation);
+
+				m_pEnemies.push_back(pBoss);
 			}
 		}
 	}
@@ -159,13 +170,30 @@ void dae::StageManagerLogic::ParseEnemies()
 void dae::StageManagerLogic::NextStage()
 {
 	std::cout << "NEXT STAGE\n";
-	m_FormationPositions.clear();
+
+	m_pFormationPositions.clear();
+	m_pEnemies.clear();
 
 	ParseEnemies();
 
-	m_NumberEnemies = static_cast<int>(m_FormationPositions.size());
+	m_NumberEnemies = static_cast<int>(m_pFormationPositions.size());
 	
 	m_CurrentStage = (m_CurrentStage + 1) % m_NumFormations;
+}
+
+void dae::StageManagerLogic::SkipStage()
+{
+	for (auto& pFormationObj : m_pFormationPositions) {
+		pFormationObj->DestroyWithChildren();
+	}
+	for (auto& pEnemy : m_pEnemies) {
+		pEnemy->DestroyWithChildren();
+	}
+
+	m_StageActive = true;
+	m_ElapsedTime = 0;
+
+	NextStage();
 }
 
 dae::ScalePulseComponent::ScalePulseComponent(GameObject* pParent, float frequency = 0.1f, float amplitude = 0.5f, float offset = 1.5f)

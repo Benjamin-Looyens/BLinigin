@@ -125,7 +125,7 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 							glm::vec2{ 10, windowSize.y - 26 },			// Lives counter pos
 							glm::vec2{ scoreInset.x, scoreInset.y },	// Score counter pos
 							"GalagaP1.tga",								// Sprite
-							0, 100.0f, 3, true };						// Index, speed, lives, controller
+							0, 100.0f, 3, dae::InputType::KEYBOARD };	// Index, speed, lives, input type
 
 	pPlayerOneObject = playerOne.AddToScene(&coopScene);
 
@@ -136,7 +136,7 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 							glm::vec2{ windowSize.x - 10 - textureSize.x, windowSize.y - 26 },	// Lives counter pos
 							glm::vec2{ windowSize.x - scoreInset.x, scoreInset.y },				// Score counter pos
 							"GalagaP2.tga",														// Sprite
-							1, 100.0f, 3, false };												// Index, speed, lives, controller
+							1, 100.0f, 3, dae::InputType::GAMEPAD };							// Index, speed, lives, input type
 
 	pPlayerTwoObject = playerTwo.AddToScene(&coopScene);
 

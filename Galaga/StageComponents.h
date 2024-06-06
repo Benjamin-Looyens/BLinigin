@@ -9,6 +9,8 @@ namespace dae {
 
 	class StageManagerLogic final : public ObservingSubjectComponent
 	{
+		friend class SkipLevelCommand;
+
 	public:
 		StageManagerLogic(GameObject* pParent, dae::Enemy boss, dae::Enemy butterfly, dae::Enemy bee);
 
@@ -31,11 +33,13 @@ namespace dae {
 
 		bool m_StageActive = false; // TODO : Implement state pattern here
 
-		std::vector<GameObject*> m_FormationPositions;
+		std::vector<GameObject*> m_pFormationPositions;
+		std::vector<GameObject*> m_pEnemies;
 
 		void ParseEnemies();
 
 		void NextStage();
+		void SkipStage();
 	};
 
 	class ScalePulseComponent final : public Component

@@ -8,6 +8,7 @@
 #include "ObserverComponents.h"
 #include "PlayerComponents.h"
 #include "SceneManager.h"
+#include "StageComponents.h"
 
 dae::GameObjectCommand::GameObjectCommand(GameObject* pActor)
 	: m_pGameObject{ pActor }
@@ -58,9 +59,22 @@ void dae::NotifyObserverCommand::Execute()
 
 void dae::KillPlayerCommand::Execute()
 {
-	GetGameObject()->GetComponent<dae::PlayerLogic>()->Die();
+	auto pPlayerLogic = GetGameObject()->GetComponent<dae::PlayerLogic>();
+	
+	if (pPlayerLogic) pPlayerLogic->Die();
 }
 
 dae::KillPlayerCommand::KillPlayerCommand(dae::GameObject* pGameObj)
 	: GameObjectCommand(pGameObj)
+{}
+
+void dae::SkipLevelCommand::Execute()
+{
+	auto pStageLogic = GetGameObject()->GetComponent<dae::StageManagerLogic>();
+	
+	if (pStageLogic) pStageLogic->SkipStage();
+}
+
+dae::SkipLevelCommand::SkipLevelCommand(dae::GameObject* pStageManagerObj)
+	: GameObjectCommand(pStageManagerObj)
 {}

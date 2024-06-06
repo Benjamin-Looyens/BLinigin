@@ -16,12 +16,18 @@ namespace dae {
 		int startingLives;
 	};
 
+	enum class InputType
+	{
+		KEYBOARD,
+		GAMEPAD,
+		KEYBOARD_AND_GAMEPAD
+	};
+
 	class Player final : public Prefab
 	{
 	public:
-		Player(glm::vec2& playerStartPos, glm::vec2& livesCounterPos, glm::vec2& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController);
-		Player(glm::vec2&& playerStartPos, glm::vec2&& livesCounterPos, glm::vec2&& scoreCounterPos, std::string&& playerSpriteLocation, int&& playerIndex, float&& movSpeed, int&& startingLives, bool&& useController);
-		Player(PlayerData& playerdata);
+		Player(glm::vec2& playerStartPos, glm::vec2& livesCounterPos, glm::vec2& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, InputType& inputType);
+		Player(glm::vec2&& playerStartPos, glm::vec2&& livesCounterPos, glm::vec2&& scoreCounterPos, std::string&& playerSpriteLocation, int&& playerIndex, float&& movSpeed, int&& startingLives, InputType&& inputType);
 
 		GameObject* AddToScene(Scene* pSceneToAddTo) override;
 
@@ -36,9 +42,13 @@ namespace dae {
 		glm::vec2 m_ScoreCounterPos;
 		std::string m_PlayerSpriteLocation;
 		int m_PlayerIndex;
-		bool m_UseController;
 		float m_SpawnMovSpeed;
 		int m_StartingLives;
+
+		dae::InputType m_InputType;
+
+		void AddKeyboardInput(GameObject* pPlayerObj) const;
+		void AddGamepadInput(GameObject* pPlayerObj) const;
 	};
 }
 

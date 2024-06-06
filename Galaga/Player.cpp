@@ -12,26 +12,22 @@
 #include "GameplayCommands.h"
 #include "TextureComponents.h"
 
-dae::Player::Player(glm::vec2& playerStartPos, glm::vec2& livesCounterPos, glm::vec2& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, bool& useController)
+dae::Player::Player(glm::vec2& playerStartPos, glm::vec2& livesCounterPos, glm::vec2& scoreCounterPos, std::string& playerSpriteLocation, int& playerIndex, float& movSpeed, int& startingLives, dae::InputType& inputType)
 	: m_PlayerStartPos{ playerStartPos }, m_LivesCounterPos{ livesCounterPos }, m_ScoreCounterPos{ scoreCounterPos },
 	m_PlayerSpriteLocation{ playerSpriteLocation },
 	m_PlayerIndex{ playerIndex },
 	m_SpawnMovSpeed{ movSpeed },
-	m_UseController{ useController },
+	m_InputType{ inputType },
 	m_StartingLives{ startingLives }
 {}
 
-dae::Player::Player(glm::vec2&& playerStartPos, glm::vec2&& livesCounterPos, glm::vec2&& scoreCounterPos, std::string&& playerSpriteLocation, int&& playerIndex, float&& movSpeed, int&& startingLives, bool&& useController)
+dae::Player::Player(glm::vec2&& playerStartPos, glm::vec2&& livesCounterPos, glm::vec2&& scoreCounterPos, std::string&& playerSpriteLocation, int&& playerIndex, float&& movSpeed, int&& startingLives, dae::InputType&& inputType)
 	: m_PlayerStartPos{ playerStartPos }, m_LivesCounterPos{ livesCounterPos }, m_ScoreCounterPos{ scoreCounterPos },
 	m_PlayerSpriteLocation{ playerSpriteLocation },
 	m_PlayerIndex{ playerIndex },
 	m_SpawnMovSpeed{ movSpeed },
-	m_UseController{ useController },
+	m_InputType{ inputType },
 	m_StartingLives{ startingLives }
-{}
-
-dae::Player::Player(PlayerData& playerdata)
-	: Player(playerdata.startPos, playerdata.livesCounterPos, playerdata.scoreCounterPos, playerdata.spriteLocation, playerdata.playerIndex, playerdata.movSpeed, playerdata.startingLives, playerdata.useController)
 {}
 
 dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
@@ -58,31 +54,47 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 	pScore->AddObserver(pLivesComp);
 
 	// Input
-	auto& input = BL_INPUT;
-
-	switch (m_UseController) {
-	case true:
-		input.AddGamepad();
-		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_LEFT,	pPlayer, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT,	pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
-
-		input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
-
-#ifndef NDEBUG
-		input.AddCommand<dae::KillPlayerCommand>(BL_GAMEPAD_START, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
-#endif
+	switch (m_InputType) {
+	case InputType::GAMEPAD:
+		AddGamepadInput(pPlayer);
 		break;
-	case false:
-		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, pPlayer, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
-
-		input.AddCommand<dae::FireCommand>(BL_KEYBOARD_SPACE, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
-
-#ifndef NDEBUG
-		input.AddCommand<dae::KillPlayerCommand>(BL_KEYBOARD_F10, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
-#endif
+	case InputType::KEYBOARD:
+		AddKeyboardInput(pPlayer);
+		break;
+	case InputType::KEYBOARD_AND_GAMEPAD:
+		AddGamepadInput(pPlayer);
+		AddKeyboardInput(pPlayer);
 		break;
 	}
 
 	return pPlayer;
+}
+
+void dae::Player::AddKeyboardInput(GameObject* pPlayerObj) const
+{
+	auto& input = BL_INPUT;
+
+	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, pPlayerObj, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
+	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, pPlayerObj, glm::vec2{ 1.0f,  0.0f }, m_SpawnMovSpeed);
+
+	input.AddCommand<dae::FireCommand>(BL_KEYBOARD_SPACE, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
+
+#ifndef NDEBUG
+	input.AddCommand<dae::KillPlayerCommand>(BL_KEYBOARD_F10, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
+#endif
+}
+
+void dae::Player::AddGamepadInput(GameObject* pPlayerObj) const
+{
+	auto& input = BL_INPUT;
+
+	input.AddGamepad();
+	input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_LEFT, pPlayerObj, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
+	input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT, pPlayerObj, glm::vec2{ 1.0f,  0.0f }, m_SpawnMovSpeed);
+
+	input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
+
+#ifndef NDEBUG
+	input.AddCommand<dae::KillPlayerCommand>(BL_GAMEPAD_START, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
+#endif
 }

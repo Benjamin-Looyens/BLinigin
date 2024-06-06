@@ -193,6 +193,19 @@ void dae::GameObject::Destroy()
 	m_Destroyed = true;
 }
 
+void dae::GameObject::DestroyWithChildren()
+{
+	if (m_pParentObject) SeperateFromParent();
+
+	if (!m_pChildObjects.empty()) {
+		for (auto& pChild : m_pChildObjects) {
+			if (pChild) pChild->DestroyWithChildren();
+		}
+	}
+	
+	m_Destroyed = true;
+}
+
 void dae::GameObject::AddChild(GameObject* pNewChild)
 {
 	if (pNewChild->m_pParentObject == this) {

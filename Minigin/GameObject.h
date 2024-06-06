@@ -46,6 +46,7 @@ namespace dae
 		void PrintComponents() const; // for debug
 
 		void Destroy();
+		void DestroyWithChildren();
 		bool IsDestroyed() const { return m_Destroyed; };
 
 		// Makes the GameObject use the parent as the origin where it moves from; If it has no parent, this value will be ignored

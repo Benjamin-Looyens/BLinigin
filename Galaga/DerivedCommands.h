@@ -64,4 +64,12 @@ namespace dae
 
 		KillPlayerCommand(dae::GameObject* pGameObj);
 	};
+
+	class SkipLevelCommand final : public GameObjectCommand
+	{
+	public:
+		void Execute() override;
+
+		SkipLevelCommand(dae::GameObject* pStageManagerObj); 
+	};
 }
