@@ -28,12 +28,17 @@ void dae::PlayerLogic::LateUpdate()
 
 void dae::PlayerLogic::Fire()
 {
-	dae::Dart dart{ 500.0f, m_pParent->GetWorldPosition(), { 0.0f, -1.0f }, "PlayerDart.tga" };
+	dae::Dart dart{ 500.0f, m_pParent->GetWorldPosition(), { 0.0f, -1.0f }, "PlayerDart.png" };
 	
 	auto pDart = dart.AddToScene(m_pParent->GetContainingScene());
+	auto parentPos = m_pParent->GetWorldPosition();
+	auto parentSize = m_pParent->GetComponent<dae::TextureComponent>()->GetTextureSize() * m_pParent->GetWorldScale();
+	auto dartSize = pDart->GetComponent<dae::TextureComponent>()->GetTextureSize() * pDart->GetWorldScale();
 
-	//m_pDarts.push_back(pDart);
-	
+	glm::vec2 dartPos{ (parentPos.x + ((parentSize.x - dartSize.x) / 2)),
+					   (parentPos.y) };
+	pDart->SetLocalTranslation(dartPos);
+
 	// TODO : rework the observer assignment here to be less coupled
 	auto pDartLogic = pDart->GetComponent<dae::DartLogic>();
 	if (pDartLogic) {

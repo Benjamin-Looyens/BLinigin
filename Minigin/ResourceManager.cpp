@@ -58,19 +58,23 @@ void dae::ResourceManager::UnLoadTexture(const std::string& file)
 		}
 
 		m_LoadedTexturesMap.erase(fullPath);
+#ifndef NDEBUG
+		std::cout << "Loaded texture with file [" << fullPath << "] was successfully unloaded!\n";
+#endif
 	}
 	else {
+#ifndef NDEBUG
 		std::cerr << "Loaded texture with file [" << fullPath << "] was not loaded before trying to unload!\n";
+#endif
 	}
 }
 
 bool dae::ResourceManager::IsTextureLoaded(const std::string& file)
 {
 	const auto fullPath = m_DataPath + file;
-	auto loadedTexture = m_LoadedTexturesMap[fullPath];
+	auto pLoadedTexture = m_LoadedTexturesMap[fullPath];
 
-	if (loadedTexture) return true;
-	else return false;
+	return pLoadedTexture != nullptr;
 }
 
 dae::Font* dae::ResourceManager::LoadFont(const std::string& file, unsigned int size)
@@ -101,9 +105,14 @@ void dae::ResourceManager::UnLoadFont(const std::string& file, unsigned int size
 		}
 
 		m_LoadedFontsMap.erase({ fullPath, size });
+#ifndef NDEBUG
+		std::cout << "Loaded font with file [" << fullPath << "] and size [" << size << "] was succesfully unloaded!\n";
+#endif
 	}
 	else {
+#ifndef NDEBUG
 		std::cerr << "Loaded font with file [" << fullPath << "] and size [" << size << "] was not loaded before trying to unload!\n";
+#endif
 	}
 }
 
@@ -112,7 +121,7 @@ bool dae::ResourceManager::IsFontLoaded(const std::string& file, unsigned int si
 	const auto fullPath = m_DataPath + file;
 	auto loadedFont = m_LoadedFontsMap[{fullPath, size}];
 
-	return loadedFont;
+	return loadedFont != nullptr;
 }
 
 nlohmann::json* dae::ResourceManager::LoadJSON(const std::string& fileName)
@@ -127,7 +136,7 @@ nlohmann::json* dae::ResourceManager::LoadJSON(const std::string& fileName)
 
 	if (!jsonFile.is_open()) {
 #ifndef NDEBUG
-		std::cerr << fileName << " could not be opened!\n";
+		std::cerr << "JSON file " << fileName << " could not be opened!\n";
 #endif
 		return nullptr;
 	}
@@ -150,11 +159,32 @@ nlohmann::json* dae::ResourceManager::LoadJSON(const std::string& fileName)
 
 bool dae::ResourceManager::IsJSONLoaded(const std::string& fileName)
 {
-	fileName;
-	return false;
+	const auto fullPath = m_DataPath + fileName;
+	auto pLoadedJSON = m_LoadedJSONMap[fullPath];
+	return pLoadedJSON != nullptr;
 }
 
 void dae::ResourceManager::UnLoadJSON(const std::string& fileName)
 {
-	fileName;
+	const auto fullPath = m_DataPath + fileName;
+	auto pLoadedJSON = m_LoadedJSONMap[fullPath];
+
+	if (pLoadedJSON) {
+		for (auto& pJson : m_LoadedJSON) {
+			if (pJson.get() == pLoadedJSON) {
+				pJson.reset();
+				break;
+			}
+		}
+
+		m_LoadedTexturesMap.erase(fullPath);
+#ifndef NDEBUG
+		std::cout << "Loaded json with file [" << fullPath << "] was successfully unloaded!\n";
+#endif
+	}
+	else {
+#ifndef NDEBUG
+		std::cerr << "Loaded json with file [" << fullPath << "] was not loaded before trying to unload!\n";
+#endif
+	}
 }

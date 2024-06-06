@@ -114,6 +114,7 @@ void load()
 // TODO : Add easy way to get screen size (as a global probably)
 // TODO : Check for if destroyed objects remove themselves from their parents
 // TODO : Make soundsys path same as resource manager
+// TODO : Add debug info for when a file is missing 
 
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");

@@ -71,9 +71,13 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 void dae::StageManagerLogic::ParseEnemies()
 {
 	std::string formationString{ "Formations/Formation" + std::to_string((m_CurrentStage) % (m_NumFormations) + 1) + ".json" };
-	//std::string formationString{ "Formations/Formation1.json" };
 
 	nlohmann::json* pFormation = BL_RESOURCE.LoadJSON(formationString);
+
+	if (!pFormation) {
+		std::cerr << "Formation file could not be found!\n";
+		return;
+	}
 
 	if (pFormation->contains("Bees") && pFormation->at("Bees").is_array() && !pFormation->at("Bees").empty()) {
 		auto& jsonDataBees = pFormation->at("Bees");

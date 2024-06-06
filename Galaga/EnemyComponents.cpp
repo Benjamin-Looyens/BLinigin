@@ -102,7 +102,9 @@ void dae::EnemyLogic::SyncToFormation()
 	// Return to formation
 	m_pFormationLocationRoot->AddChild(m_pParent);
 	m_pParent->SetLocalTranslation({ 0, 0 });
+#ifndef NDEBUG
 	std::cout << "[Enemy] X: " << m_pParent->GetWorldPosition().x << ", Y: " << m_pParent->GetWorldPosition().y << "\n";
+#endif
 }
 
 void dae::EnemyLogic::DetachFromFormation()
