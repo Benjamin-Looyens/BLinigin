@@ -38,9 +38,9 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 {
 	// Player itself
 	auto pPlayer = pSceneToAddTo->AddGameObject();
-	pPlayer->SetLocalTranslation(m_PlayerStartPos);
 	pPlayer->SetLocalScale(2.0f, 2.0f);
 	auto pTextureComp = pPlayer->AddComponent<dae::TextureComponent>(m_PlayerSpriteLocation);
+	pPlayer->SetLocalTranslation(m_PlayerStartPos);
 	auto pPlayerLogic = pPlayer->AddComponent<dae::PlayerLogic>();
 	pPlayer->AddComponent<dae::CollisionComponent>(pTextureComp->GetTextureSize());
 
@@ -50,7 +50,7 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 	else				pLivesComp = pPlayer->AddComponent<dae::LivesComponent>(m_StartingLives, m_LivesCounterPos, glm::vec2{ 1, 0 });
 
 	// Score Counter
-	auto pFont = BL_RESOURCE.LoadFont("Emulogic.ttf", 25);
+	auto pFont = BL_RESOURCE.LoadFont("Emulogic.ttf", 18);
 	auto pScore = pPlayer->AddComponent<dae::ScoreComponent>(m_ScoreCounterPos, pFont, std::string{ "playerScore" + std::to_string(m_PlayerIndex) });
 
 	// Observers
@@ -63,17 +63,13 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 	switch (m_UseController) {
 	case true:
 		input.AddGamepad();
-		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_UP,		pPlayer, glm::vec2{  0.0f, -1.0f }, m_SpawnMovSpeed);
 		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_LEFT,	pPlayer, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
 		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT,	pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_DOWN,	pPlayer, glm::vec2{  0.0f,  1.0f }, m_SpawnMovSpeed);
 
 		input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
 		break;
 	case false:
-		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_W, pPlayer, glm::vec2{  0.0f, -1.0f }, m_SpawnMovSpeed);
 		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, pPlayer, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
-		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_S, pPlayer, glm::vec2{  0.0f,  1.0f }, m_SpawnMovSpeed);
 		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
 
 		input.AddCommand<dae::FireCommand>(BL_KEYBOARD_SPACE, dae::InputState::PRESSED_THIS_FRAME, pPlayer);

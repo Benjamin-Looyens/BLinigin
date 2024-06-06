@@ -11,6 +11,7 @@
 #include "GameObject.h"
 #include "DartLogic.h"
 #include "TextureComponents.h"
+#include "Timer.h"
 
 dae::PlayerLogic::PlayerLogic(GameObject* pParent)
 	: SubjectComponent(pParent)
@@ -125,9 +126,34 @@ void dae::LivesComponent::LoseLife()
 #pragma endregion LivesComponent
 
 #pragma region ScoreComponent
+const std::string dae::ScoreComponent::s_ONE_UP_TEXT = "1UP";
+dae::Texture2D* dae::ScoreComponent::s_pOneUpTextTexture = nullptr;
+float dae::ScoreComponent::s_OneUpTimer = 0.0f;
+bool dae::ScoreComponent::s_DisplayOneUp = true;
+int dae::ScoreComponent::s_NumScoreCounters = 0;
+
 dae::ScoreComponent::ScoreComponent(dae::GameObject* pParent, glm::vec2 displayPosition, dae::Font* pFont, std::string resourceName)
 	: ObservingSubjectComponent(pParent), m_DisplayPos{ displayPosition }, m_pFont{ pFont }, m_ResourceFileStr{ resourceName }
-{}
+{
+	if (!s_pOneUpTextTexture) {
+		const SDL_Color color = { 255, 0, 0, 255 };
+		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), s_ONE_UP_TEXT.c_str(), color);
+		if (surf == nullptr) throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
+
+		auto texture = SDL_CreateTextureFromSurface(BL_RENDERER.GetSDLRenderer(), surf);
+		if (texture == nullptr) throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
+
+		SDL_FreeSurface(surf);
+		s_pOneUpTextTexture = BL_RESOURCE.LoadTexture(texture, "1UP_Text");
+	}
+
+	s_NumScoreCounters++;
+}
+
+dae::ScoreComponent::~ScoreComponent()
+{
+	s_NumScoreCounters--;
+}
 
 void dae::ScoreComponent::AddPoints(int pointsToAdd)
 {
@@ -164,11 +190,38 @@ void dae::ScoreComponent::Update()
 		m_pTextTexture = resourceManager.LoadTexture(texture, m_ResourceFileStr);
 		m_TextDirty = false;
 	}
+
+	if (s_OneUpTimer >= s_MAX_ONE_UP_TIMER) {
+		s_DisplayOneUp = !s_DisplayOneUp;
+		s_OneUpTimer = 0.0f;
+	}
+	s_OneUpTimer += BL_TIMER.GetDeltaTime() / s_NumScoreCounters;
 }
 
 void dae::ScoreComponent::Render() const
 {
-	if (m_pTextTexture != nullptr) BL_RENDERER.RenderTexture(*m_pTextTexture, m_DisplayPos.x, m_DisplayPos.y);
+	if (m_pTextTexture != nullptr) {
+		const auto& parentScale = m_pParent->GetWorldScale();
+		const auto& textSize = m_pTextTexture->GetSize();
+
+		glm::vec2 realMainPos = m_DisplayPos;
+
+		realMainPos.x -= ((textSize.x / 2) * parentScale.x) / 2; // always keep centered
+
+		BL_RENDERER.RenderTexture(*m_pTextTexture, realMainPos.x, realMainPos.y);
+
+		if (s_pOneUpTextTexture != nullptr) {
+
+			if (s_DisplayOneUp) {
+				glm::vec2 real1upPos = m_DisplayPos;
+
+				real1upPos.x -= ((s_pOneUpTextTexture->GetSize().x / 2) * parentScale.x) / 2; // always keep centered
+				real1upPos.y -= textSize.y;
+
+				BL_RENDERER.RenderTexture(*s_pOneUpTextTexture, real1upPos.x, real1upPos.y);
+			}
+		}
+	}
 }
 
 void dae::ScoreComponent::OnNotify(const ISubject*, Event event)

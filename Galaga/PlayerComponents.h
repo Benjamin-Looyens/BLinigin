@@ -69,7 +69,7 @@ namespace dae {
 		void OnNotify(const ISubject* pSubject, Event event) override;
 
 		ScoreComponent(GameObject* pParent, glm::vec2 displayPosition, dae::Font* pFont, std::string resourceName);
-		~ScoreComponent() = default;
+		~ScoreComponent();
 		ScoreComponent(const ScoreComponent& other) = delete;
 		ScoreComponent(const ScoreComponent&& other) = delete;
 		ScoreComponent& operator=(const ScoreComponent& other) = delete;
@@ -77,8 +77,19 @@ namespace dae {
 
 	private:
 		Font* m_pFont;		
+
+		// Score texture itself:
 		Texture2D* m_pTextTexture;
 		const std::string m_ResourceFileStr;
+
+		// 1 UP flashing above:
+		static Texture2D* s_pOneUpTextTexture;
+		static const std::string s_ONE_UP_TEXT;
+		static int s_NumScoreCounters;
+		static float s_OneUpTimer;
+		static bool s_DisplayOneUp;
+		static constexpr float s_MAX_ONE_UP_TIMER = 0.3f;
+
 		glm::vec2 m_DisplayPos;
 
 		int m_Score{ };
