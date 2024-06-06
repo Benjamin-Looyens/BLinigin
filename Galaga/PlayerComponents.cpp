@@ -13,7 +13,7 @@
 #include "TextureComponents.h"
 
 dae::PlayerLogic::PlayerLogic(GameObject* pParent)
-	: Component(pParent)
+	: SubjectComponent(pParent)
 {}
 
 void dae::PlayerLogic::Update()
@@ -48,12 +48,23 @@ void dae::PlayerLogic::Fire()
 		}
 	}
 
+	NotifyObservers(Event::PLAYER_SHOOT);
+
 	BL_SOUND.PlaySound(13, 0.3f);
+}
+
+void dae::PlayerLogic::Die()
+{
+	NotifyObservers(Event::PLAYER_DIED);
+
+#ifndef NDEBUG
+	std::cout << "Player lost life!\n";
+#endif
 }
 
 #pragma region LivesComponent
 dae::LivesComponent::LivesComponent(GameObject* pParent, int lives, glm::vec2 displayPosition, glm::vec2 livesStackDirection)
-	: ObservingComponent(pParent), m_NumLives{ lives }, m_DisplayPos{ displayPosition }, m_LivesStackDir{ livesStackDirection }
+	: ObservingSubjectComponent(pParent), m_NumLives{ lives }, m_DisplayPos{ displayPosition }, m_LivesStackDir{ livesStackDirection }
 {
 	if (pParent) {
 		auto pTextureComp = pParent->GetComponent<dae::TextureComponent>();
@@ -98,18 +109,24 @@ void dae::LivesComponent::OnNotify(const ISubject*, Event event)
 		LoseLife();
 		// TODO : Play sound
 		break;
+	case Event::ONE_UP:
+		GainLife();
+		// TODO : Play sound
 	}
 }
 
 void dae::LivesComponent::LoseLife()
 {
 	m_NumLives--;
+
+	// TODO : add check for other player
+	if (m_NumLives <= 0) NotifyObservers(Event::GAME_OVER);
 }
 #pragma endregion LivesComponent
 
 #pragma region ScoreComponent
 dae::ScoreComponent::ScoreComponent(dae::GameObject* pParent, glm::vec2 displayPosition, dae::Font* pFont, std::string resourceName)
-	: ObservingComponent(pParent), m_DisplayPos{ displayPosition }, m_pFont{ pFont }, m_ResourceFileStr{ resourceName }
+	: ObservingSubjectComponent(pParent), m_DisplayPos{ displayPosition }, m_pFont{ pFont }, m_ResourceFileStr{ resourceName }
 {}
 
 void dae::ScoreComponent::AddPoints(int pointsToAdd)
@@ -117,6 +134,13 @@ void dae::ScoreComponent::AddPoints(int pointsToAdd)
 	m_Score += pointsToAdd;
 
 	m_TextDirty = true;
+
+	if (m_Score >= s_NUM_POINTS_FOR_1UP) {
+		if (m_Score / s_NUM_POINTS_FOR_1UP > m_NumTimesOneUp) {
+			NotifyObservers(Event::ONE_UP);
+			m_NumTimesOneUp++;
+		}
+	}
 }
 
 void dae::ScoreComponent::Update()
@@ -149,8 +173,6 @@ void dae::ScoreComponent::Render() const
 
 void dae::ScoreComponent::OnNotify(const ISubject*, Event event)
 {
-
-
 	switch (event) {
 	case Event::BEE_DIED_FORMATION:
 		AddPoints(50);

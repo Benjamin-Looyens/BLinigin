@@ -7,27 +7,26 @@
 namespace dae {
 	class Font;
 
-	class PlayerLogic final : public Component
+	class PlayerLogic final : public SubjectComponent
 	{
 	public:
 		void Update() override;
 		void LateUpdate() override;
 
 		void Fire();
+		void Die();
 
 		PlayerLogic(GameObject* pParent);
-
+		~PlayerLogic() = default;
 		PlayerLogic(const PlayerLogic& other) = delete;
 		PlayerLogic(const PlayerLogic&& other) = delete;
 		PlayerLogic& operator=(const PlayerLogic& other) = delete;
 		PlayerLogic& operator=(const PlayerLogic&& other) = delete;
 
 	private:
-		std::vector<GameObject*> m_pDarts;
-		bool m_DartDestroyedThisFrame;
 	};
 
-	class LivesComponent final : public ObservingComponent
+	class LivesComponent final : public ObservingSubjectComponent
 	{
 	public:
 		void LoseLife();
@@ -41,7 +40,7 @@ namespace dae {
 		void OnNotify(const ISubject* pSubject, Event event) override;
 
 		LivesComponent(GameObject* pParent, int lives, glm::vec2 displayPosition = { 0, 0 }, glm::vec2 livesStackDirection = { 1, 0 });
-		virtual ~LivesComponent() = default;
+		~LivesComponent() = default;
 		LivesComponent(const LivesComponent& other) = delete;
 		LivesComponent(const LivesComponent&& other) = delete;
 		LivesComponent& operator=(const LivesComponent& other) = delete;
@@ -58,7 +57,7 @@ namespace dae {
 		static constexpr float s_SPACER_BETWEEN_LIVES{ 5.0f };
 	};
 
-	class ScoreComponent final : public ObservingComponent
+	class ScoreComponent final : public ObservingSubjectComponent
 	{
 	public:
 		int GetScore() const { return m_Score; };
@@ -70,7 +69,7 @@ namespace dae {
 		void OnNotify(const ISubject* pSubject, Event event) override;
 
 		ScoreComponent(GameObject* pParent, glm::vec2 displayPosition, dae::Font* pFont, std::string resourceName);
-		virtual ~ScoreComponent() = default;
+		~ScoreComponent() = default;
 		ScoreComponent(const ScoreComponent& other) = delete;
 		ScoreComponent(const ScoreComponent&& other) = delete;
 		ScoreComponent& operator=(const ScoreComponent& other) = delete;
@@ -84,6 +83,9 @@ namespace dae {
 
 		int m_Score{ };
 		bool m_TextDirty{ true };
+
+		int m_NumTimesOneUp{ 0 };
+		static constexpr int s_NUM_POINTS_FOR_1UP = 20000;
 	};
 
 }

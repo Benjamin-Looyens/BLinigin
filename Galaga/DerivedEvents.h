@@ -7,6 +7,8 @@ namespace dae {
 
 		PLAYER_DIED,
 		PLAYER_SPAWNED,
+		GAME_OVER,
+		ONE_UP,
 		
 		BIG_ENEMY_DIED,
 		SMALL_ENEMY_DIED,

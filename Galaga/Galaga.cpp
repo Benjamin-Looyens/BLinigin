@@ -59,11 +59,11 @@ void load()
 	pBackgroundObject->AddChild(pBackgroundTileBR);
 
 	// Prefabs
-	dae::Player playerOne{glm::vec2{ 30, 420 }, glm::vec2{ 10, 10 }, glm::vec2{ 10, 160 }, "GalagaP1.tga", 0, 100.0f, 5, true };
+	dae::Player playerOne{glm::vec2{ 30, 420 }, glm::vec2{ 10, 10 }, glm::vec2{ 10, 160 }, "GalagaP1.tga", 0, 100.0f, 3, true };
 	auto pPlayerOneObject = playerOne.AddToScene(&scene);
 
 	auto textureSize = pPlayerOneObject->GetComponent<dae::TextureComponent>()->GetTextureSize(); // NOTE : Temporary setup
-	dae::Player playerTwo{ glm::vec2{ 90, 420 }, glm::vec2{ screenWidth - 10 - textureSize.x, 10 }, glm::vec2{ 10, 230 }, "GalagaP2.tga", 1, 100.0f, 5, false };
+	dae::Player playerTwo{ glm::vec2{ 90, 420 }, glm::vec2{ screenWidth - 10 - textureSize.x, 10 }, glm::vec2{ 10, 230 }, "GalagaP2.tga", 1, 100.0f, 3, false };
 	auto pPlayerTwoObject = playerTwo.AddToScene(&scene);
 
 	// Sound
