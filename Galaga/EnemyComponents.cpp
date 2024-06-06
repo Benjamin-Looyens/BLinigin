@@ -10,8 +10,9 @@
 
 #include "TEMP_PlayerGlobal.h"
 
-dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health, sound_id damageSoundID, sound_id deathSoundID)
-	: SubjectComponent(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }, m_Health{ health }, m_DamageSound{ damageSoundID }, m_DeathSound{ deathSoundID }
+dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health, sound_id damageSoundID, sound_id deathSoundID, dae::Event normalDeath, dae::Event kamikazeDeath)
+	: SubjectComponent(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }, m_Health{ health }, m_DamageSound{ damageSoundID }, m_DeathSound{ deathSoundID },
+	  m_NormalDeath{ normalDeath }, m_KamikazeDeath{ kamikazeDeath }
 {
 	m_pSwitchState = std::make_unique<EnemySpawnInState>();
 }

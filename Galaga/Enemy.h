@@ -3,6 +3,7 @@
 #include "glm/vec2.hpp"
 #include <string>
 #include "SoundSystem.h"
+#include "DerivedEvents.h"
 
 namespace dae {
 	class IObserver;
@@ -17,8 +18,8 @@ namespace dae {
 	class Enemy final : public Prefab
 	{
 	public:
-		Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed, std::vector<IObserver*>& observers, float& animFPS, int& animFrames, int& health, sound_id& damageSoundID, sound_id& deathSoundID);
-		Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed, std::vector<IObserver*>& observers, float&& animFPS, int&& animFrames, int&& health, sound_id&& damageSoundID, sound_id&& deathSoundID);
+		Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed, std::vector<IObserver*>& observers, float& animFPS, int& animFrames, int& health, sound_id& damageSoundID, sound_id& deathSoundID, dae::Event& normalDeath, dae::Event& kamikazeDeath);
+		Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed, std::vector<IObserver*>& observers, float&& animFPS, int&& animFrames, int&& health, sound_id&& damageSoundID, sound_id&& deathSoundID, dae::Event&& normalDeath, dae::Event&& kamikazeDeath);
 
 		GameObject* AddToScene(Scene* pSceneToAddTo) override;
 
@@ -44,6 +45,9 @@ namespace dae {
 
 		sound_id m_DamageSound;
 		sound_id m_DeathSound;
+
+		dae::Event m_NormalDeath;
+		dae::Event m_KamikazeDeath;
 	};
 }
 

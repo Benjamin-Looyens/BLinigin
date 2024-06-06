@@ -13,7 +13,7 @@ namespace dae {
 	class EnemyLogic final : public SubjectComponent
 	{
 	public:
-		EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health, sound_id damageSoundID, sound_id deathSoundID);
+		EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health, sound_id damageSoundID, sound_id deathSoundID, dae::Event normalDeath, dae::Event kamikazeDeath);
 		void Update() override;
 		void LateUpdate() override;
 		
@@ -51,9 +51,9 @@ namespace dae {
 		EnemyDeath m_DeathAnim{ };
 
 		// TODO : Implement these through constructor
-		dae::Event m_NormalDeath	= dae::Event::BOSS_DIED_FORMATION;
-		dae::Event m_KamikazeDeath	= dae::Event::BOSS_DIED_KAMIKAZE;
-		dae::Event m_ReturnDeath	= dae::Event::NULL_EVENT;
+		dae::Event m_NormalDeath;
+		dae::Event m_KamikazeDeath;
+		dae::Event m_ReturnDeath = dae::Event::NULL_EVENT;
 
 		sound_id m_DamageSound;
 		sound_id m_DeathSound;

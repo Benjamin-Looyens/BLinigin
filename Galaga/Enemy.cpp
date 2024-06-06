@@ -8,21 +8,21 @@
 #include "ServiceLocator.h"
 #include "TextureComponents.h"
 
-dae::Enemy::Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed, std::vector<IObserver*>& observers, float& animFPS, int& animFrames, int& health, sound_id& damageSoundID, sound_id& deathSoundID)
-	: m_StartPos{ startPos }, m_SpriteLocation{ spriteLocation }, m_SpawnMovSpeed{ spawnMovSpeed }, m_PatrolMovSpeed{ patrolSpeed }, m_Observers{ observers }, 
-	  m_AnimFPS{ animFPS }, m_AnimFrames{ animFrames }, m_Health{ health }, m_DeathSound{ deathSoundID }, m_DamageSound{ damageSoundID }
+dae::Enemy::Enemy(glm::vec2& startPos, std::string& spriteLocation, float& spawnMovSpeed, float& patrolSpeed, std::vector<IObserver*>& observers, float& animFPS, int& animFrames, int& health, sound_id& damageSoundID, sound_id& deathSoundID, dae::Event& normalDeath, dae::Event& kamikazeDeath)
+	: m_StartPos{ startPos }, m_SpriteLocation{ spriteLocation }, m_SpawnMovSpeed{ spawnMovSpeed }, m_PatrolMovSpeed{ patrolSpeed }, m_Observers{ observers },
+	  m_AnimFPS{ animFPS }, m_AnimFrames{ animFrames }, m_Health{ health }, m_DeathSound{ deathSoundID }, m_DamageSound{ damageSoundID }, m_NormalDeath{ normalDeath }, m_KamikazeDeath{ kamikazeDeath }
 {}
 
-dae::Enemy::Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed, std::vector<IObserver*>& observers, float&& animFPS, int&& animFrames, int&& health, sound_id&& damageSoundID, sound_id&& deathSoundID)
+dae::Enemy::Enemy(glm::vec2&& startPos, std::string&& spriteLocation, float&& spawnMovSpeed, float&& patrolSpeed, std::vector<IObserver*>& observers, float&& animFPS, int&& animFrames, int&& health, sound_id&& damageSoundID, sound_id&& deathSoundID, dae::Event&& normalDeath, dae::Event&& kamikazeDeath)
 	: m_StartPos{ startPos }, m_SpriteLocation{ spriteLocation }, m_SpawnMovSpeed{ spawnMovSpeed }, m_PatrolMovSpeed{ patrolSpeed }, m_Observers{ observers },
-	  m_AnimFPS{ animFPS }, m_AnimFrames{ animFrames }, m_Health{ health }, m_DeathSound{ deathSoundID }, m_DamageSound{ damageSoundID }
+	  m_AnimFPS{ animFPS }, m_AnimFrames{ animFrames }, m_Health{ health }, m_DeathSound{ deathSoundID }, m_DamageSound{ damageSoundID }, m_NormalDeath{ normalDeath }, m_KamikazeDeath{ kamikazeDeath }
 {}
 
 dae::GameObject* dae::Enemy::AddToScene(Scene* pSceneToAddTo)
 {
 	auto pEnemy = pSceneToAddTo->AddGameObject();
 	auto pTextureComp = pEnemy->AddComponent<dae::AnimatedTextureComponent>(m_SpriteLocation, m_AnimFrames, m_AnimFPS, m_Health);
-	auto pLogic = pEnemy->AddComponent<dae::EnemyLogic>(m_SpawnMovSpeed, m_PatrolMovSpeed, m_Health, m_DamageSound, m_DeathSound);
+	auto pLogic = pEnemy->AddComponent<dae::EnemyLogic>(m_SpawnMovSpeed, m_PatrolMovSpeed, m_Health, m_DamageSound, m_DeathSound, m_NormalDeath, m_KamikazeDeath);
 	pEnemy->AddComponent<dae::CollisionComponent>(pTextureComp->GetAppliedTextureSize());
 
 	pEnemy->SetLocalTranslation(m_StartPos);
