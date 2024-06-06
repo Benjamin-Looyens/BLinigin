@@ -84,15 +84,15 @@ void dae::EnemyLogic::Die()
 	m_pState->OnExit(*this);
 
 	auto parentPos = m_pParent->GetWorldPosition();
-	auto parentSize = m_pParent->GetComponent<dae::AnimatedTextureComponent>()->GetAppliedTextureSize();
+	auto parentSize = m_pParent->GetComponent<dae::AnimatedTextureComponent>()->GetAppliedTextureSize() * m_pParent->GetWorldScale();
 
 	auto pDeathObj = m_DeathAnim.AddToScene(m_pParent->GetContainingScene());
-	auto deathSize = pDeathObj->GetComponent<dae::AnimatedTextureComponent>()->GetAppliedTextureSize();
+	pDeathObj->SetLocalScale(m_pParent->GetWorldScale());
+	auto deathSize = pDeathObj->GetComponent<dae::AnimatedTextureComponent>()->GetAppliedTextureSize() * pDeathObj->GetWorldScale();
 
 	glm::vec2 deathPos{ parentPos.x + ((parentSize.x - deathSize.x) / 2), parentPos.y + ((parentSize.y - deathSize.y) / 2) };
 
 	pDeathObj->SetLocalTranslation(deathPos);
-	pDeathObj->SetLocalScale(m_pParent->GetWorldScale());
 
 	m_pParent->Destroy();
 }
