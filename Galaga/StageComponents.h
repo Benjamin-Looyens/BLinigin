@@ -31,6 +31,9 @@ namespace dae {
 		float m_TimeBetweenStages{ 1.0f };
 		float m_ElapsedTime{};
 
+		float m_SkipCoolDown{};
+		static constexpr float s_MAX_SKIP_COOLDOWN = 1.0f;
+
 		bool m_StageActive = false; // TODO : Implement state pattern here
 
 		std::vector<GameObject*> m_pFormationPositions;

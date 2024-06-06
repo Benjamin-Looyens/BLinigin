@@ -46,6 +46,8 @@ void dae::StageManagerLogic::Update()
 			NextStage();
 		}
 	}
+
+	if (m_SkipCoolDown >= 0.0f) m_SkipCoolDown -= BL_TIMER.GetDeltaTime();
 }
 
 void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
@@ -62,15 +64,19 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 		if (pCasted) {
 			std::cout << "Enemy died!\n";
 
+			m_pEnemies.erase(std::remove(begin(m_pEnemies), end(m_pEnemies), pCasted->GetParent()));
+			
 			if (--m_NumberEnemies <= 0) {
 				m_StageActive = false;
 
 				for (auto& pFormationObject : m_pFormationPositions) {
 					pFormationObject->Destroy();
 				}
+
+				m_pFormationPositions.clear();
+				m_pEnemies.clear();
 			}
 
-			m_pEnemies.erase(std::remove(begin(m_pEnemies), end(m_pEnemies), pCasted->GetParent()));
 		}
 		break;
 	}
@@ -174,9 +180,6 @@ void dae::StageManagerLogic::NextStage()
 {
 	std::cout << "NEXT STAGE\n";
 
-	m_pFormationPositions.clear();
-	m_pEnemies.clear();
-
 	ParseEnemies();
 
 	m_NumberEnemies = static_cast<int>(m_pFormationPositions.size());
@@ -186,6 +189,8 @@ void dae::StageManagerLogic::NextStage()
 
 void dae::StageManagerLogic::SkipStage()
 {
+	if (m_SkipCoolDown >= 0.0f || !m_StageActive) return;
+
 	for (auto pEnemy : m_pEnemies) {
 		if (pEnemy != nullptr) {
 			auto pLogic = pEnemy->GetComponent<dae::EnemyLogic>();
@@ -198,6 +203,10 @@ void dae::StageManagerLogic::SkipStage()
 
 	m_StageActive = true;
 	m_ElapsedTime = 0;
+	m_SkipCoolDown = s_MAX_SKIP_COOLDOWN;
+
+	m_pFormationPositions.clear();
+	m_pEnemies.clear();
 
 	NextStage();
 }
