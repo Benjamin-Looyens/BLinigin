@@ -111,6 +111,9 @@ namespace dae {
 		float m_DoneTimer{};
 		float m_MaxDoneTimer{ 1.0f };
 
+		float m_ShootTimer{};
+
+		constexpr static float s_TIME_TO_SHOOT{ 0.5f };
 		constexpr static float EPSILON{ 5.0f };
 	};
 

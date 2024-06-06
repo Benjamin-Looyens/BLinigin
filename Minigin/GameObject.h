@@ -101,7 +101,7 @@ namespace dae
 		int GetChildCount() const { return static_cast<int>(m_pChildObjects.size()); };
 		bool HasParent() const { return (m_pParentObject != nullptr); };
 
-		dae::Scene* GetContainingScene() { return m_pContainingScene; };
+		dae::Scene* GetContainingScene() const { return m_pContainingScene; };
 
 		GameObject(Scene* pScene, GameObject* pParent = nullptr);
 		~GameObject();

@@ -123,3 +123,9 @@ glm::vec2 dae::EnemyLogic::GetScale()
 	auto scale = m_pParent->GetWorldScale();
 	return { scale.x, scale.y };
 }
+
+float dae::EnemyLogic::GetXDirToClosestPlayer()
+{
+	// TODO : Implement x direction to player for slight edge of dart shooting towards players
+	return 0.0f;
+}

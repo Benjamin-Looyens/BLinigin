@@ -9,7 +9,7 @@ namespace dae {
 	public:
 		GameObject* AddToScene(Scene* pSceneToAddTo) override;
 
-		Dart(float speed, glm::vec2 startPos, glm::vec2 movDir, std::string m_SpriteLocation);
+		Dart(float speed, glm::vec2 startPos, glm::vec2 movDir, std::string m_SpriteLocation, bool isFromPlayer = true);
 
 		Dart(const Dart& other) = delete;
 		Dart(const Dart&& other) = delete;
@@ -17,6 +17,7 @@ namespace dae {
 		Dart& operator=(const Dart&& other) = delete;
 
 	private:
+		bool m_IsFromPlayer;
 		float m_Speed;
 		glm::vec2 m_Startpos; 
 		glm::vec2 m_MovDirection;

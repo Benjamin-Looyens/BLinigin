@@ -30,6 +30,7 @@ namespace dae {
 
 		glm::vec2 GetLocation();
 		glm::vec2 GetScale();
+		float GetXDirToClosestPlayer();
 
 		float GetSpawnSpeed() const { return m_SpawnSpeed; };
 		float GetPatrolSpeed() const { return m_PatrolSpeed; };

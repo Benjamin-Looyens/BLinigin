@@ -6,6 +6,8 @@
 #include <SDL.h>
 #include "DerivedComponents.h"
 #include "TextureComponents.h"
+#include "Dart.h"
+#include "DartLogic.h"
 
 dae::EnemySpawnInState::EnemySpawnInState()
 {
@@ -115,7 +117,31 @@ void dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
     glm::vec2 dir{};
     float lenSqr{};
 
-    if (m_NotDone) dir = { m_KamikazePosition - curLocation };
+    // TODO : Rework this
+    if (m_NotDone) {
+        dir = { m_KamikazePosition - curLocation };
+        
+        m_ShootTimer += deltaTime;
+        if (m_ShootTimer > s_TIME_TO_SHOOT) {
+            dae::Dart dart{ 750.0f, enemy.GetLocation(), { enemy.GetXDirToClosestPlayer(), 1.0f }, "EnemyDart.png", false };
+            
+            // TODO : Make dart shooting system part of the dart prefab
+            auto pDart = dart.AddToScene(enemy.GetParent()->GetContainingScene());
+            auto parentPos = enemy.GetLocation();
+            auto parentSize = enemy.GetParent()->GetComponent<dae::AnimatedTextureComponent>()->GetAppliedTextureSize() * enemy.GetScale();
+            auto dartSize = pDart->GetComponent<dae::TextureComponent>()->GetTextureSize() * pDart->GetWorldScale();
+
+            glm::vec2 dartPos{ (parentPos.x + ((parentSize.x - dartSize.x) / 2)),
+                               (parentPos.y) };
+            pDart->SetLocalTranslation(dartPos);
+
+            // TODO : rework the observer assignment here to be less coupled
+            auto pDartLogic = pDart->GetComponent<dae::DartLogic>();
+            if (pDartLogic) {}
+
+            m_ShootTimer = 0;
+        }
+    }
     else {
         if (m_DoneTimer < m_MaxDoneTimer) {
             m_DoneTimer += deltaTime;
@@ -159,6 +185,8 @@ void dae::EnemyKamikazeState::OnEnter(EnemyLogic& enemy)
     m_StartPosition = enemy.GetLocation();
 
     enemy.DetachFromFormation();
+
+    m_ShootTimer = s_TIME_TO_SHOOT;
 }
 
 void dae::EnemyKamikazeState::OnExit(EnemyLogic&)
