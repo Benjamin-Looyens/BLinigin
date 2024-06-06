@@ -11,11 +11,6 @@ namespace dae
 	public:
 		void RemoveAll();
 
-		// TODO : Make it so that only SceneManager can call update, render, etc
-		void Update();
-		void LateUpdate();
-		void Render() const;
-
 		dae::GameObject* AddGameObject();
 		void RemoveObject(size_t objectIndex);
 		void RemoveObject(dae::GameObject* pObject);
@@ -30,6 +25,10 @@ namespace dae
 
 	private: 
 		explicit Scene(const std::string& name);
+
+		void Update();
+		void LateUpdate();
+		void Render() const;
 
 		std::string m_Name;
 		std::vector <std::unique_ptr<dae::GameObject>> m_pObjects{};

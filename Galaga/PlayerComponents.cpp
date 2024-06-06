@@ -23,8 +23,7 @@ void dae::PlayerLogic::Update()
 
 void dae::PlayerLogic::LateUpdate()
 {
-	// TODO : Remove destroyed darts
-	//m_pDarts.erase(std::remove_if(begin(m_pDarts), end(m_pDarts), [](const GameObject* pObject) { return (pObject == nullptr || pObject->IsDestroyed()); }), m_pDarts.end());
+
 }
 
 void dae::PlayerLogic::Fire()
@@ -121,7 +120,10 @@ void dae::LivesComponent::LoseLife()
 	m_NumLives--;
 
 	// TODO : add check for other player
-	if (m_NumLives <= 0) NotifyObservers(Event::GAME_OVER);
+	if (m_NumLives <= 0) {
+		NotifyObservers(Event::GAME_OVER);
+
+	}
 }
 #pragma endregion LivesComponent
 
@@ -171,7 +173,6 @@ void dae::ScoreComponent::AddPoints(int pointsToAdd)
 
 void dae::ScoreComponent::Update()
 {
-	// TODO : Use Text Component instead but ughfnhghng
 	if (m_TextDirty) {
 		auto& resourceManager = BL_RESOURCE;
 
@@ -179,7 +180,7 @@ void dae::ScoreComponent::Update()
 
 		std::string text{ std::to_string(m_Score) };
 
-		const SDL_Color color = { 255,255,255,255 }; // TODO : Implement colors
+		const SDL_Color color = { 255,255,255,255 };
 		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), text.c_str(), color);
 		if (surf == nullptr) throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 

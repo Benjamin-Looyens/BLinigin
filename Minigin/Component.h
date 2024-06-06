@@ -36,7 +36,7 @@ namespace dae {
 	protected:
 		bool m_Removed{ false };
 
-		// HACK : Potentially change the pParent to a private getter rather than protected so that derived components cannot remove their parent for example
+		// NOTE : Potentially change the pParent to a private getter rather than protected so that derived components cannot remove their parent for example
 		GameObject* m_pParent;
 	};
 

@@ -50,7 +50,6 @@ void dae::EnemyLogic::AddLocation(glm::vec2 movement)
 
 bool dae::EnemyLogic::GetHit()
 {
-	// TODO : Implement more logic for get hit
 	if (--m_Health <= 0) {
 		if (m_pState != nullptr && dynamic_cast<EnemyKamikazeState*>(m_pState.get())) {
 			NotifyObservers(Event::BOSS_DIED_KAMIKAZE);

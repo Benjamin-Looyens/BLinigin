@@ -23,7 +23,8 @@ dae::EnemySpawnInState::EnemySpawnInState()
     bezierPath->AddCurve({ { startPositionX, 20.0f }, { startPositionX, 100.0f }, { halfWidth - 25.0f, 325.0f }, { halfWidth - 25.0f, 425.0f } }, 25);            // Curve to side
     bezierPath->AddCurve({ { halfWidth - 25.0f, 425.0f }, { halfWidth - 25.0f, 650.0f }, { halfWidth + 150.0f, 650.0f }, { halfWidth + 150.0f, 425.0f } }, 25);   // U-Turn
     bezierPath->AddCurve({ { halfWidth + 150.0f, 425.0f }, { halfWidth + 150.0f, 425.0f }, { 25.0f, 25.0f }, { 25.0f, 25.0f } }, 25);                             // Get into patrol location
-    // TODO : Make final location dependent on formation (having set positions for each enemy in a formation)
+    // TODO : Make final location in middle of screen
+    // TODO : Make state where the enemy goes to their formation state (from the middle)
 
     bezierPath->Sample(&m_Path);
 
@@ -78,24 +79,11 @@ void dae::EnemyPatrolState::Update(EnemyLogic& enemy)
     //std::cout << "[Enemy] X: " << enemy.GetLocation().x << ", Y: " << enemy.GetLocation().y << "\n";
 }
 
-void dae::EnemyPatrolState::OnEnter(EnemyLogic& enemy)
+void dae::EnemyPatrolState::OnEnter(EnemyLogic&)
 {
 #ifndef NDEBUG
     std::cout << "Patrol State Entering.\n";
 #endif
-    constexpr float BORDER_OFFSET{ 25.0f };
-
-    glm::vec2 windowSize = BL_RENDERER.GetWindowSize();
-
-    auto pParent = enemy.GetParent();
-    auto scale = enemy.GetScale();
-    auto size = pParent->GetComponent<dae::TextureComponent>()->GetTextureSize();
-
-    // TODO : Calculate proper min and max pos using formation reference
-    m_MinPos = { BORDER_OFFSET, BORDER_OFFSET };
-    m_MaxPos = { static_cast<float>(windowSize.x) - BORDER_OFFSET - (size.x * scale.x), static_cast<float>(windowSize.y) - BORDER_OFFSET };
-
-    //enemy.DetachFromFormation();
 }
 
 void dae::EnemyPatrolState::OnExit(EnemyLogic&)
@@ -212,8 +200,6 @@ void dae::EnemyDeathState::OnExit(EnemyLogic&)
 #ifndef NDEBUG
     std::cout << "Death State Exiting.\n";
 #endif
-
-    // TODO : Play death explosion & sound effect
 }
 
 void dae::EnemyReturnToPatrolState::Update(EnemyLogic& enemy)

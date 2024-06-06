@@ -34,7 +34,6 @@ glm::vec2 dae::TextureComponent::GetTextureSize() const
 
 void dae::TextureComponent::Render() const
 {
-	// TODO : add rotation compatibility
 	const auto& transform = m_pParent->GetWorldTransform();
 	const auto& pos = transform.GetTranslation();
 	const auto& scale = transform.GetScale();

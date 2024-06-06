@@ -59,11 +59,10 @@ void load()
 // GENERAL TODOS
 // TODO : Improve Player/Controller Setup
 // TODO : Check every class to make sure if applies rule of 5 correctly
-// TODO : Add layering options which guarantees that some Objects/Components are rendered above others
+// TODO : (Maybe) Add layering options which guarantees that some Objects/Components are rendered above others
 // TODO : Reduce auto usage
 // TODO : (Maybe) Write explanations/summaries for functions
 // TODO : Check where getters and setters are necessary
-// TODO : Add easy way to get screen size (as a global probably)
 // TODO : Add debug info for when a file is missing 
 
 int main(int, char* []) {

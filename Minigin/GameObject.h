@@ -11,7 +11,6 @@ namespace dae
 	class Component;
 	class Scene;
 
-	// TODO : Potentially refactor the concept and template setup here
 	template<typename ComponentType>
 	concept DerivedComponent = requires(ComponentType component) { std::derived_from<ComponentType, Component>; };
 

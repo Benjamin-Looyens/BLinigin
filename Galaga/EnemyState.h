@@ -88,10 +88,6 @@ namespace dae {
 		void OnExit(EnemyLogic& enemy) override;
 
 	private:
-		glm::vec2 m_MinPos{};
-		glm::vec2 m_MaxPos{};
-		glm::vec2 m_CurDirection{ 1.0f, 0.0f }; 
-
 		float m_ElapsedTime{};
 		float m_MaxTime{ 5.0f }; // TODO : Define value in constructor (or OnEnter)
 	};

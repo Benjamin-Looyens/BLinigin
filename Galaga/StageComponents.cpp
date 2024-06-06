@@ -163,13 +163,8 @@ void dae::StageManagerLogic::NextStage()
 
 	ParseEnemies();
 
-
-	// TODO : Parse information from file
-	// TODO : pass formation object to the enemies directly
-
 	m_NumberEnemies = static_cast<int>(m_FormationPositions.size());
 	
-
 	m_CurrentStage = (m_CurrentStage + 1) % m_NumFormations;
 }
 

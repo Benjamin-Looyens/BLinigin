@@ -21,7 +21,7 @@ void dae::SDL_SoundSystem::LoadSound(const sound_id id)
 	m_SoundAddedCondition.notify_one();
 }
 
-bool dae::SDL_SoundSystem::InitSound(const sound_id id, const bool overwriteIfExists) // TODO: Add result to LoadSound as a bool, so I can stop checking if it exists manually
+bool dae::SDL_SoundSystem::InitSound(const sound_id id, const bool overwriteIfExists)
 {
 	auto sound = m_LoadedSounds[id];
 
