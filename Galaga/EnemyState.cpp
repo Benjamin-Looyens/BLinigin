@@ -8,13 +8,12 @@
 #include "TextureComponents.h"
 #include "Dart.h"
 #include "DartLogic.h"
+#include "Renderer.h"
 
 dae::EnemySpawnInState::EnemySpawnInState()
 {
-    int screenWidth;
-    int screenHeight;
-    SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight);
-    float halfWidth = (static_cast<float>(screenWidth) / 2);
+    glm::vec2 windowSize = BL_RENDERER.GetWindowSize();
+    float halfWidth = (static_cast<float>(windowSize.x) / 2);
     float startPositionX = halfWidth + 150.0f;
 
     // Temporary hard coded definition
@@ -86,9 +85,7 @@ void dae::EnemyPatrolState::OnEnter(EnemyLogic& enemy)
 #endif
     constexpr float BORDER_OFFSET{ 25.0f };
 
-    int screenWidth;
-    int screenHeight;
-    SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight);
+    glm::vec2 windowSize = BL_RENDERER.GetWindowSize();
 
     auto pParent = enemy.GetParent();
     auto scale = enemy.GetScale();
@@ -96,7 +93,7 @@ void dae::EnemyPatrolState::OnEnter(EnemyLogic& enemy)
 
     // TODO : Calculate proper min and max pos using formation reference
     m_MinPos = { BORDER_OFFSET, BORDER_OFFSET };
-    m_MaxPos = { static_cast<float>(screenWidth) - BORDER_OFFSET - (size.x * scale.x), static_cast<float>(screenHeight) - BORDER_OFFSET };
+    m_MaxPos = { static_cast<float>(windowSize.x) - BORDER_OFFSET - (size.x * scale.x), static_cast<float>(windowSize.y) - BORDER_OFFSET };
 
     //enemy.DetachFromFormation();
 }
@@ -176,12 +173,10 @@ void dae::EnemyKamikazeState::OnEnter(EnemyLogic& enemy)
     std::cout << "Kamikaze State Entering.\n";
 #endif
     
-    int screenWidth;
-    int screenHeight;
-    SDL_GetWindowSize(SDL_GetKeyboardFocus(), &screenWidth, &screenHeight);
+    glm::vec2 windowSize = BL_RENDERER.GetWindowSize();
 
     // TODO : Calculate kamikaze position based on player positions
-    m_KamikazePosition = { static_cast<float>(screenWidth / 2), screenHeight};
+    m_KamikazePosition = { static_cast<float>(windowSize.x / 2), windowSize.y};
     m_StartPosition = enemy.GetLocation();
 
     enemy.DetachFromFormation();

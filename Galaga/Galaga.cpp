@@ -24,6 +24,7 @@
 #include "PlayerComponents.h"
 #include "StageManager.h"
 #include "TextureComponents.h"
+#include "Renderer.h"
 
 #include "TEMP_PlayerGlobal.h"
 
@@ -36,9 +37,8 @@ void InitSound();
 
 void load()
 {
-	glm::ivec2 windowSize{};
-	SDL_GetWindowSize(SDL_GetKeyboardFocus(), &windowSize.x, &windowSize.y); // HACK : **NEED TO FIND ALTERNATIVE** Window size may not be made if the window is not in focus currently
-
+	glm::ivec2 windowSize{ BL_RENDERER.GetWindowSize() };
+	
 	auto& title		= BL_SCENE_MANAGER.CreateScene("Title");
 	auto& solo		= BL_SCENE_MANAGER.CreateScene("SoloGalaga");
 	auto& versus	= BL_SCENE_MANAGER.CreateScene("VersusGalaga");

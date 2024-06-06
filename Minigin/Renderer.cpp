@@ -104,4 +104,9 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, SDL_FRect src, SDL_F
 	SDL_RenderCopyF(GetSDLRenderer(), texture.GetSDLTexture(), &iSrc, &dst);
 }
 
-SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_pRenderer; }
+glm::vec2 dae::Renderer::GetWindowSize() const
+{
+	glm::ivec2 windowSize{};
+	SDL_GetWindowSize(m_pWindow, &windowSize.x, &windowSize.y);
+	return windowSize;
+}

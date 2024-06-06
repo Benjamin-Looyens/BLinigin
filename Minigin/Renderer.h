@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
+#include <glm/vec2.hpp>
 
 namespace dae
 {
@@ -10,9 +11,6 @@ namespace dae
 	 */
 	class Renderer final : public Singleton<Renderer>
 	{
-		SDL_Renderer* m_pRenderer{};
-		SDL_Window* m_pWindow{};
-		SDL_Color m_ClearColor{};	
 	public:
 		void Init(SDL_Window* window);
 		void Render() const;
@@ -24,10 +22,16 @@ namespace dae
 		void RenderTexture(const dae::Texture2D& texture, SDL_Rect src, SDL_FRect dst) const;
 		void RenderTexture(const dae::Texture2D& texture, SDL_FRect src, SDL_FRect dst) const;
 		
-		SDL_Renderer* GetSDLRenderer() const;
+		inline SDL_Renderer* GetSDLRenderer() const { return m_pRenderer; };
+		glm::vec2 GetWindowSize() const;
 
 		const SDL_Color& GetBackgroundColor() const { return m_ClearColor; }
 		void SetBackgroundColor(const SDL_Color& color) { m_ClearColor = color; }
+
+	private:
+		SDL_Renderer* m_pRenderer{};
+		SDL_Window* m_pWindow{};
+		SDL_Color m_ClearColor{};
 	};
 }
 
