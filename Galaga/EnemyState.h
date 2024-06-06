@@ -6,8 +6,6 @@
 namespace dae {
 	class EnemyLogic;
 
-	// TODO : consider template-izing the state pattern for easier reusing
-
 	using EnemyState = State<EnemyLogic>;
 
 	class EnemySpawnInState final : public EnemyState

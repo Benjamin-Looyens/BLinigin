@@ -57,7 +57,9 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 	case Event::BUTTERFLY_DIED_KAMIKAZE:
 	case Event::BOSS_DIED_FORMATION:
 	case Event::BOSS_DIED_KAMIKAZE:
-		if (dynamic_cast<const dae::EnemyLogic*>(pSubject)) {
+		auto pCasted = dynamic_cast<const dae::EnemyLogic*>(pSubject);
+
+		if (pCasted) {
 			std::cout << "Enemy died!\n";
 
 			if (--m_NumberEnemies <= 0) {
@@ -67,8 +69,9 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 					pFormationObject->Destroy();
 				}
 			}
-		}
 
+			m_pEnemies.erase(std::remove(begin(m_pEnemies), end(m_pEnemies), pCasted->GetParent()));
+		}
 		break;
 	}
 }
@@ -183,11 +186,14 @@ void dae::StageManagerLogic::NextStage()
 
 void dae::StageManagerLogic::SkipStage()
 {
-	for (auto& pFormationObj : m_pFormationPositions) {
-		pFormationObj->DestroyWithChildren();
+	for (auto pEnemy : m_pEnemies) {
+		if (pEnemy != nullptr) {
+			auto pLogic = pEnemy->GetComponent<dae::EnemyLogic>();
+			if (pLogic) pLogic->Die();
+		}
 	}
-	for (auto& pEnemy : m_pEnemies) {
-		pEnemy->DestroyWithChildren();
+	for (auto pFormationObj : m_pFormationPositions) {
+		if (pFormationObj) pFormationObj->Destroy();
 	}
 
 	m_StageActive = true;
