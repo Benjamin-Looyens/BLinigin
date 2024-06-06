@@ -24,6 +24,7 @@ namespace dae {
 		PlayerLogic& operator=(const PlayerLogic&& other) = delete;
 
 	private:
+		int m_DartsFired{ };
 	};
 
 	class LivesComponent final : public ObservingSubjectComponent

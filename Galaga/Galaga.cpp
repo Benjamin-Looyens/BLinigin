@@ -25,6 +25,7 @@
 #include "StageManager.h"
 #include "TextureComponents.h"
 #include "Renderer.h"
+#include "ScoreTracker.h"
 
 #include "TEMP_PlayerGlobal.h"
 
@@ -113,6 +114,9 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 	pBackgroundObject->AddChild(pBackgroundTileBR);
 
 	// Prefabs
+	dae::GameObject* pPlayerOneObject = nullptr;
+	dae::GameObject* pPlayerTwoObject = nullptr;
+
 	float playerElevation{ static_cast<float>(windowSize.y - 100) };
 	//float midScreen{ static_cast<float>(windowSize.x / 2) };
 	constexpr glm::vec2 scoreInset{ 100, 35 };
@@ -123,7 +127,7 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 							"GalagaP1.tga",								// Sprite
 							0, 100.0f, 3, true };						// Index, speed, lives, controller
 
-	auto pPlayerOneObject = playerOne.AddToScene(&coopScene);
+	pPlayerOneObject = playerOne.AddToScene(&coopScene);
 
 	auto textureSize = pPlayerOneObject->GetComponent<dae::TextureComponent>()->GetTextureSize(); // NOTE : Temporary setup
 	float p2Offset = (textureSize.x * pPlayerOneObject->GetWorldScale().x);
@@ -134,7 +138,7 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 							"GalagaP2.tga",														// Sprite
 							1, 100.0f, 3, false };												// Index, speed, lives, controller
 
-	auto pPlayerTwoObject = playerTwo.AddToScene(&coopScene);
+	pPlayerTwoObject = playerTwo.AddToScene(&coopScene);
 
 	std::vector<dae::IObserver*> enemyObservers;
 	//enemyObservers.push_back(pPlayerOneObject->GetComponent<dae::ScoreComponent>());
@@ -142,6 +146,16 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 
 	dae::StageManager stageManager{ enemyObservers };
 	stageManager.AddToScene(&coopScene);
+
+	std::vector<dae::GameObject*> players{ pPlayerOneObject, pPlayerTwoObject };
+
+	auto pScoreTrackerObject = coopScene.AddGameObject();
+	auto pScoreTrackerComp = pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
+	
+	pPlayerOneObject->GetComponent<dae::PlayerLogic>()->AddObserver(pScoreTrackerComp);
+	pPlayerTwoObject->GetComponent<dae::PlayerLogic>()->AddObserver(pScoreTrackerComp);
+	pPlayerOneObject->GetComponent<dae::LivesComponent>()->AddObserver(pScoreTrackerComp);
+	pPlayerTwoObject->GetComponent<dae::LivesComponent>()->AddObserver(pScoreTrackerComp);
 
 	// TEMP
 	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);

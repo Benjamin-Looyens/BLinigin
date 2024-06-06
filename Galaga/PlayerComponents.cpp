@@ -51,6 +51,8 @@ void dae::PlayerLogic::Fire()
 	NotifyObservers(Event::PLAYER_SHOOT);
 
 	BL_SOUND.PlaySound(13, 0.3f);
+
+	m_DartsFired++;
 }
 
 void dae::PlayerLogic::Die()

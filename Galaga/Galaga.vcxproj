@@ -163,6 +163,7 @@
     <ClCompile Include="GameplayCommands.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerComponents.cpp" />
+    <ClCompile Include="ScoreTracker.cpp" />
     <ClCompile Include="StageComponents.cpp" />
     <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="TEMP_PlayerGlobal.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="GameplayCommands.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerComponents.h" />
+    <ClInclude Include="ScoreTracker.h" />
     <ClInclude Include="StageComponents.h" />
     <ClInclude Include="StageManager.h" />
   </ItemGroup>

@@ -56,4 +56,12 @@ namespace dae
 	private:
 		dae::Event m_EventToNotify;
 	};
+
+	class KillPlayerCommand final : public GameObjectCommand
+	{
+	public:
+		void Execute() override;
+
+		KillPlayerCommand(dae::GameObject* pGameObj);
+	};
 }

@@ -19,7 +19,7 @@ namespace dae {
 
 		bool m_IsPlayerDart;
 		float m_ElapsedTime{};
-		static constexpr float MAX_LIFETIME{ 10.0f };
+		static constexpr float MAX_LIFETIME{ 2.0f };
 	};
 }
 

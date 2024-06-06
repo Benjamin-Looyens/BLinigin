@@ -55,3 +55,12 @@ void dae::NotifyObserverCommand::Execute()
 		pSubjectComp->NotifyObservers(m_EventToNotify);
 }
 #pragma endregion NotifyObserverCommand
+
+void dae::KillPlayerCommand::Execute()
+{
+	GetGameObject()->GetComponent<dae::PlayerLogic>()->Die();
+}
+
+dae::KillPlayerCommand::KillPlayerCommand(dae::GameObject* pGameObj)
+	: GameObjectCommand(pGameObj)
+{}

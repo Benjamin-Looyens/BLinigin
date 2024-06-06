@@ -67,12 +67,20 @@ dae::GameObject* dae::Player::AddToScene(Scene* pSceneToAddTo)
 		input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT,	pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
 
 		input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
+
+#ifndef NDEBUG
+		input.AddCommand<dae::KillPlayerCommand>(BL_GAMEPAD_START, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
+#endif
 		break;
 	case false:
 		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, pPlayer, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
 		input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, pPlayer, glm::vec2{  1.0f,  0.0f }, m_SpawnMovSpeed);
 
 		input.AddCommand<dae::FireCommand>(BL_KEYBOARD_SPACE, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
+
+#ifndef NDEBUG
+		input.AddCommand<dae::KillPlayerCommand>(BL_KEYBOARD_F10, dae::InputState::PRESSED_THIS_FRAME, pPlayer);
+#endif
 		break;
 	}
 
