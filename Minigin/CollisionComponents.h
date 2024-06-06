@@ -8,10 +8,10 @@ namespace dae {
 	class CollisionComponent final : public Component
 	{
 	public:
-		bool DoesOverlap(CollisionComponent* otherCollision) const;
-		bool DoesOverlap(GameObject* otherObject) const;
+		bool DoesOverlap(dae::CollisionComponent* otherCollision) const;
+		bool DoesOverlap(dae::GameObject* otherObject) const;
 		bool DoesOverlap(SDL_FRect rectangle) const;
-		std::vector<GameObject*> GetAllOverlappingObjects();
+		std::vector<dae::GameObject*> GetAllOverlappingObjects();
 
 		SDL_FRect GetRect() const;
 

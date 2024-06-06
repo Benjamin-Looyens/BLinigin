@@ -16,11 +16,11 @@ namespace dae
 		void LateUpdate();
 		void Render() const;
 
-		GameObject* AddGameObject();
+		dae::GameObject* AddGameObject();
 		void RemoveObject(size_t objectIndex);
-		void RemoveObject(GameObject* pObject);
+		void RemoveObject(dae::GameObject* pObject);
 
-		std::vector<GameObject*> GetAllObjects();
+		std::vector<dae::GameObject*> GetAllObjects();
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -32,8 +32,8 @@ namespace dae
 		explicit Scene(const std::string& name);
 
 		std::string m_Name;
-		std::vector <std::unique_ptr<GameObject>> m_pObjects{};
-		std::vector <std::unique_ptr<GameObject>> m_pAddedObjects{};
+		std::vector <std::unique_ptr<dae::GameObject>> m_pObjects{};
+		std::vector <std::unique_ptr<dae::GameObject>> m_pAddedObjects{};
 
 		static unsigned int m_idCounter; 
 	};

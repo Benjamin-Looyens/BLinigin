@@ -11,7 +11,7 @@ namespace dae
 	{
 	public:
 		virtual ~IObserver() = default;
-		virtual void OnNotify(const ISubject* pSubject, Event event) = 0;
+		virtual void OnNotify(const dae::ISubject* pSubject, dae::Event event) = 0;
 	};
 
 	class ISubject
@@ -19,10 +19,10 @@ namespace dae
 	public:
 		~ISubject() = default;
 		
-		virtual void AddObserver(IObserver* pObserverToAdd) = 0;
-		virtual void RemoveObserver(IObserver* pObserverToRemove) = 0;
-		virtual void NotifyObservers(Event& eventToNotify) = 0;
-		virtual void NotifyObservers(Event&& eventToNotify) = 0;
+		virtual void AddObserver(dae::IObserver* pObserverToAdd) = 0;
+		virtual void RemoveObserver(dae::IObserver* pObserverToRemove) = 0;
+		virtual void NotifyObservers(dae::Event& eventToNotify) = 0;
+		virtual void NotifyObservers(dae::Event&& eventToNotify) = 0;
 	};
 }
 

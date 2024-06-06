@@ -3,11 +3,11 @@
 
 using namespace dae;
 
-unsigned int Scene::m_idCounter = 0;
+unsigned int dae::Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) : m_Name(name) {}
+dae::Scene::Scene(const std::string& name) : m_Name(name) {}
 
-Scene::~Scene() = default;
+dae::Scene::~Scene() = default;
 
 void Scene::RemoveAll()
 {
@@ -30,7 +30,7 @@ void dae::Scene::LateUpdate()
 	}
 
 	// Remove Objects Marked as Destroyed
-	m_pObjects.erase(std::remove_if(begin(m_pObjects), end(m_pObjects), [](const std::unique_ptr<GameObject>& obj) { return obj->IsDestroyed(); }), m_pObjects.end());
+	m_pObjects.erase(std::remove_if(begin(m_pObjects), end(m_pObjects), [](const std::unique_ptr<dae::GameObject>& obj) { return obj->IsDestroyed(); }), m_pObjects.end());
 
 	if (!m_pAddedObjects.empty()) {
 		for (auto& pObject : m_pAddedObjects) {
@@ -49,9 +49,9 @@ void Scene::Render() const
 	}
 }
 
-GameObject* dae::Scene::AddGameObject()
+dae::GameObject* dae::Scene::AddGameObject()
 {
-	m_pAddedObjects.push_back(std::make_unique<GameObject>(this));
+	m_pAddedObjects.push_back(std::make_unique<dae::GameObject>(this));
 
 	return m_pAddedObjects[m_pAddedObjects.size() - 1].get();
 }
@@ -61,7 +61,7 @@ void dae::Scene::RemoveObject(size_t objectIndex)
 	m_pObjects.erase(std::remove(m_pObjects.begin(), m_pObjects.end(), m_pObjects[objectIndex]), m_pObjects.end());
 }
 
-void dae::Scene::RemoveObject(GameObject* pObject)
+void dae::Scene::RemoveObject(dae::GameObject* pObject)
 {
 	for (auto& pContainerObject : m_pObjects) {
 		if (pContainerObject.get() == pObject) {
@@ -71,9 +71,9 @@ void dae::Scene::RemoveObject(GameObject* pObject)
 	}
 }
 
-std::vector<GameObject*> dae::Scene::GetAllObjects()
+std::vector<dae::GameObject*> dae::Scene::GetAllObjects()
 {
-	std::vector<GameObject*> pRetObjects{};
+	std::vector<dae::GameObject*> pRetObjects{};
 	pRetObjects.reserve(m_pObjects.size());
 
 	for (auto& pObject : m_pObjects) {

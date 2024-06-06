@@ -35,13 +35,12 @@ namespace dae
 		ResourceManager() = default;
 		std::string m_DataPath;
 
-		std::map<std::string, Texture2D*> m_LoadedTexturesMap;
-		std::map<std::pair<std::string, unsigned int>, Font*> m_LoadedFontsMap;
+		std::map<std::string, dae::Texture2D*> m_LoadedTexturesMap;
+		std::map<std::pair<std::string, unsigned int>, dae::Font*> m_LoadedFontsMap;
 		std::map<std::string, nlohmann::json*> m_LoadedJSONMap;
 
-		std::vector<std::unique_ptr<Texture2D>> m_LoadedTextures;
+		std::vector<std::unique_ptr<dae::Texture2D>> m_LoadedTextures;
 		std::vector<std::unique_ptr<Font>> m_LoadedFonts;
-
 		std::vector<std::unique_ptr<nlohmann::json>> m_LoadedJSON;
 	};
 }

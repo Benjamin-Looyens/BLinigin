@@ -4,13 +4,7 @@
 #include <iostream>
 #include <algorithm>
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <Xinput.h>
-#pragma comment(lib, "xinput.lib")
-
 #include "Command.h"
-//#include "DerivedCommands.h"
 #include "Defines.h"
 #include "Gamepad.h"
 
@@ -32,13 +26,13 @@ bool dae::InputManager::ProcessInput()
         if (command.isController) {
             for (auto& gamepad : m_Gamepads) {
                 switch (command.inputState) {
-                case InputState::PRESSED_THIS_FRAME:
+                case dae::InputState::PRESSED_THIS_FRAME:
                     if (gamepad.ButtonPressedThisFrame(command.commandCode)) command.pCommand->Execute();
                     break;
-                case InputState::RELEASED_THIS_FRAME:
+                case dae::InputState::RELEASED_THIS_FRAME:
                     if (gamepad.ButtonReleasedThisFrame(command.commandCode)) command.pCommand->Execute();
                     break;
-                case InputState::HELD:
+                case dae::InputState::HELD:
                     if (gamepad.ButtonHeld(command.commandCode)) command.pCommand->Execute();
                     break;
                 }
@@ -46,7 +40,7 @@ bool dae::InputManager::ProcessInput()
         }
         else {
             switch (command.inputState) {
-            case InputState::HELD:
+            case dae::InputState::HELD:
                 if (pStates[static_cast<SDL_Scancode>(command.commandCode)])
                     command.pCommand->Execute();
                 else if (mouseState & SDL_BUTTON(command.commandCode)) // TODO : Check that no scenario causes problems where the code is overlapping with SDL_SCANCODE and SDL_BUTTON
@@ -62,16 +56,16 @@ bool dae::InputManager::ProcessInput()
             return false;
 			break;
 		case SDL_KEYDOWN:
-            if (e.key.repeat == 0) HandleKeyboardInput(InputState::PRESSED_THIS_FRAME, e);
+            if (e.key.repeat == 0) HandleKeyboardInput(dae::InputState::PRESSED_THIS_FRAME, e);
 			break;
 		case SDL_KEYUP:
-            HandleKeyboardInput(InputState::RELEASED_THIS_FRAME, e);
+            HandleKeyboardInput(dae::InputState::RELEASED_THIS_FRAME, e);
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-            HandleMouseInput(InputState::PRESSED_THIS_FRAME, e);
+            HandleMouseInput(dae::InputState::PRESSED_THIS_FRAME, e);
 			break;
 		case SDL_MOUSEBUTTONUP:
-            HandleMouseInput(InputState::RELEASED_THIS_FRAME, e);
+            HandleMouseInput(dae::InputState::RELEASED_THIS_FRAME, e);
 			break;
 		case SDL_MOUSEMOTION:
             m_MousePos.x = e.motion.x;
@@ -303,7 +297,7 @@ int dae::InputManager::TranslateCode(const int& code, bool& inputIsController_OU
 	return -1;
 }
 
-void dae::InputManager::HandleMouseInput(const InputState state, SDL_Event& e)
+void dae::InputManager::HandleMouseInput(const dae::InputState state, SDL_Event& e)
 {
     for (auto& command : m_Commands) {
         if (command.isController) continue;
@@ -314,7 +308,7 @@ void dae::InputManager::HandleMouseInput(const InputState state, SDL_Event& e)
     }
 }
 
-void dae::InputManager::HandleKeyboardInput(InputState state, SDL_Event& e)
+void dae::InputManager::HandleKeyboardInput(dae::InputState state, SDL_Event& e)
 {
     for (auto& command : m_Commands) {
         if (command.isController) continue;

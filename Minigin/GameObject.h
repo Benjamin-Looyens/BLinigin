@@ -59,7 +59,7 @@ namespace dae
 		inline void SetApplyParentScaleOnTranslation(const bool newApply) { m_ApplyParentScaleOnTranslation = newApply; };
 		inline bool GetApplyParentScaleOnTranslation() const { return m_ApplyParentScaleOnTranslation; };
 
-		GameObject* GetChildAtIndex(size_t index) { if (m_pChildObjects.size() <= index) return nullptr; return m_pChildObjects[index]; };
+		dae::GameObject* GetChildAtIndex(size_t index) { if (m_pChildObjects.size() <= index) return nullptr; return m_pChildObjects[index]; };
 
 #pragma region TemplateFunctions
 		template<DerivedComponent ComponentType, typename... TArgs>
@@ -92,9 +92,9 @@ namespace dae
 		bool HasComponent() { return GetComponent<ComponentType>() != nullptr; }
 #pragma endregion TemplateFunctions
 
-		void AddChild(GameObject* pNewChild);
-		void RemoveChild(GameObject* pChildToRemove);
-		bool ValidParent(GameObject* pParent);
+		void AddChild(dae::GameObject* pNewChild);
+		void RemoveChild(dae::GameObject* pChildToRemove);
+		bool ValidParent(dae::GameObject* pParent);
 
 		void SeperateFromParent();
 		inline int GetChildCount() const { return static_cast<int>(m_pChildObjects.size()); };
@@ -102,7 +102,7 @@ namespace dae
 
 		inline dae::Scene* GetContainingScene() const { return m_pContainingScene; };
 
-		GameObject(Scene* pScene, GameObject* pParent = nullptr);
+		GameObject(Scene* pScene, dae::GameObject* pParent = nullptr);
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -114,16 +114,16 @@ namespace dae
 		void SetScaleDirty();
 		void SetTransformDirty();
 
-		Transform m_LocalTransform{ glm::vec2{}, glm::vec2{}, glm::vec2{ 1.0f, 1.0f } };
-		Transform m_WorldTransform{ };
+		dae::Transform m_LocalTransform{ glm::vec2{}, glm::vec2{}, glm::vec2{ 1.0f, 1.0f } };
+		dae::Transform m_WorldTransform{ };
 
 		bool m_PositionDirty{ true };
 		bool m_ScaleDirty{ true };
 
-		GameObject* m_pParentObject;
+		dae::GameObject* m_pParentObject;
 
-		std::vector<std::unique_ptr<Component>>	 m_pComponents;
-		std::vector<GameObject*> m_pChildObjects;
+		std::vector<std::unique_ptr<dae::Component>> m_pComponents;
+		std::vector<dae::GameObject*> m_pChildObjects;
 
 		bool m_ParentAsOrigin{ true };
 		bool m_ApplyParentScale{ true };

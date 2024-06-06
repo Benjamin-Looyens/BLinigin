@@ -284,11 +284,4 @@ void dae::GameObject::SeperateFromParent()
 	}
 
 	m_pParentObject->RemoveChild(this);
-
-	//// HACK : This implementation is pretty scuffed
-	//for (auto& object : m_pParentObject->m_pChildObjects) {
-	//	if (object == this) {
-	//		m_pParentObject->RemoveChild(object);
-	//	}
-	//}
 }

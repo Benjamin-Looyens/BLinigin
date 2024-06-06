@@ -23,10 +23,10 @@ namespace dae
 
 	struct CommandData
 	{
-		std::unique_ptr<Command> pCommand;
+		std::unique_ptr<dae::Command> pCommand;
 		int commandCode;
 		bool isController; // HACK : Can probably get rid of this and use custom Macro parser that has controller and keyboard both
-		InputState inputState = InputState::HELD;
+		dae::InputState inputState = dae::InputState::HELD;
 	};
 
 	// TODO : Potentially a wrapper class that handles input which itself handles whether it gets it from a controller or not
@@ -58,7 +58,7 @@ namespace dae
 		};
 
 		template<DerivedCommand CommandType, typename... TArgs>
-		void AddCommand(int code, InputState inputState, const TArgs&... args)
+		void AddCommand(int code, dae::InputState inputState, const TArgs&... args)
 		{
 			bool inputTypeIsController{ false };
 			code = TranslateCode(code, inputTypeIsController);
@@ -72,15 +72,15 @@ namespace dae
 		};
 
 	private:
-		std::vector<CommandData> m_Commands; 
-		std::vector<Gamepad> m_Gamepads;
+		std::vector<dae::CommandData> m_Commands; 
+		std::vector<dae::Gamepad> m_Gamepads;
 		
 		glm::ivec2 m_MousePos;
 		glm::ivec2 m_RelMousePos;
 
 		int TranslateCode(const int& code, bool& inputIsController_OUT);
-		void HandleMouseInput(InputState state, SDL_Event& e);
-		void HandleKeyboardInput(InputState state, SDL_Event& e);
+		void HandleMouseInput(dae::InputState state, SDL_Event& e);
+		void HandleKeyboardInput(dae::InputState state, SDL_Event& e);
 	};
 }
 

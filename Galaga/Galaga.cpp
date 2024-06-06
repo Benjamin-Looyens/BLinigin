@@ -61,8 +61,7 @@ void load()
 // TODO : Check every class to make sure if applies rule of 5 correctly
 // TODO : Add layering options which guarantees that some Objects/Components are rendered above others
 // TODO : Reduce auto usage
-// TODO : Everywhere in headers, use dae:: namespace for classes contained within others
-// TODO : Write explanations/summaries for functions 
+// TODO : (Maybe) Write explanations/summaries for functions
 // TODO : Check where getters and setters are necessary
 // TODO : Add easy way to get screen size (as a global probably)
 // TODO : Check for if destroyed objects remove themselves from their parents

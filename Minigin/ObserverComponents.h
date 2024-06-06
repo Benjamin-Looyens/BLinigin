@@ -9,7 +9,7 @@ namespace dae {
 	class SubjectComponent : public Component, public ISubject
 	{
 	public:
-		SubjectComponent(GameObject* pParent);
+		SubjectComponent(dae::GameObject* pParent);
 		virtual ~SubjectComponent() = 0;
 
 		SubjectComponent(const SubjectComponent& other) = delete;
@@ -19,17 +19,17 @@ namespace dae {
 
 		void AddObserver(IObserver* pObserverToAdd) override;
 		void RemoveObserver(IObserver* pObserverToRemove) override;
-		void NotifyObservers(Event& eventToNotify) override;
-		void NotifyObservers(Event&& eventToNotify) override;
+		void NotifyObservers(dae::Event& eventToNotify) override;
+		void NotifyObservers(dae::Event&& eventToNotify) override;
 
 	private:
-		std::vector<IObserver*> m_pObservers;
+		std::vector<dae::IObserver*> m_pObservers;
 	};
 
 	class ObservingComponent : public Component, public IObserver
 	{
 	public:
-		ObservingComponent(GameObject* pParent);
+		ObservingComponent(dae::GameObject* pParent);
 		virtual ~ObservingComponent() = 0;
 
 		ObservingComponent(const ObservingComponent& other) = delete;
@@ -41,7 +41,7 @@ namespace dae {
 	class ObservingSubjectComponent : public Component, public IObserver, public ISubject
 	{
 	public:
-		ObservingSubjectComponent(GameObject* pParent);
+		ObservingSubjectComponent(dae::GameObject* pParent);
 		virtual ~ObservingSubjectComponent() = 0;
 
 		ObservingSubjectComponent(const ObservingSubjectComponent& other) = delete;
@@ -51,10 +51,10 @@ namespace dae {
 
 		void AddObserver(IObserver* pObserverToAdd) override;
 		void RemoveObserver(IObserver* pObserverToRemove) override;
-		void NotifyObservers(Event& eventToNotify) override;
-		void NotifyObservers(Event&& eventToNotify) override;
+		void NotifyObservers(dae::Event& eventToNotify) override;
+		void NotifyObservers(dae::Event&& eventToNotify) override;
 
 	private:
-		std::vector<IObserver*> m_pObservers;
+		std::vector<dae::IObserver*> m_pObservers;
 	};
 }

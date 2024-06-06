@@ -38,7 +38,7 @@ namespace dae {
 
 		void SetText(const std::string& text);
 
-		TextComponent(dae::GameObject* pParent, const std::string& text, Font* font, const std::string& internalIdentifier);
+		TextComponent(dae::GameObject* pParent, const std::string& text, dae::Font* font, const std::string& internalIdentifier);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
