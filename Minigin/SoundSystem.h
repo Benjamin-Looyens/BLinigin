@@ -13,6 +13,7 @@ namespace dae {
 		virtual void PlaySound(const sound_id id, const float volume) = 0;
 		virtual void LoadSound(const sound_id id) = 0;
 		virtual void LinkIDToFilePath(const sound_id id, const char* filePath) = 0;
+		virtual void SetDataPath(const char* dataPath) = 0;
 
 	private:
 		virtual bool InitSound(const sound_id id, const bool overwriteIfExists = false) = 0;

@@ -46,14 +46,14 @@ bool dae::SDL_SoundSystem::InitSound(const sound_id id, const bool overwriteIfEx
 		std::cout << "Loading sound [" << id << "]...\n";
 #endif 
 
-		const char* sound_cstr{ m_SoundFileLinks[id] };
+		const auto& soundStr{ m_SoundFileLinks[id] };
 
-		if (!sound_cstr) {
+		if (!soundStr.c_str()) {
 			std::cerr << "No sound was found matching the id [" << id << "]!\n";
 			return false;
 		}
 
-		sound = Mix_LoadWAV(sound_cstr);
+		sound = Mix_LoadWAV(soundStr.c_str());
 
 		if (!sound) {
 			std::cerr << "Failed to load sound! SDL_mixer Error: " << Mix_GetError() << "\n";

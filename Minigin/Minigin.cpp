@@ -90,7 +90,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	BL_TIMER.Init();
 
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SDL_SoundSystem>());
-	//dae::ServiceLocator::RegisterSoundSystem(nullptr);
+	BL_SOUND.SetDataPath(dataPath.c_str());
 }
 
 dae::Minigin::~Minigin()

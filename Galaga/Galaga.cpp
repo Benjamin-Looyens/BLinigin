@@ -64,8 +64,6 @@ void load()
 // TODO : (Maybe) Write explanations/summaries for functions
 // TODO : Check where getters and setters are necessary
 // TODO : Add easy way to get screen size (as a global probably)
-// TODO : Check for if destroyed objects remove themselves from their parents
-// TODO : Make soundsys path same as resource manager
 // TODO : Add debug info for when a file is missing 
 
 int main(int, char* []) {
@@ -162,21 +160,21 @@ void InitSound()
 	// Sound
 	auto& soundSys = BL_SOUND;
 
-	soundSys.LinkIDToFilePath(1, "../Data/Sound/01. Stage Intro.mp3");
-	soundSys.LinkIDToFilePath(2, "../Data/Sound/02. Fighter Captured.mp3");
-	soundSys.LinkIDToFilePath(3, "../Data/Sound/03. Fighter Rescued.mp3");
-	soundSys.LinkIDToFilePath(4, "../Data/Sound/04. Captured Fighter Destroyed.mp3");
-	soundSys.LinkIDToFilePath(5, "../Data/Sound/05. Challenging Stage.mp3");
-	soundSys.LinkIDToFilePath(6, "../Data/Sound/06. Challenging Stage Over.mp3");
-	soundSys.LinkIDToFilePath(7, "../Data/Sound/07. Challenging Stage Perfect.mp3");
-	soundSys.LinkIDToFilePath(8, "../Data/Sound/08. 1-Up.mp3");
-	soundSys.LinkIDToFilePath(9, "../Data/Sound/09. Die-Start Up Sound.mp3");
-	soundSys.LinkIDToFilePath(10, "../Data/Sound/10. Coin.mp3");
-	soundSys.LinkIDToFilePath(11, "../Data/Sound/11. Name Entry.mp3");
-	soundSys.LinkIDToFilePath(12, "../Data/Sound/12. 2nd - 5th Name Entry.mp3");
-	soundSys.LinkIDToFilePath(13, "../Data/Sound/13. Shoot.mp3");
-	soundSys.LinkIDToFilePath(14, "../Data/Sound/BossDamage.mp3");
-	soundSys.LinkIDToFilePath(15, "../Data/Sound/BossDeath.mp3");
-	soundSys.LinkIDToFilePath(16, "../Data/Sound/BeeDeath.mp3");
-	soundSys.LinkIDToFilePath(17, "../Data/Sound/ButterflyDeath.mp3");
+	soundSys.LinkIDToFilePath(1,  "Sound/01. Stage Intro.mp3");
+	soundSys.LinkIDToFilePath(2,  "Sound/02. Fighter Captured.mp3");
+	soundSys.LinkIDToFilePath(3,  "Sound/03. Fighter Rescued.mp3");
+	soundSys.LinkIDToFilePath(4,  "Sound/04. Captured Fighter Destroyed.mp3");
+	soundSys.LinkIDToFilePath(5,  "Sound/05. Challenging Stage.mp3");
+	soundSys.LinkIDToFilePath(6,  "Sound/06. Challenging Stage Over.mp3");
+	soundSys.LinkIDToFilePath(7,  "Sound/07. Challenging Stage Perfect.mp3");
+	soundSys.LinkIDToFilePath(8,  "Sound/08. 1-Up.mp3");
+	soundSys.LinkIDToFilePath(9,  "Sound/09. Die-Start Up Sound.mp3");
+	soundSys.LinkIDToFilePath(10, "Sound/10. Coin.mp3");
+	soundSys.LinkIDToFilePath(11, "Sound/11. Name Entry.mp3");
+	soundSys.LinkIDToFilePath(12, "Sound/12. 2nd - 5th Name Entry.mp3");
+	soundSys.LinkIDToFilePath(13, "Sound/13. Shoot.mp3");
+	soundSys.LinkIDToFilePath(14, "Sound/BossDamage.mp3");
+	soundSys.LinkIDToFilePath(15, "Sound/BossDeath.mp3");
+	soundSys.LinkIDToFilePath(16, "Sound/BeeDeath.mp3");
+	soundSys.LinkIDToFilePath(17, "Sound/ButterflyDeath.mp3");
 }

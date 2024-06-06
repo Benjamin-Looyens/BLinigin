@@ -11,6 +11,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <tuple>
+#include <string>
 
 namespace dae {
 	class SDL_SoundSystem final : public ISoundSystem
@@ -18,7 +19,8 @@ namespace dae {
 	public:
 		void PlaySound(const sound_id id, const float volume) override;
 		void LoadSound(const sound_id id) override;
-		inline void LinkIDToFilePath(const sound_id id, const char* filePath) override { m_SoundFileLinks[id] = filePath; };
+		inline void SetDataPath(const char* dataPath) override { m_DataPath = dataPath; };
+		inline void LinkIDToFilePath(const sound_id id, const char* filePath) override { m_SoundFileLinks[id] = m_DataPath.c_str() + std::string{ filePath }; };
 
 	private:
 		bool InitSound(const sound_id id, const bool overwriteIfExists = false) override;
@@ -27,7 +29,7 @@ namespace dae {
 		std::thread* InitQueue() override;
 		
 		std::map<sound_id, Mix_Chunk*> m_LoadedSounds;
-		std::map<sound_id, const char*> m_SoundFileLinks;
+		std::map<sound_id, std::string> m_SoundFileLinks;
 
 		// Event Queue
 		//std::queue<std::pair<sound_id, float>> m_SoundQueue;
@@ -36,5 +38,6 @@ namespace dae {
 		std::condition_variable m_SoundAddedCondition;
 
 		bool m_Continue{ true };
+		std::string m_DataPath{};
 	};
 }
