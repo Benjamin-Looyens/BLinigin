@@ -9,6 +9,7 @@
 #include "PlayerComponents.h"
 #include "SceneManager.h"
 #include "StageComponents.h"
+#include "MainMenu.h"
 
 dae::GameObjectCommand::GameObjectCommand(GameObject* pActor)
 	: m_pGameObject{ pActor }
@@ -78,3 +79,29 @@ void dae::SkipLevelCommand::Execute()
 dae::SkipLevelCommand::SkipLevelCommand(dae::GameObject* pStageManagerObj)
 	: GameObjectCommand(pStageManagerObj)
 {}
+
+dae::MainMenuCommand::MainMenuCommand(GameObject* pMainMenuObj, dae::MainMenuCommand::MainMenuInput inputToSignal)
+	: GameObjectCommand(pMainMenuObj), m_InputToSignal{ inputToSignal }
+{}
+
+void dae::MainMenuCommand::Execute()
+{
+	auto pMenu = GetGameObject()->GetComponent<dae::MainMenuComponent>();
+
+	if (!pMenu) return;
+
+	switch (m_InputToSignal) {
+	case MainMenuInput::UP:
+		pMenu->UpPressed();
+		break;
+	case MainMenuInput::DOWN:
+		pMenu->DownPressed();
+		break;
+	case MainMenuInput::CONFIRM:
+		pMenu->ConfirmPressed();
+		break;
+	case MainMenuInput::BACK:
+		pMenu->BackPressed();
+		break;
+	}
+}

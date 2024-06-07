@@ -74,6 +74,12 @@
     <ClCompile Include="ScoreTracker.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnemyComponents.h">
@@ -119,6 +125,12 @@
       <Filter>Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="ScoreTracker.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
       <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>

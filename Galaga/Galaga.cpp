@@ -26,6 +26,7 @@
 #include "TextureComponents.h"
 #include "Renderer.h"
 #include "ScoreTracker.h"
+#include "MainMenu.h"
 
 #include "TEMP_PlayerGlobal.h"
 
@@ -53,8 +54,8 @@ void load()
 	InitVersus(versus, windowSize);
 	InitResults(results, windowSize);
 
-	//BL_SCENE_MANAGER.SetActiveScene("Title");
-	BL_SCENE_MANAGER.SetActiveScene("CoopGalaga");
+	BL_SCENE_MANAGER.SetActiveScene("Title");
+	//BL_SCENE_MANAGER.SetActiveScene("CoopGalaga");
 }
 
 // GENERAL TODOS
@@ -74,7 +75,9 @@ int main(int, char* []) {
 
 void InitTitle(dae::Scene& titleScene, glm::ivec2& windowSize)
 {
-	titleScene;
+	auto pMainMenuObj = titleScene.AddGameObject();
+	pMainMenuObj->AddComponent<dae::MainMenuComponent>();
+
 	windowSize;
 }
 

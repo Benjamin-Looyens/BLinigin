@@ -28,6 +28,13 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 	return *m_pScenes.back();
 }
 
+//dae::Scene& dae::SceneManager::CreateScene(const std::string& name, std::function<void(dae::Scene&, glm::vec2&)> initFunc)
+//{
+//	m_Scenes.push_back({ std::move(std::unique_ptr<Scene>(new Scene(name))), initFunc });
+//	
+//	return *std::get<std::unique_ptr<dae::Scene>>(m_Scenes[m_Scenes.size() - 1]).get();
+//}
+
 void dae::SceneManager::SetActiveScene(size_t sceneIndex)
 {
 	if (sceneIndex >= m_pScenes.size()) {

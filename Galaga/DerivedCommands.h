@@ -72,4 +72,23 @@ namespace dae
 
 		SkipLevelCommand(dae::GameObject* pStageManagerObj); 
 	};
+
+	class MainMenuCommand final : public GameObjectCommand
+	{
+	public:
+		enum class MainMenuInput
+		{
+			UP,
+			DOWN,
+			CONFIRM,
+			BACK
+		};
+
+		MainMenuCommand(GameObject* pMainMenuObj, dae::MainMenuCommand::MainMenuInput inputToSignal);
+
+		void Execute() override;
+
+	private:
+		dae::MainMenuCommand::MainMenuInput m_InputToSignal;
+	};
 }
