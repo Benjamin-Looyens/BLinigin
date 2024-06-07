@@ -121,11 +121,11 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 	//float midScreen{ static_cast<float>(windowSize.x / 2) };
 	constexpr glm::vec2 scoreInset{ 100, 35 };
 
-	dae::Player playerOne{	glm::vec2{ 150, playerElevation },			// Player pos
-							glm::vec2{ 10, windowSize.y - 26 },			// Lives counter pos
-							glm::vec2{ scoreInset.x, scoreInset.y },	// Score counter pos
-							"GalagaP1.tga",								// Sprite
-							0, 100.0f, 3, dae::InputType::KEYBOARD };	// Index, speed, lives, input type
+	dae::Player playerOne{	glm::vec2{ 150, playerElevation },						// Player pos
+							glm::vec2{ 10, windowSize.y - 26 },						// Lives counter pos
+							glm::vec2{ scoreInset.x, scoreInset.y },				// Score counter pos
+							"GalagaP1.tga",											// Sprite
+							0, 100.0f, 3, dae::InputType::KEYBOARD_AND_GAMEPAD };	// Index, speed, lives, input type
 
 	pPlayerOneObject = playerOne.AddToScene(&coopScene);
 

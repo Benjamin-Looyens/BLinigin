@@ -30,7 +30,7 @@ dae::StageManagerLogic::StageManagerLogic(GameObject* pParent, dae::Enemy boss, 
 
 	m_pParent->AddComponent<dae::ScalePulseComponent>(0.1f, 0.25f, 1.25f);
 
-	BL_INPUT.AddCommand<dae::SkipLevelCommand>(BL_KEYBOARD_F1, dae::InputState::PRESSED_THIS_FRAME, m_pParent);
+	BL_INPUT.AddCommand<dae::SkipLevelCommand>(BL_KEYBOARD_F1, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent);
 }
 
 void dae::StageManagerLogic::Update()

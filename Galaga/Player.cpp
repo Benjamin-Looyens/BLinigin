@@ -74,13 +74,13 @@ void dae::Player::AddKeyboardInput(GameObject* pPlayerObj) const
 {
 	auto& input = BL_INPUT;
 
-	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, pPlayerObj, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
-	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, pPlayerObj, glm::vec2{ 1.0f,  0.0f }, m_SpawnMovSpeed);
+	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, 0, pPlayerObj, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
+	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, 0, pPlayerObj, glm::vec2{ 1.0f,  0.0f }, m_SpawnMovSpeed);
 
-	input.AddCommand<dae::FireCommand>(BL_KEYBOARD_SPACE, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
+	input.AddCommand<dae::FireCommand>(BL_KEYBOARD_SPACE, 0, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
 
 #ifndef NDEBUG
-	input.AddCommand<dae::KillPlayerCommand>(BL_KEYBOARD_F10, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
+	input.AddCommand<dae::KillPlayerCommand>(BL_KEYBOARD_F10, 0, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
 #endif
 }
 
@@ -88,13 +88,13 @@ void dae::Player::AddGamepadInput(GameObject* pPlayerObj) const
 {
 	auto& input = BL_INPUT;
 
-	input.AddGamepad();
-	input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_LEFT, pPlayerObj, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
-	input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT, pPlayerObj, glm::vec2{ 1.0f,  0.0f }, m_SpawnMovSpeed);
+	auto index = input.AddGamepad();
+	input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_LEFT, index, pPlayerObj, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
+	input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT, index, pPlayerObj, glm::vec2{ 1.0f,  0.0f }, m_SpawnMovSpeed);
 
-	input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
+	input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, index, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
 
 #ifndef NDEBUG
-	input.AddCommand<dae::KillPlayerCommand>(BL_GAMEPAD_START, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
+	input.AddCommand<dae::KillPlayerCommand>(BL_GAMEPAD_START, index, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
 #endif
 }

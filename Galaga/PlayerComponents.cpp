@@ -122,7 +122,7 @@ void dae::LivesComponent::LoseLife()
 	m_NumLives--;
 
 	// TODO : add check for other player
-	if (m_NumLives <= 0) {
+	if (m_NumLives == -1) {
 		NotifyObservers(Event::GAME_OVER);
 
 	}

@@ -21,11 +21,14 @@ namespace dae
 		HELD
 	};
 
+	using input_index = unsigned short;
+
 	struct CommandData
 	{
 		std::unique_ptr<dae::Command> pCommand;
 		int commandCode;
-		bool isController; // HACK : Can probably get rid of this and use custom Macro parser that has controller and keyboard both
+		//bool isController; // HACK : Can probably get rid of this and use custom Macro parser that has controller and keyboard both
+		input_index index; // Index 0 -> KBM, Index 1-4 -> Controllers 1-4
 		dae::InputState inputState = dae::InputState::HELD;
 	};
 
@@ -40,12 +43,12 @@ namespace dae
 	{
 	public:
 		bool ProcessInput();
-		void AddGamepad();
+		input_index AddGamepad();
 		glm::ivec2 GetMousePos() const { return m_MousePos; };
 		glm::ivec2 GetPreviosMouseMovement() const { return m_MousePos; };
 
 		template<DerivedCommand CommandType, typename... TArgs>
-		void AddCommand(int code, const TArgs&... args) 
+		void AddCommand(int code, input_index index, const TArgs&... args) 
 		{
 			bool inputTypeIsController{ false };
 			code = TranslateCode(code, inputTypeIsController);
@@ -53,12 +56,12 @@ namespace dae
 			m_Commands.emplace_back(
 				std::make_unique<CommandType>(args...),
 				code,
-				inputTypeIsController
+				index
 			);
 		};
 
 		template<DerivedCommand CommandType, typename... TArgs>
-		void AddCommand(int code, dae::InputState inputState, const TArgs&... args)
+		void AddCommand(int code, input_index index, dae::InputState inputState, const TArgs&... args)
 		{
 			bool inputTypeIsController{ false };
 			code = TranslateCode(code, inputTypeIsController);
@@ -66,7 +69,7 @@ namespace dae
 			m_Commands.emplace_back(
 				std::make_unique<CommandType>(args...),
 				code,
-				inputTypeIsController,
+				index,
 				inputState
 			);
 		};

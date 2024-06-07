@@ -23,8 +23,10 @@ bool dae::InputManager::ProcessInput()
 
 	// HACK : Please if you have time, find some other way to do this because good lord
     for (auto& command : m_Commands) {
-        if (command.isController) {
+        if (command.index > 0) {
             for (auto& gamepad : m_Gamepads) {
+                if (static_cast<int>(command.index) != gamepad.GetPlayerIndex() + 1) continue; 
+
                 switch (command.inputState) {
                 case dae::InputState::PRESSED_THIS_FRAME:
                     if (gamepad.ButtonPressedThisFrame(command.commandCode)) command.pCommand->Execute();
@@ -83,9 +85,17 @@ bool dae::InputManager::ProcessInput()
 	return true;
 }
 
-void dae::InputManager::AddGamepad()
+dae::input_index dae::InputManager::AddGamepad()
 {
-	m_Gamepads.push_back(static_cast<int>(m_Gamepads.size()));
+    if (m_Gamepads.size() == 4) {
+#ifndef NDEBUG
+        std::cerr << "Maximum amount of gamepads (4) have already been added!\n";
+#endif
+    }
+    else {
+	    m_Gamepads.push_back(static_cast<int>(m_Gamepads.size()));
+    }
+    return static_cast<dae::input_index>(m_Gamepads.size());
 }
 
 int dae::InputManager::TranslateCode(const int& code, bool& inputIsController_OUT)
@@ -300,7 +310,7 @@ int dae::InputManager::TranslateCode(const int& code, bool& inputIsController_OU
 void dae::InputManager::HandleMouseInput(const dae::InputState state, SDL_Event& e)
 {
     for (auto& command : m_Commands) {
-        if (command.isController) continue;
+        if (command.index > 0) continue;
 
         if (command.inputState == state) 
             if (e.button.button == command.commandCode) 
@@ -311,7 +321,7 @@ void dae::InputManager::HandleMouseInput(const dae::InputState state, SDL_Event&
 void dae::InputManager::HandleKeyboardInput(dae::InputState state, SDL_Event& e)
 {
     for (auto& command : m_Commands) {
-        if (command.isController) continue;
+        if (command.index > 0) continue;
 
         if (command.inputState == state)
             if (e.key.keysym.scancode == command.commandCode)
