@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include <glm/vec2.hpp>
+#include <SDL.h>
 
 namespace dae {
 	class Font;
@@ -37,8 +38,9 @@ namespace dae {
 		void Render() const override;
 
 		void SetText(const std::string& text);
+		void SetCentered(bool setCentered) { m_Centered = setCentered; };
 
-		TextComponent(dae::GameObject* pParent, const std::string& text, dae::Font* font, const std::string& internalIdentifier);
+		TextComponent(dae::GameObject* pParent, const std::string& text, dae::Font* font, const std::string& internalIdentifier, bool isCentered = false, SDL_Color color = { 255, 255, 255, 255 });
 		~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -46,11 +48,13 @@ namespace dae {
 		TextComponent& operator=(TextComponent&& other) = delete;
 
 	private:
+		bool m_Centered;
 		bool m_NeedsUpdate;
 		std::string m_Text;
 		const std::string m_ResourceFile;
 		Font* m_pFont;
 		Texture2D* m_pTextTexture;
+		SDL_Color m_Color;
 	};
 
 	class AnimatedTextureComponent final : public TextureComponent

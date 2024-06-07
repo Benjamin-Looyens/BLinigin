@@ -47,6 +47,8 @@ namespace dae
 		glm::ivec2 GetMousePos() const { return m_MousePos; };
 		glm::ivec2 GetPreviosMouseMovement() const { return m_MousePos; };
 
+		inline void QuitGame() { m_NeedToQuit = true; };
+
 		template<DerivedCommand CommandType, typename... TArgs>
 		void AddCommand(int code, input_index index, const TArgs&... args) 
 		{
@@ -84,6 +86,8 @@ namespace dae
 		int TranslateCode(const int& code, bool& inputIsController_OUT);
 		void HandleMouseInput(dae::InputState state, SDL_Event& e);
 		void HandleKeyboardInput(dae::InputState state, SDL_Event& e);
+
+		bool m_NeedToQuit;
 	};
 }
 

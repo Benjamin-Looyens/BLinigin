@@ -36,6 +36,7 @@ void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize);
 void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize);
 void InitResults(dae::Scene& resultsScene, glm::ivec2& windowSize);
 void InitSound();
+void AddAllModeSharedObj(dae::Scene& scene, glm::ivec2& windowSize);
 
 void load()
 {
@@ -78,13 +79,47 @@ void InitTitle(dae::Scene& titleScene, glm::ivec2& windowSize)
 	auto pMainMenuObj = titleScene.AddGameObject();
 	pMainMenuObj->AddComponent<dae::MainMenuComponent>();
 
-	windowSize;
+
+	//TextComponent(dae::GameObject* pParent, const std::string& text, dae::Font* font, const std::string& internalIdentifier, bool isCentered = false, SDL_Color color = { 255, 255, 255, 255 });
+	auto pFont = BL_RESOURCE.LoadFont("Emulogic.ttf", 20);
+	auto pGalagaTextObj = titleScene.AddGameObject();
+	pGalagaTextObj->AddComponent<dae::TextComponent>("GALAGA", pFont, "GalagaTitleText", true, SDL_Color{ 0, 255, 255, 255 });
+	pGalagaTextObj->SetLocalTranslation({ windowSize.x / 2, 50 });
+
+	auto pDaeProjectTextObj = titleScene.AddGameObject();
+	pDaeProjectTextObj->AddComponent<dae::TextComponent>("DAE GD PROGRAMMING 4", pFont, "DaeProg4Text", true, SDL_Color{ 255, 255, 255, 255 });
+	pDaeProjectTextObj->SetLocalTranslation({ windowSize.x / 2, 100 });
 }
 
 void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize)
 {
-	soloScene;
-	windowSize;
+	AddAllModeSharedObj(soloScene, windowSize);
+
+	// Prefabs
+	dae::GameObject* pPlayerOneObject = nullptr;
+
+	float playerElevation{ static_cast<float>(windowSize.y - 100) };
+	float midScreen{ static_cast<float>(windowSize.x / 2) };
+	constexpr glm::vec2 scoreInset{ 100, 35 };
+
+	dae::Player playerOne{	glm::vec2{ midScreen - 16, playerElevation },			// Player pos
+							glm::vec2{ 10, windowSize.y - 26 },						// Lives counter pos
+							glm::vec2{ scoreInset.x, scoreInset.y },				// Score counter pos
+							"GalagaP1.tga",											// Sprite
+							0, 100.0f, 3, dae::InputType::KEYBOARD_AND_GAMEPAD };	// Index, speed, lives, input type
+
+	pPlayerOneObject = playerOne.AddToScene(&soloScene);
+
+	std::vector<dae::GameObject*> players{ pPlayerOneObject };
+
+	auto pScoreTrackerObject = soloScene.AddGameObject();
+	auto pScoreTrackerComp = pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
+
+	pPlayerOneObject->GetComponent<dae::PlayerLogic>()->AddObserver(pScoreTrackerComp);
+	pPlayerOneObject->GetComponent<dae::LivesComponent>()->AddObserver(pScoreTrackerComp);
+
+	// TEMP
+	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);
 }
 
 void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize)
@@ -95,26 +130,7 @@ void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize)
 
 void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 {
-	// Raw Object Initializations
-	auto pBackgroundObject = coopScene.AddGameObject();
-	pBackgroundObject->AddComponent<dae::TextureComponent>("GalagaBackground.png");
-
-	auto pBackgroundTileR = coopScene.AddGameObject();
-	auto pTextureCompR = pBackgroundTileR->AddComponent<dae::TextureComponent>("GalagaBackground.png");
-	pBackgroundTileR->SetLocalTranslation(pTextureCompR->GetTextureWidth(), 0.0f);
-
-	auto pBackgroundTileB = coopScene.AddGameObject();
-	pBackgroundTileB->AddComponent<dae::TextureComponent>("GalagaBackground.png");
-	pBackgroundTileB->SetLocalTranslation(0.0f, pTextureCompR->GetTextureHeight());
-
-	auto pBackgroundTileBR = coopScene.AddGameObject();
-	pBackgroundTileBR->AddComponent<dae::TextureComponent>("GalagaBackground.png");
-	pBackgroundTileBR->SetLocalTranslation(pTextureCompR->GetTextureWidth(), pTextureCompR->GetTextureHeight());
-
-	// TODO : Make better background tiling system
-	pBackgroundObject->AddChild(pBackgroundTileR);
-	pBackgroundObject->AddChild(pBackgroundTileB);
-	pBackgroundObject->AddChild(pBackgroundTileBR);
+	AddAllModeSharedObj(coopScene, windowSize);
 
 	// Prefabs
 	dae::GameObject* pPlayerOneObject = nullptr;
@@ -123,12 +139,12 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 	float playerElevation{ static_cast<float>(windowSize.y - 100) };
 	//float midScreen{ static_cast<float>(windowSize.x / 2) };
 	constexpr glm::vec2 scoreInset{ 100, 35 };
-
-	dae::Player playerOne{	glm::vec2{ 150, playerElevation },						// Player pos
-							glm::vec2{ 10, windowSize.y - 26 },						// Lives counter pos
-							glm::vec2{ scoreInset.x, scoreInset.y },				// Score counter pos
-							"GalagaP1.tga",											// Sprite
-							0, 100.0f, 3, dae::InputType::KEYBOARD_AND_GAMEPAD };	// Index, speed, lives, input type
+	 
+	dae::Player playerOne{ glm::vec2{ 150, playerElevation },						// Player pos
+						glm::vec2{ 10, windowSize.y - 26 },						// Lives counter pos
+						glm::vec2{ scoreInset.x, scoreInset.y },				// Score counter pos
+						"GalagaP1.tga",											// Sprite
+						0, 100.0f, 3, dae::InputType::KEYBOARD_AND_GAMEPAD };	// Index, speed, lives, input type
 
 	pPlayerOneObject = playerOne.AddToScene(&coopScene);
 
@@ -142,13 +158,6 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 							1, 100.0f, 3, dae::InputType::GAMEPAD };							// Index, speed, lives, input type
 
 	pPlayerTwoObject = playerTwo.AddToScene(&coopScene);
-
-	std::vector<dae::IObserver*> enemyObservers;
-	//enemyObservers.push_back(pPlayerOneObject->GetComponent<dae::ScoreComponent>());
-	//enemyObservers.push_back(pPlayerTwoObject->GetComponent<dae::ScoreComponent>());
-
-	dae::StageManager stageManager{ enemyObservers };
-	stageManager.AddToScene(&coopScene);
 
 	std::vector<dae::GameObject*> players{ pPlayerOneObject, pPlayerTwoObject };
 
@@ -193,4 +202,33 @@ void InitSound()
 	soundSys.LinkIDToFilePath(15, "Sound/BossDeath.mp3");
 	soundSys.LinkIDToFilePath(16, "Sound/BeeDeath.mp3");
 	soundSys.LinkIDToFilePath(17, "Sound/ButterflyDeath.mp3");
+}
+
+void AddAllModeSharedObj(dae::Scene& scene, glm::ivec2&)
+{
+	// Raw Object Initializations
+	auto pBackgroundObject = scene.AddGameObject();
+	pBackgroundObject->AddComponent<dae::TextureComponent>("GalagaBackground.png");
+
+	auto pBackgroundTileR = scene.AddGameObject();
+	auto pTextureCompR = pBackgroundTileR->AddComponent<dae::TextureComponent>("GalagaBackground.png");
+	pBackgroundTileR->SetLocalTranslation(pTextureCompR->GetTextureWidth(), 0.0f);
+
+	auto pBackgroundTileB = scene.AddGameObject();
+	pBackgroundTileB->AddComponent<dae::TextureComponent>("GalagaBackground.png");
+	pBackgroundTileB->SetLocalTranslation(0.0f, pTextureCompR->GetTextureHeight());
+
+	auto pBackgroundTileBR = scene.AddGameObject();
+	pBackgroundTileBR->AddComponent<dae::TextureComponent>("GalagaBackground.png");
+	pBackgroundTileBR->SetLocalTranslation(pTextureCompR->GetTextureWidth(), pTextureCompR->GetTextureHeight());
+
+	// TODO : Make better background tiling system
+	pBackgroundObject->AddChild(pBackgroundTileR);
+	pBackgroundObject->AddChild(pBackgroundTileB);
+	pBackgroundObject->AddChild(pBackgroundTileBR);
+
+	std::vector<dae::IObserver*> enemyObservers;
+
+	dae::StageManager stageManager{ enemyObservers };
+	stageManager.AddToScene(&scene);
 }

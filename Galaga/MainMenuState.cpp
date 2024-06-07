@@ -2,12 +2,17 @@
 #include <iostream>
 #include "MainMenu.h"
 #include "SceneManager.h"
+#include "InputManager.h"
 
 #pragma region TitleState
 void dae::TitleState::Update(MainMenuComponent& stateObject)
 {
 	if (stateObject.WasConfirmPressed()) {
+		//BL_SCENE_MANAGER.SetActiveScene("SoloGalaga");
 		BL_SCENE_MANAGER.SetActiveScene("CoopGalaga");
+	}
+	if (stateObject.WasBackPressed()) {
+		BL_INPUT.Quit();
 	}
 }
 

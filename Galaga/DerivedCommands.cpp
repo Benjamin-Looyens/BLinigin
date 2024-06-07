@@ -86,6 +86,9 @@ dae::MainMenuCommand::MainMenuCommand(GameObject* pMainMenuObj, dae::MainMenuCom
 
 void dae::MainMenuCommand::Execute()
 {
+	bool mainMenuActive = BL_SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene());
+	if (!mainMenuActive) return;
+	
 	auto pMenu = GetGameObject()->GetComponent<dae::MainMenuComponent>();
 
 	if (!pMenu) return;

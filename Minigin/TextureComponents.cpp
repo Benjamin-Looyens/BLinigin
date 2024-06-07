@@ -52,8 +52,8 @@ void dae::TextureComponent::SetTexture(const std::string& filename)
 #pragma endregion TextureComponent
 
 #pragma region TextComponent
-dae::TextComponent::TextComponent(dae::GameObject* pParent, const std::string& text, Font* font, const std::string& internalIdentifier)
-	: Component(pParent), m_NeedsUpdate(true), m_Text(text), m_pFont(font), m_pTextTexture(nullptr), m_ResourceFile{ internalIdentifier }
+dae::TextComponent::TextComponent(dae::GameObject* pParent, const std::string& text, Font* font, const std::string& internalIdentifier, bool isCentered, SDL_Color color)
+	: Component(pParent), m_NeedsUpdate(true), m_Text(text), m_pFont(font), m_pTextTexture(nullptr), m_ResourceFile{ internalIdentifier }, m_Centered{ isCentered }, m_Color{ color }
 {}
 
 void dae::TextComponent::Update()
@@ -63,8 +63,7 @@ void dae::TextComponent::Update()
 
 		if (resourceManager.IsTextureLoaded(m_ResourceFile)) resourceManager.UnLoadTexture(m_ResourceFile);
 
-		const SDL_Color color = { 255,255,255,255 }; // TODO : Implement colors
-		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), color);
+		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), m_Color);
 		if (surf == nullptr) throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 
 		auto texture = SDL_CreateTextureFromSurface(BL_RENDERER.GetSDLRenderer(), surf);
@@ -80,7 +79,15 @@ void dae::TextComponent::Render() const
 {
 	if (m_pTextTexture != nullptr)
 	{
-		const auto& pos = m_pParent->GetWorldPosition();
+		auto pos = m_pParent->GetWorldPosition();
+
+		if (m_Centered) {
+			const auto& parentScale = m_pParent->GetWorldScale();
+			const auto& textSize = m_pTextTexture->GetSize();
+	
+			pos.x -= ((textSize.x / 2) * parentScale.x);
+		}
+
 		BL_RENDERER.RenderTexture(*m_pTextTexture, pos.x, pos.y);
 	}
 }

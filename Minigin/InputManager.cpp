@@ -10,6 +10,8 @@
 
 bool dae::InputManager::ProcessInput()
 {
+    if (m_NeedToQuit) return false;
+
 	// Keyboard & Mouse Input
 	SDL_Event e;
 
