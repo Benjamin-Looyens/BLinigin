@@ -50,13 +50,22 @@ void dae::SceneManager::SetActiveScene(size_t sceneIndex)
 
 void dae::SceneManager::SetActiveScene(const std::string& sceneName)
 {
+	bool success = false;
+
 	for (size_t index{ }; index < m_pScenes.size(); ++index) {
 		const auto& pScene = m_pScenes[index];
 		if (pScene && pScene->m_Name == sceneName) {
 			m_ActiveSceneIndex = index;
+			success = true;
 			break;
 		}
 	}
+
+#ifndef NDEBUG
+	if (!success) {
+		std::cerr << "Requested scene [" << sceneName << "] does not exist!\n";
+	}
+#endif
 }
 
 bool dae::SceneManager::IsActiveScene(const Scene* pScene) const
