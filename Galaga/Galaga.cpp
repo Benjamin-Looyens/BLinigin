@@ -27,14 +27,15 @@
 #include "Renderer.h"
 #include "ScoreTracker.h"
 #include "MainMenu.h"
+#include "Results.h"
 
 #include "TEMP_PlayerGlobal.h"
 
-void InitTitle(dae::Scene& titleScene, glm::ivec2& windowSize);
-void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize);
-void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize);
-void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize);
-void InitResults(dae::Scene& resultsScene, glm::ivec2& windowSize);
+void InitTitle	(dae::Scene& titleScene,	glm::ivec2& windowSize);
+void InitSolo	(dae::Scene& soloScene,		glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT);
+void InitVersus	(dae::Scene& versusScene,	glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT);
+void InitCoop	(dae::Scene& coopScene,		glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT);
+void InitResults(dae::Scene& resultsScene,	glm::ivec2& windowSize, dae::ScoreTrackerComponent* pScoreTracker);
 void InitSound();
 void AddAllModeSharedObj(dae::Scene& scene, glm::ivec2& windowSize);
 
@@ -46,14 +47,24 @@ void load()
 	auto& solo		= BL_SCENE_MANAGER.CreateScene("SoloGalaga");
 	auto& versus	= BL_SCENE_MANAGER.CreateScene("VersusGalaga");
 	auto& coop		= BL_SCENE_MANAGER.CreateScene("CoopGalaga");
-	auto& results	= BL_SCENE_MANAGER.CreateScene("Results");
+
+	auto& soloResults	= BL_SCENE_MANAGER.CreateScene("SoloResults");
+	auto& coopResults	= BL_SCENE_MANAGER.CreateScene("VersusResults");
+	auto& versusResults	= BL_SCENE_MANAGER.CreateScene("CoopResults");
 
 	InitSound();
 	InitTitle(title, windowSize);
-	InitSolo(solo, windowSize);
-	InitCoop(coop, windowSize);
-	InitVersus(versus, windowSize);
-	InitResults(results, windowSize);
+	dae::ScoreTrackerComponent* pSoloScoreTracker = nullptr;
+	dae::ScoreTrackerComponent* pCoopScoreTracker = nullptr;
+	dae::ScoreTrackerComponent* pVersusScoreTracker = nullptr;
+	
+	InitSolo(solo, windowSize, pSoloScoreTracker);
+	InitCoop(coop, windowSize, pCoopScoreTracker);
+	InitVersus(versus, windowSize, pVersusScoreTracker);
+
+	InitResults(soloResults, windowSize, pSoloScoreTracker);
+	InitResults(coopResults, windowSize, pCoopScoreTracker);
+	InitResults(versusResults, windowSize, pVersusScoreTracker);
 
 	BL_SCENE_MANAGER.SetActiveScene("Title");
 	//BL_SCENE_MANAGER.SetActiveScene("CoopGalaga");
@@ -67,6 +78,7 @@ void load()
 // TODO : (Maybe) Write explanations/summaries for functions
 // TODO : Check where getters and setters are necessary
 // TODO : Add debug info for when a file is missing 
+// TODO : Look at kill player command and ensure it is in the active scene
 
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");
@@ -90,7 +102,7 @@ void InitTitle(dae::Scene& titleScene, glm::ivec2& windowSize)
 	pDaeProjectTextObj->SetLocalTranslation({ windowSize.x / 2, 100 });
 }
 
-void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize)
+void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT)
 {
 	AddAllModeSharedObj(soloScene, windowSize);
 
@@ -101,7 +113,7 @@ void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize)
 	float midScreen{ static_cast<float>(windowSize.x / 2) };
 	constexpr glm::vec2 scoreInset{ 100, 35 };
 
-	dae::Player playerOne{	glm::vec2{ midScreen - 16, playerElevation },			// Player pos
+	dae::Player playerOne{ glm::vec2{ midScreen - 16, playerElevation },			// Player pos
 							glm::vec2{ 10, windowSize.y - 26 },						// Lives counter pos
 							glm::vec2{ scoreInset.x, scoreInset.y },				// Score counter pos
 							"GalagaP1.tga",											// Sprite
@@ -112,21 +124,22 @@ void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize)
 	std::vector<dae::GameObject*> players{ pPlayerOneObject };
 
 	auto pScoreTrackerObject = soloScene.AddGameObject();
-	pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
+	pScoreTracker_OUT = pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
 
 	// TEMP
 	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);
 }
 
-void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize)
+void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT)
 {
 	BL_INPUT.AddGamepad();
 
 	versusScene;
 	windowSize;
+	pScoreTracker_OUT;
 }
 
-void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
+void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT)
 {
 	AddAllModeSharedObj(coopScene, windowSize);
 
@@ -139,7 +152,7 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 	float playerElevation{ static_cast<float>(windowSize.y - 100) };
 	//float midScreen{ static_cast<float>(windowSize.x / 2) };
 	constexpr glm::vec2 scoreInset{ 100, 35 };
-	 
+
 	dae::Player playerOne{ glm::vec2{ 150, playerElevation },						// Player pos
 						glm::vec2{ 10, windowSize.y - 26 },						// Lives counter pos
 						glm::vec2{ scoreInset.x, scoreInset.y },				// Score counter pos
@@ -151,7 +164,7 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 	auto textureSize = pPlayerOneObject->GetComponent<dae::TextureComponent>()->GetTextureSize(); // NOTE : Temporary setup
 	float p2Offset = (textureSize.x * pPlayerOneObject->GetWorldScale().x);
 
-	dae::Player playerTwo{	glm::vec2{ windowSize.x - 150 - p2Offset, playerElevation },		// Player pos
+	dae::Player playerTwo{ glm::vec2{ windowSize.x - 150 - p2Offset, playerElevation },		// Player pos
 							glm::vec2{ windowSize.x - 10 - textureSize.x, windowSize.y - 26 },	// Lives counter pos
 							glm::vec2{ windowSize.x - scoreInset.x, scoreInset.y },				// Score counter pos
 							"GalagaP2.tga",														// Sprite
@@ -162,16 +175,19 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 	std::vector<dae::GameObject*> players{ pPlayerOneObject, pPlayerTwoObject };
 
 	auto pScoreTrackerObject = coopScene.AddGameObject();
-	pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
+	pScoreTracker_OUT = pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
 
 	// TEMP
 	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);
 	dae::PlayerLocator::RegisterPlayer(pPlayerTwoObject);
 }
 
-void InitResults(dae::Scene& resultsScene, glm::ivec2& windowSize)
+void InitResults(dae::Scene& resultsScene, glm::ivec2& windowSize, dae::ScoreTrackerComponent* pScoreTracker)
 {
-	resultsScene;
+	auto pResultsObj = resultsScene.AddGameObject();
+	pResultsObj->AddComponent<dae::ResultsComponent>(pScoreTracker);
+
+
 	windowSize;
 }
 

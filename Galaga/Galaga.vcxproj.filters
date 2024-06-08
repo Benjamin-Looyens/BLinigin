@@ -83,6 +83,9 @@
     <ClCompile Include="HighScore.cpp">
       <Filter>Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Results.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnemyComponents.h">
@@ -137,6 +140,9 @@
       <Filter>Menu</Filter>
     </ClInclude>
     <ClInclude Include="HighScore.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Results.h">
       <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>

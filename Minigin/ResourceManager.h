@@ -29,6 +29,7 @@ namespace dae
 		nlohmann::json* LoadJSON(const std::string& fileName);
 		bool IsJSONLoaded(const std::string& fileName);
 		void UnLoadJSON(const std::string& fileName);
+		void WriteToJSON(const std::string& fileName, const nlohmann::json& jsonToWrite);
 
 	private:
 		friend class Singleton<ResourceManager>;

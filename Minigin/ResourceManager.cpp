@@ -127,10 +127,9 @@ bool dae::ResourceManager::IsFontLoaded(const std::string& file, unsigned int si
 nlohmann::json* dae::ResourceManager::LoadJSON(const std::string& fileName)
 {
 	const auto fullPath = m_DataPath + fileName;
-
 	auto pLoadedJSON = m_LoadedJSONMap[fullPath];
-	if (pLoadedJSON) return pLoadedJSON;
 
+	if (pLoadedJSON != nullptr) return pLoadedJSON;
 
 	std::ifstream jsonFile{ fullPath };
 
@@ -167,17 +166,22 @@ bool dae::ResourceManager::IsJSONLoaded(const std::string& fileName)
 void dae::ResourceManager::UnLoadJSON(const std::string& fileName)
 {
 	const auto fullPath = m_DataPath + fileName;
-	auto pLoadedJSON = m_LoadedJSONMap[fullPath];
+	//auto pLoadedJSON = m_LoadedJSONMap[fullPath];
 
-	if (pLoadedJSON) {
-		for (auto& pJson : m_LoadedJSON) {
-			if (pJson.get() == pLoadedJSON) {
-				pJson.reset();
-				break;
-			}
+	auto jsonIt = m_LoadedJSONMap.find(fullPath);
+
+	if (jsonIt != end(m_LoadedJSONMap)) {
+		auto pRaw = std::get<nlohmann::json*>(*jsonIt);
+
+		auto uniqueIt = std::find_if(m_LoadedJSON.begin(), m_LoadedJSON.end(), [pRaw](const std::unique_ptr<nlohmann::json>& pUnique)
+			{ return pUnique.get() == pRaw; });
+		
+		if (uniqueIt != end(m_LoadedJSON)) {
+			m_LoadedJSON.erase(uniqueIt);
 		}
 
-		m_LoadedTexturesMap.erase(fullPath);
+		m_LoadedJSONMap.erase(jsonIt);
+
 #ifndef NDEBUG
 		std::cout << "Loaded json with file [" << fullPath << "] was successfully unloaded!\n";
 #endif
@@ -186,5 +190,30 @@ void dae::ResourceManager::UnLoadJSON(const std::string& fileName)
 #ifndef NDEBUG
 		std::cerr << "Loaded json with file [" << fullPath << "] was not loaded before trying to unload!\n";
 #endif
+	}
+}
+
+void dae::ResourceManager::WriteToJSON(const std::string& fileName, const nlohmann::json& jsonToWrite)
+{
+	const auto fullPath = m_DataPath + fileName;
+	//auto pLoadedJSON = m_LoadedJSONMap[fullPath];
+
+	auto jsonIt = m_LoadedJSONMap.find(fullPath);
+	if (jsonIt != end(m_LoadedJSONMap)) {
+		UnLoadJSON(fullPath);
+	}
+
+	std::ofstream jsonFile{ fullPath };
+
+	if (jsonFile.is_open()) {
+		jsonFile << jsonToWrite.dump(4);
+		jsonFile.close();
+
+#ifndef NDEBUG
+		std::cout << jsonToWrite.dump(4) << "\n";
+#endif
+	}
+	else {
+		// TODO : handle error
 	}
 }

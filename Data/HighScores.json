@@ -1,16 +1,40 @@
 {
-    "RegisteredScores" : [
+    "RegisteredScores": [
         {
-            "Initials" : "BEN",
-            "Score" : 500,
-            "Shots" : 10,
-            "Hits" : 5
+            "Hits": 5,
+            "Initials": "HHH",
+            "Score": 410,
+            "Shots": 7
         },
         {
-            "Initials" : "HLP",
-            "Score" : 1500,
-            "Shots" : 23,
-            "Hits" : 19
+            "Hits": 5,
+            "Initials": "HHH",
+            "Score": 410,
+            "Shots": 9
+        },
+        {
+            "Hits": 5,
+            "Initials": "",
+            "Score": 660,
+            "Shots": 8
+        },
+        {
+            "Hits": 0,
+            "Initials": "",
+            "Score": 0,
+            "Shots": 0
+        },
+        {
+            "Hits": 2,
+            "Initials": "",
+            "Score": 130,
+            "Shots": 2
+        },
+        {
+            "Hits": 1,
+            "Initials": "",
+            "Score": 80,
+            "Shots": 3
         }
     ]
 }

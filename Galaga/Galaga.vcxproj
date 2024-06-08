@@ -166,6 +166,7 @@
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerComponents.cpp" />
+    <ClCompile Include="Results.cpp" />
     <ClCompile Include="ScoreTracker.cpp" />
     <ClCompile Include="StageComponents.cpp" />
     <ClCompile Include="StageManager.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerComponents.h" />
+    <ClInclude Include="Results.h" />
     <ClInclude Include="ScoreTracker.h" />
     <ClInclude Include="StageComponents.h" />
     <ClInclude Include="StageManager.h" />

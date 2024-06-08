@@ -13,6 +13,7 @@ namespace dae {
 		ScoreTrackerComponent(GameObject* pParent, std::vector<GameObject*> pPlayers);
 
 		void OnNotify(const dae::ISubject* pSubject, dae::Event event) override;
+		std::vector<dae::ScoreData> GetScores();
 
 	private:
 		std::vector<std::pair<GameObject*, dae::ScoreData>> m_Players;

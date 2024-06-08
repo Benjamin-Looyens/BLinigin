@@ -35,7 +35,11 @@ void dae::ScoreTrackerComponent::OnNotify(const dae::ISubject* pSubject, dae::Ev
 				}
 			}
 
-			BL_SCENE_MANAGER.SetActiveScene("Results");
+			if (m_Players.size() == 1) BL_SCENE_MANAGER.SetActiveScene("SoloResults");
+			else if (m_Players.size() == 2) BL_SCENE_MANAGER.SetActiveScene("CoopResults");
+			else {
+				// TODO : Handle Versus Results
+			}
 		}
 		break;
 	case Event::PLAYER_SHOOT:
@@ -67,4 +71,15 @@ void dae::ScoreTrackerComponent::OnNotify(const dae::ISubject* pSubject, dae::Ev
 		}
 		break;
 	}
+}
+
+std::vector<dae::ScoreData> dae::ScoreTrackerComponent::GetScores()
+{
+	std::vector<dae::ScoreData> pReturnScores{};
+	pReturnScores.resize(m_Players.size());
+
+	std::transform(m_Players.begin(), m_Players.end(), pReturnScores.begin(),
+		[](const std::pair<GameObject*, dae::ScoreData>& player) { return (std::get<ScoreData>(player)); });
+
+	return pReturnScores;
 }
