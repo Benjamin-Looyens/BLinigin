@@ -167,12 +167,20 @@ void dae::HighScoreViewState::OnEnter(MainMenuComponent& stateObject)
 	stateObject.SetSelectorElevation(-50.0f); // Put it off screen because no selections here
 	stateObject.SetTopText("");
 	stateObject.SetBotText("");
+
+	if (!m_LoadedScores) {
+		stateObject.InitHighScore("HighScores.json");
+	}
+
+	stateObject.SetHighScoreVisible(true);
 }
 
-void dae::HighScoreViewState::OnExit(MainMenuComponent&)
+void dae::HighScoreViewState::OnExit(MainMenuComponent& stateObject)
 {
 #ifndef NDEBUG
 	std::cout << "HighScoreState exit.\n";
 #endif
+
+	stateObject.SetHighScoreVisible(false);
 }
 #pragma endregion HighScoreViewState

@@ -6,6 +6,7 @@
 namespace dae {
 	class GameObject;
 	class TextComponent;
+	class HighScoreDisplayComponent;
 
 	class MainMenuComponent final : public Component
 	{
@@ -30,6 +31,9 @@ namespace dae {
 
 		static constexpr float GetTopElevation() { return s_TOP_ELEVATION; };
 		static constexpr float GetBotElevation() { return s_BOT_ELEVATION; };
+
+		void InitHighScore(const std::string& scoreFile);
+		void SetHighScoreVisible(bool newVisible);
 
 		MainMenuComponent(GameObject* pParent);
 
@@ -60,6 +64,9 @@ namespace dae {
 
 		TextComponent* m_pTopOptionComp;
 		TextComponent* m_pBottomOptionComp;
+
+		GameObject* m_pHighScoreObj;
+		HighScoreDisplayComponent* m_pHighScoreComp;
 	};
 }
 

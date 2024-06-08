@@ -161,6 +161,7 @@
     <ClCompile Include="EnemyState.cpp" />
     <ClCompile Include="Galaga.cpp" />
     <ClCompile Include="GameplayCommands.cpp" />
+    <ClCompile Include="HighScore.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="EnemyDeath.h" />
     <ClInclude Include="EnemyState.h" />
     <ClInclude Include="GameplayCommands.h" />
+    <ClInclude Include="HighScore.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Player.h" />

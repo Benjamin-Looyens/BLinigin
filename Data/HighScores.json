@@ -1,0 +1,16 @@
+{
+    "RegisteredScores" : [
+        {
+            "Initials" : "BEN",
+            "Score" : 500,
+            "Shots" : 10,
+            "Hits" : 5
+        },
+        {
+            "Initials" : "HLP",
+            "Score" : 1500,
+            "Shots" : 23,
+            "Hits" : 19
+        }
+    ]
+}

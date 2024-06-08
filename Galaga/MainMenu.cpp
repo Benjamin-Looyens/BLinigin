@@ -5,6 +5,7 @@
 #include "TextureComponents.h"
 #include "ResourceManager.h"
 #include "Scene.h"
+#include "HighScore.h"
 
 dae::MainMenuComponent::MainMenuComponent(GameObject* pParent)
 	: Component(pParent)
@@ -93,4 +94,19 @@ void dae::MainMenuComponent::SetBotText(std::string newText)
 	if (m_pBottomOptionComp) {
 		m_pBottomOptionComp->SetText(newText);
 	}
+}
+
+void dae::MainMenuComponent::InitHighScore(const std::string& scoreFile)
+{
+	if (!m_pHighScoreObj) {
+		m_pHighScoreObj = m_pParent->GetContainingScene()->AddGameObject();
+	}
+	if (!m_pHighScoreComp) {
+		m_pHighScoreObj->AddComponent<dae::HighScoreDisplayComponent>(scoreFile);
+	}
+}
+
+void dae::MainMenuComponent::SetHighScoreVisible(bool newVisible)
+{
+	if (m_pHighScoreComp) m_pHighScoreComp->SetVisible(newVisible);
 }
