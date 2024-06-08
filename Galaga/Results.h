@@ -48,5 +48,8 @@ namespace dae {
 		dae::TextComponent* m_pShotsTextComp = nullptr;
 		dae::TextComponent* m_pHitsTextComp = nullptr;
 		dae::TextComponent* m_pHitMissTextComp = nullptr;
+
+		float m_DelayBeforeInput{};
+		static constexpr float s_MAX_DELAY_BEFORE_INPUT{ 2.0f };
 	};
 }

@@ -11,6 +11,12 @@
             "Initials": "ben",
             "Score": 8620,
             "Shots": 152
+        },
+        {
+            "Hits": 0,
+            "Initials": "ddd",
+            "Score": 0,
+            "Shots": 0
         }
     ]
 }

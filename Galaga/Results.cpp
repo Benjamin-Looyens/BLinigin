@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include <SDL.h>
 #include <format>
+#include "Timer.h"
 
 const std::string dae::ResultsComponent::s_SCORE_FILE = std::string("HighScores.json");
 
@@ -81,6 +82,8 @@ dae::ResultsComponent::ResultsComponent(GameObject* pParent, dae::ScoreTrackerCo
 
 void dae::ResultsComponent::Update()
 {
+	if (m_DelayBeforeInput < s_MAX_DELAY_BEFORE_INPUT) m_DelayBeforeInput += BL_TIMER.GetDeltaTime();
+
 	switch (m_State) {
 	case ResultsSimpleState::RECEIVING_SCORES:
 		m_Scores = m_pScoreTracker->GetScores();
@@ -95,28 +98,29 @@ void dae::ResultsComponent::Update()
 			m_pNameTextComp->SetText("___");
 			m_InitCurrent = true;
 		}
+		if (m_DelayBeforeInput >= s_MAX_DELAY_BEFORE_INPUT) {
+			const char charTyped = BL_INPUT.GetLatestTyped();
 
-		const char charTyped = BL_INPUT.GetLatestTyped();
+			if (charTyped != '\0') {
+				m_Scores[m_CurrentPlayerIndex].initials = m_Scores[m_CurrentPlayerIndex].initials + charTyped;
 
-		if (charTyped != '\0') {
-			m_Scores[m_CurrentPlayerIndex].initials = m_Scores[m_CurrentPlayerIndex].initials + charTyped;
+				std::string initialsStr{ m_pNameTextComp->GetText() };
 
-			std::string initialsStr{ m_pNameTextComp->GetText() };
+				for (size_t index{}; index < m_Scores[m_CurrentPlayerIndex].initials.size(); ++index) {
+					initialsStr[index] = m_Scores[m_CurrentPlayerIndex].initials[index];
+				}
 
-			for (size_t index{}; index < m_Scores[m_CurrentPlayerIndex].initials.size(); ++index) {
-				initialsStr[index] = m_Scores[m_CurrentPlayerIndex].initials[index];
+				m_pNameTextComp->SetText(initialsStr);
+				true;
 			}
 
-			m_pNameTextComp->SetText(initialsStr);
-			true;
-		}
-
-		if (m_Scores[m_CurrentPlayerIndex].initials.size() >= 3) {
-			if (++m_CurrentPlayerIndex >= m_Scores.size()) {
-				m_State = ResultsSimpleState::PRINTING_DATA;
-				m_pResultsTextObj->SetVisible(false);
+			if (m_Scores[m_CurrentPlayerIndex].initials.size() >= 3) {
+				if (++m_CurrentPlayerIndex >= m_Scores.size()) {
+					m_State = ResultsSimpleState::PRINTING_DATA;
+					m_pResultsTextObj->SetVisible(false);
+				}
+				m_InitCurrent = false;
 			}
-			m_InitCurrent = false;
 		}
 	}
 		break;

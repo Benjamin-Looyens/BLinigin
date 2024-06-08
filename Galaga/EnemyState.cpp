@@ -29,7 +29,6 @@ dae::EnemySpawnInState::EnemySpawnInState()
     bezierPath->AddCurve({ { halfWidth - (25.0f), 325.0f }, { halfWidth - (25.0f), 550.0f }, { halfWidth + (150.0f), 550.0f }, { halfWidth + (150.0f), 325.0f } }, 25);     // U-Turn
     bezierPath->AddCurve({ { halfWidth + (150.0f), 325.0f }, { halfWidth + (150.0f), 325.0f }, { halfWidth, halfHeight / 2 }, { halfWidth, halfHeight / 2 } }, 25);         // Go to center
 
-    // TODO : Make final location in middle of screen
     // TODO : Make state where the enemy goes to their formation state (from the middle)
 
     bezierPath->Sample(&m_Path);
