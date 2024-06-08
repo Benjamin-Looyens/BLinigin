@@ -2,51 +2,9 @@
     "RegisteredScores": [
         {
             "Hits": 5,
-            "Initials": "HHH",
+            "Initials": "TST",
             "Score": 410,
             "Shots": 7
-        },
-        {
-            "Hits": 5,
-            "Initials": "HHH",
-            "Score": 410,
-            "Shots": 9
-        },
-        {
-            "Hits": 5,
-            "Initials": "",
-            "Score": 660,
-            "Shots": 8
-        },
-        {
-            "Hits": 0,
-            "Initials": "",
-            "Score": 0,
-            "Shots": 0
-        },
-        {
-            "Hits": 2,
-            "Initials": "",
-            "Score": 130,
-            "Shots": 2
-        },
-        {
-            "Hits": 1,
-            "Initials": "",
-            "Score": 80,
-            "Shots": 3
-        },
-        {
-            "Hits": 12,
-            "Initials": "",
-            "Score": 1010,
-            "Shots": 19
-        },
-        {
-            "Hits": 0,
-            "Initials": "",
-            "Score": 0,
-            "Shots": 0
         }
     ]
 }

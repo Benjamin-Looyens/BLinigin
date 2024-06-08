@@ -51,6 +51,9 @@ dae::NotifyObserverCommand::NotifyObserverCommand(dae::GameObject* pGameObject, 
 
 void dae::NotifyObserverCommand::Execute()
 {
+	bool sceneActive = BL_SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene());
+	if (!sceneActive) return;
+
 	auto pSubjectComp = GetGameObject()->GetComponent<dae::SubjectComponent>();
 
 	if (pSubjectComp)
@@ -60,6 +63,9 @@ void dae::NotifyObserverCommand::Execute()
 
 void dae::KillPlayerCommand::Execute()
 {
+	bool sceneActive = BL_SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene());
+	if (!sceneActive) return;
+
 	auto pPlayerLogic = GetGameObject()->GetComponent<dae::PlayerLogic>();
 	
 	if (pPlayerLogic) pPlayerLogic->Die();
@@ -71,6 +77,9 @@ dae::KillPlayerCommand::KillPlayerCommand(dae::GameObject* pGameObj)
 
 void dae::SkipLevelCommand::Execute()
 {
+	bool sceneActive = BL_SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene());
+	if (!sceneActive) return;
+
 	auto pStageLogic = GetGameObject()->GetComponent<dae::StageManagerLogic>();
 	
 	if (pStageLogic) pStageLogic->SkipStage();
