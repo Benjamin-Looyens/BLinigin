@@ -52,7 +52,8 @@ dae::NotifyObserverCommand::NotifyObserverCommand(dae::GameObject* pGameObject, 
 void dae::NotifyObserverCommand::Execute()
 {
 	bool sceneActive = BL_SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene());
-	if (!sceneActive) return;
+	bool enabled = GetGameObject()->IsEnabled();
+	if (!sceneActive || !enabled) return;
 
 	auto pSubjectComp = GetGameObject()->GetComponent<dae::SubjectComponent>();
 
@@ -64,7 +65,8 @@ void dae::NotifyObserverCommand::Execute()
 void dae::KillPlayerCommand::Execute()
 {
 	bool sceneActive = BL_SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene());
-	if (!sceneActive) return;
+	bool enabled = GetGameObject()->IsEnabled();
+	if (!sceneActive || !enabled) return;
 
 	auto pPlayerLogic = GetGameObject()->GetComponent<dae::PlayerLogic>();
 	
@@ -78,7 +80,8 @@ dae::KillPlayerCommand::KillPlayerCommand(dae::GameObject* pGameObj)
 void dae::SkipLevelCommand::Execute()
 {
 	bool sceneActive = BL_SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene());
-	if (!sceneActive) return;
+	bool enabled = GetGameObject()->IsEnabled();
+	if (!sceneActive || !enabled) return;
 
 	auto pStageLogic = GetGameObject()->GetComponent<dae::StageManagerLogic>();
 	
@@ -96,7 +99,8 @@ dae::MainMenuCommand::MainMenuCommand(GameObject* pMainMenuObj, dae::MainMenuCom
 void dae::MainMenuCommand::Execute()
 {
 	bool mainMenuActive = BL_SCENE_MANAGER.IsActiveScene(GetGameObject()->GetContainingScene());
-	if (!mainMenuActive) return;
+	bool enabled = GetGameObject()->IsEnabled();
+	if (!mainMenuActive || !enabled) return;
 	
 	auto pMenu = GetGameObject()->GetComponent<dae::MainMenuComponent>();
 

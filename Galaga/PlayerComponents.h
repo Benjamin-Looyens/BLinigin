@@ -15,6 +15,7 @@ namespace dae {
 
 		void Fire();
 		void Die();
+		void RanOutOfLives();
 
 		PlayerLogic(GameObject* pParent);
 		~PlayerLogic() = default;
@@ -31,6 +32,8 @@ namespace dae {
 
 		float m_InvulFrames{ };
 		static constexpr float s_MAX_INVUL_FRAMES{ 0.6f };
+
+		bool m_RanOutOfLives{ };
 	};
 
 	class LivesComponent final : public ObservingSubjectComponent

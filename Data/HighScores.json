@@ -59,6 +59,18 @@
             "Initials": "ben",
             "Score": 310,
             "Shots": 8
+        },
+        {
+            "Hits": 0,
+            "Initials": "ben",
+            "Score": 0,
+            "Shots": 2
+        },
+        {
+            "Hits": 0,
+            "Initials": "hel",
+            "Score": 0,
+            "Shots": 0
         }
     ]
 }

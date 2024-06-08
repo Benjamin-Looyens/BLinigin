@@ -11,6 +11,7 @@ void dae::FireCommand::Execute()
 	auto pGameObject = GetGameObject();
 
 	if (!BL_SCENE_MANAGER.IsActiveScene(pGameObject->GetContainingScene())) return;
+	if (!pGameObject->IsEnabled()) return;
 
 	auto pPlayerLogic = pGameObject->GetComponent<dae::PlayerLogic>(); // TODO : Store pPlayerLogic rather than getting it every command call
 

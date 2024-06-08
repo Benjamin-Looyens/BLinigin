@@ -30,6 +30,7 @@ void dae::PlayerLogic::LateUpdate()
 
 void dae::PlayerLogic::Fire()
 {
+	if (m_RanOutOfLives) return;
 	if (m_FireCooldown <= 0) {
 		dae::Dart dart{ 500.0f, m_pParent->GetWorldPosition(), { 0.0f, -1.0f }, "PlayerDart.png" };
 		
@@ -70,6 +71,12 @@ void dae::PlayerLogic::Die()
 		std::cout << "Player lost life!\n";
 #endif
 	}
+}
+
+void dae::PlayerLogic::RanOutOfLives()
+{
+	m_RanOutOfLives = true;
+	m_pParent->SetLocalTranslation({ 0, -1000.0f });
 }
 
 #pragma region LivesComponent
@@ -132,7 +139,7 @@ void dae::LivesComponent::LoseLife()
 	// TODO : add check for other player
 	if (m_NumLives == -1) {
 		NotifyObservers(Event::GAME_OVER);
-
+		m_pParent->GetComponent<dae::PlayerLogic>()->RanOutOfLives();
 	}
 }
 #pragma endregion LivesComponent
