@@ -49,9 +49,9 @@ void load()
 	auto& coop		= BL_SCENE_MANAGER.CreateScene("CoopGalaga");
 
 	auto& soloResults	= BL_SCENE_MANAGER.CreateScene("SoloResults");
-	auto& coopResults	= BL_SCENE_MANAGER.CreateScene("VersusResults");
-	auto& versusResults	= BL_SCENE_MANAGER.CreateScene("CoopResults");
-
+	auto& coopResults	= BL_SCENE_MANAGER.CreateScene("CoopResults");
+	auto& versusResults = BL_SCENE_MANAGER.CreateScene("VersusResults");
+	
 	InitSound();
 	InitTitle(title, windowSize);
 	dae::ScoreTrackerComponent* pSoloScoreTracker = nullptr;
@@ -186,7 +186,6 @@ void InitResults(dae::Scene& resultsScene, glm::ivec2& windowSize, dae::ScoreTra
 {
 	auto pResultsObj = resultsScene.AddGameObject();
 	pResultsObj->AddComponent<dae::ResultsComponent>(pScoreTracker);
-
 
 	windowSize;
 }

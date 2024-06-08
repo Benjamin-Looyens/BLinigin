@@ -7,6 +7,7 @@ namespace dae {
 	class ScoreTrackerComponent;
 	class HighScoreComponent; 
 	struct ScoreData;
+	class TextComponent;
 	
 	class ResultsComponent final : public Component
 	{
@@ -38,5 +39,12 @@ namespace dae {
 		static const std::string s_SCORE_FILE;
 
 		dae::ResultsComponent::ResultsSimpleState m_State = dae::ResultsComponent::ResultsSimpleState::RECEIVING_SCORES;
+
+		bool m_InitCurrent = false;
+		dae::GameObject* m_pResultsTextObj = nullptr;
+		dae::TextComponent* m_pResultsTextComp = nullptr;
+		dae::TextComponent* m_pShotsTextComp = nullptr;
+		dae::TextComponent* m_pHitsTextComp = nullptr;
+		dae::TextComponent* m_pHitMissTextComp = nullptr;
 	};
 }
