@@ -49,6 +49,11 @@ namespace dae
 		void DestroyWithChildren();
 		bool IsDestroyed() const { return m_Destroyed; };
 
+		inline bool IsEnabled() const { return m_Enabled; };
+		inline void SetEnabled(bool newEnabled) { m_Enabled = newEnabled; };
+		inline bool IsVisible() const { return m_Visible; };
+		inline void SetVisible(bool newVisible) { m_Visible = newVisible; };
+
 		// Makes the GameObject use the parent as the origin where it moves from; If it has no parent, this value will be ignored
 		inline void SetUseParentAsOrigin(const bool newUse) { m_ParentAsOrigin = newUse; }; 
 		inline bool GetUseParentAsOrigin() const { return m_ParentAsOrigin; }; 
@@ -130,6 +135,8 @@ namespace dae
 		bool m_ApplyParentScaleOnTranslation{ true };
 
 		bool m_Destroyed{ false };
+		bool m_Enabled{ true };
+		bool m_Visible{ true };
 
 		dae::Scene* m_pContainingScene;
 	};

@@ -65,6 +65,9 @@ void dae::SceneManager::SetActiveScene(const std::string& sceneName)
 	if (!success) {
 		std::cerr << "Requested scene [" << sceneName << "] does not exist!\n";
 	}
+	else {
+		std::cout << "Requested scene [" << sceneName << "] has been set as active!\n";
+	}
 #endif
 }
 

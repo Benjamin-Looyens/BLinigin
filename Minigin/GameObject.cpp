@@ -16,15 +16,19 @@ dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update()
 {
+	if (!m_Enabled) return;
+
 	for (auto& pComponent : m_pComponents) 
 		if (pComponent != nullptr) pComponent->Update();
 }
 
 void dae::GameObject::LateUpdate()
 {
-	for (auto& pComponent : m_pComponents) {
-		if (pComponent == nullptr) continue;
-		pComponent->LateUpdate();
+	if (m_Enabled) {
+		for (auto& pComponent : m_pComponents) {
+			if (pComponent == nullptr) continue;
+			pComponent->LateUpdate();
+		}
 	}
 
 	// TODO : Refine component removal system & also fix it cause seems kinda broken
@@ -46,6 +50,8 @@ void dae::GameObject::LateUpdate()
 
 void dae::GameObject::Render() const
 {
+	if (!m_Visible) return;
+
 	for (auto& pComponent : m_pComponents)
 		if (pComponent != nullptr) pComponent->Render(); // if component has a rendering section, it will render using game object transform
 }

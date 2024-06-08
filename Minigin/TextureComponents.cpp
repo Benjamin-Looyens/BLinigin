@@ -61,7 +61,14 @@ void dae::TextComponent::Update()
 	if (m_NeedsUpdate) {
 		auto& resourceManager = BL_RESOURCE;
 
+		m_NeedsUpdate = false;
+
 		if (resourceManager.IsTextureLoaded(m_ResourceFile)) resourceManager.UnLoadTexture(m_ResourceFile);
+
+		if (m_Text.empty()) {
+			m_pTextTexture = nullptr;
+			return;
+		}
 
 		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), m_Color);
 		if (surf == nullptr) throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -71,7 +78,6 @@ void dae::TextComponent::Update()
 
 		SDL_FreeSurface(surf);
 		m_pTextTexture = resourceManager.LoadTexture(texture, m_ResourceFile);
-		m_NeedsUpdate = false;
 	}
 }
 

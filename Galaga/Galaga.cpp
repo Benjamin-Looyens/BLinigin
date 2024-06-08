@@ -79,7 +79,6 @@ void InitTitle(dae::Scene& titleScene, glm::ivec2& windowSize)
 	auto pMainMenuObj = titleScene.AddGameObject();
 	pMainMenuObj->AddComponent<dae::MainMenuComponent>();
 
-
 	//TextComponent(dae::GameObject* pParent, const std::string& text, dae::Font* font, const std::string& internalIdentifier, bool isCentered = false, SDL_Color color = { 255, 255, 255, 255 });
 	auto pFont = BL_RESOURCE.LoadFont("Emulogic.ttf", 20);
 	auto pGalagaTextObj = titleScene.AddGameObject();

@@ -1,6 +1,10 @@
 #include "MainMenu.h"
 #include "InputManager.h"
 #include "DerivedCommands.h"
+#include "GameObject.h"
+#include "TextureComponents.h"
+#include "ResourceManager.h"
+#include "Scene.h"
 
 dae::MainMenuComponent::MainMenuComponent(GameObject* pParent)
 	: Component(pParent)
@@ -11,6 +15,23 @@ dae::MainMenuComponent::MainMenuComponent(GameObject* pParent)
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_S, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::DOWN);
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_LSHIFT, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::BACK);
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_SPACE, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::CONFIRM);
+
+	auto pScene = m_pParent->GetContainingScene();
+	auto pFont = BL_RESOURCE.LoadFont("Emulogic.ttf", 20);
+	m_pSelectionObj = pScene->AddGameObject();
+	m_pSelectionObj->AddComponent<dae::TextComponent>(">", pFont, "MenuSelector", true);
+	
+	auto pTop = pScene->AddGameObject();
+	m_pTopOptionComp = pTop->AddComponent<dae::TextComponent>("N", pFont, "MenuTopOption", false);
+	pTop->SetLocalTranslation({ s_OPTION_X, s_TOP_ELEVATION });
+
+	auto pBot = pScene->AddGameObject();
+	m_pBottomOptionComp = pBot->AddComponent<dae::TextComponent>("N", pFont, "MenuBotOption", false);
+	pBot->SetLocalTranslation({ s_OPTION_X, s_BOT_ELEVATION });
+
+	//pDaeProjectTextObj->AddComponent<dae::TextComponent>("DAE GD PROGRAMMING 4", pFont, "DaeProg4Text", true, SDL_Color{ 255, 255, 255, 255 });
+
+	m_pSelectionObj->SetLocalTranslation({ s_SELECTION_X, m_SelectionElevation });
 }
 
 void dae::MainMenuComponent::Update()
@@ -43,4 +64,24 @@ void dae::MainMenuComponent::Render() const
 void dae::MainMenuComponent::ChangeState(std::unique_ptr<MainMenuState> pNewState)
 {
 	m_pSwitchState = std::move(pNewState);
+}
+
+void dae::MainMenuComponent::SetSelectorElevation(float newElevation)
+{
+	m_SelectionElevation = newElevation;
+	m_pSelectionObj->SetLocalTranslation({ s_SELECTION_X, m_SelectionElevation });
+}
+
+void dae::MainMenuComponent::SetTopText(std::string newText)
+{
+	if (m_pTopOptionComp) {
+		m_pTopOptionComp->SetText(newText);
+	}
+}
+
+void dae::MainMenuComponent::SetBotText(std::string newText)
+{
+	if (m_pBottomOptionComp) {
+		m_pBottomOptionComp->SetText(newText);
+	}
 }

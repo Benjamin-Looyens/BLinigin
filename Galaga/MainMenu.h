@@ -5,6 +5,7 @@
 
 namespace dae {
 	class GameObject;
+	class TextComponent;
 
 	class MainMenuComponent final : public Component
 	{
@@ -21,6 +22,14 @@ namespace dae {
 		inline bool WasDownPressed() const { return m_DownPressedThisFrame; };
 		inline bool WasBackPressed() const { return m_BackPressedThisFrame; };
 		inline bool WasConfirmPressed() const { return m_ConfirmPressedThisFrame; }
+
+		void SetSelectorElevation(float newElevation);
+
+		void SetTopText(std::string newText);
+		void SetBotText(std::string newText);
+
+		static constexpr float GetTopElevation() { return s_TOP_ELEVATION; };
+		static constexpr float GetBotElevation() { return s_BOT_ELEVATION; };
 
 		MainMenuComponent(GameObject* pParent);
 
@@ -39,6 +48,18 @@ namespace dae {
 
 		std::unique_ptr<MainMenuState> m_pState;
 		std::unique_ptr<MainMenuState> m_pSwitchState;
+
+		float m_SelectionElevation{};
+		static constexpr float s_SELECTION_X{ 200.0f };
+
+		static constexpr float s_OPTION_X{ s_SELECTION_X + 25.0f };
+		static constexpr float s_TOP_ELEVATION{ 500.0f };
+		static constexpr float s_BOT_ELEVATION{ 550.0f };
+
+		GameObject* m_pSelectionObj;
+
+		TextComponent* m_pTopOptionComp;
+		TextComponent* m_pBottomOptionComp;
 	};
 }
 
