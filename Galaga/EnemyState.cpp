@@ -14,6 +14,7 @@ dae::EnemySpawnInState::EnemySpawnInState()
 {
     glm::vec2 windowSize = BL_RENDERER.GetWindowSize();
     float halfWidth = (static_cast<float>(windowSize.x) / 2);
+    float halfHeight = (static_cast<float>(windowSize.y) / 2);
 
     float dirModifier{ 1.0f };
     //if (rand() % 2) dirModifier = -1.0f;
@@ -24,12 +25,9 @@ dae::EnemySpawnInState::EnemySpawnInState()
     auto bezierPath = std::make_unique<BezierPath>();
 
     bezierPath->AddCurve({ { startPositionX, -10.0f }, { startPositionX, -20.0f }, { startPositionX, 30.0f }, { startPositionX, 20.0f } }, 1);                              // Start straight line down
-    bezierPath->AddCurve({ { startPositionX, 20.0f }, { startPositionX, 100.0f }, { halfWidth - 25.0f, 325.0f }, { halfWidth - 25.0f, 425.0f } }, 25);                      // Curve to side
-    bezierPath->AddCurve({ { halfWidth - (25.0f), 425.0f }, { halfWidth - (25.0f), 650.0f }, { halfWidth + (150.0f), 650.0f }, { halfWidth + (150.0f), 425.0f } }, 25);     // U-Turn
-    bezierPath->AddCurve({ { halfWidth + (150.0f), 425.0f }, { halfWidth + (150.0f), 425.0f }, { 25.0f, 25.0f }, { 25.0f, 25.0f } }, 25);                                   // Get into patrol location
-    
-
-
+    bezierPath->AddCurve({ { startPositionX, 20.0f }, { startPositionX, 100.0f }, { halfWidth - 25.0f, 225.0f }, { halfWidth - 25.0f, 325.0f } }, 25);                      // Curve to side
+    bezierPath->AddCurve({ { halfWidth - (25.0f), 325.0f }, { halfWidth - (25.0f), 550.0f }, { halfWidth + (150.0f), 550.0f }, { halfWidth + (150.0f), 325.0f } }, 25);     // U-Turn
+    bezierPath->AddCurve({ { halfWidth + (150.0f), 325.0f }, { halfWidth + (150.0f), 325.0f }, { halfWidth, halfHeight / 2 }, { halfWidth, halfHeight / 2 } }, 25);         // Go to center
 
     // TODO : Make final location in middle of screen
     // TODO : Make state where the enemy goes to their formation state (from the middle)
@@ -77,7 +75,7 @@ void dae::EnemySpawnInState::OnExit(EnemyLogic&)
 void dae::EnemyPatrolState::Update(EnemyLogic& enemy)
 {
     if (m_ElapsedTime >= m_MaxTime) {
-        if ((rand() % 10) == 1) enemy.SetState(std::make_unique<EnemyKamikazeState>());
+        if ((rand() % 100) < s_PERCENT_CHANCE_TO_KAMIKAZE) enemy.SetState(std::make_unique<EnemyKamikazeState>());
         m_ElapsedTime = 0;
     }
     else {

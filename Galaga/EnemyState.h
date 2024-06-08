@@ -86,6 +86,7 @@ namespace dae {
 	private:
 		float m_ElapsedTime{};
 		float m_MaxTime{ 5.0f }; // TODO : Define value in constructor (or OnEnter)
+		static constexpr int s_PERCENT_CHANCE_TO_KAMIKAZE{ 8 };
 	};
 
 	class EnemyKamikazeState final : public EnemyState
