@@ -54,6 +54,7 @@ bool dae::InputManager::ProcessInput()
         }
     }
     
+    bool typed = false;
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
 		case SDL_QUIT:
@@ -78,11 +79,19 @@ bool dae::InputManager::ProcessInput()
             m_RelMousePos.x = e.motion.xrel;
             m_RelMousePos.y = e.motion.yrel;
 			break;
+        case SDL_TEXTINPUT:
+            m_LastTyped = e.text.text[0];
+            typed = true;
+            break;
 		}
 
 		// ImGUI
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
+
+    if (!typed) {
+        m_LastTyped = '\0';
+    }
 
 	return true;
 }

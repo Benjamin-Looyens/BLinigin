@@ -4,6 +4,7 @@
 #include "HighScore.h"
 #include <json.hpp>
 #include "ResourceManager.h"
+#include "InputManager.h"
 
 const std::string dae::ResultsComponent::s_SCORE_FILE = std::string("HighScores.json");
 
@@ -15,23 +16,46 @@ dae::ResultsComponent::ResultsComponent(GameObject* pParent, dae::ScoreTrackerCo
 
 void dae::ResultsComponent::Update()
 {
-	if (!m_SavedResults) {
-		SaveScores();
+	switch (m_State) {
+	case ResultsSimpleState::RECEIVING_SCORES:
+		m_Scores = m_pScoreTracker->GetScores();
+		m_State = ResultsSimpleState::RECEIVING_NAMES;
+		break;
+	case ResultsSimpleState::RECEIVING_NAMES: {
+		const char charTyped = BL_INPUT.GetLatestTyped();
 
-		m_SavedResults = true;
+		if (charTyped != '\0') {
+			m_Scores[m_CurrentPlayerIndex].initials = m_Scores[m_CurrentPlayerIndex].initials + charTyped;
+			true;
+		}
+
+		if (m_Scores[m_CurrentPlayerIndex].initials.size() >= 3) {
+			if (++m_CurrentPlayerIndex >= m_Scores.size()) {
+				m_State = ResultsSimpleState::PRINTING_DATA;
+			}
+		}
+	}
+		break;
+	case ResultsSimpleState::PRINTING_DATA:
+		SaveScores();
+		AddHighScoreRenderObjects();
+		m_State = ResultsSimpleState::DONE;
+		break;
 	}
 }
 
 void dae::ResultsComponent::SaveScores()
 {
-	auto scores = m_pScoreTracker->GetScores();
 	m_pHighScoreComp->LoadScores(s_SCORE_FILE);
 
 	auto pAllScores = m_pHighScoreComp->GetAllScores();
 
-	for (auto score : scores) {
-		score.initials = "TMP"; // TODO : REPLACE TEMP NAME SETUP
-		pAllScores.push_back(&score);
+	std::vector<std::unique_ptr<dae::ScoreData>> pTempUniques; // For some reason, when it is a pointer, it does allow me to transfer initials; without this, it does not allow me to?
+	pTempUniques.resize(m_Scores.size());
+
+	for (size_t index{}; index < m_Scores.size(); ++index) {
+		pTempUniques[index] = std::make_unique<dae::ScoreData>(m_Scores[index]);
+		pAllScores.push_back(pTempUniques[index].get());
 	}
 
 	nlohmann::json fullJson{};
@@ -39,6 +63,8 @@ void dae::ResultsComponent::SaveScores()
 	jsonScores.reserve(pAllScores.size());
 
 	for (auto pScore : pAllScores) {
+		std::cout << pScore->initials << "\n";
+
 		nlohmann::json curScoreJson{
 			{ "Initials", pScore->initials },
 			{ "Score", pScore->score },
@@ -58,8 +84,10 @@ void dae::ResultsComponent::SaveScores()
 void dae::ResultsComponent::AddHighScoreRenderObjects()
 {
 	if (!m_DisplayingScores) {
-		
+		if (m_pHighScoreComp) {
+			m_pHighScoreComp->AddHighScoreListAsChildren(BL_RESOURCE.LoadFont("Emulogic.ttf", 20), m_pParent->GetContainingScene());
 
-		m_DisplayingScores = true;
+			m_DisplayingScores = true;
+		}
 	}
 }

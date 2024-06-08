@@ -5,6 +5,24 @@
             "Initials": "TST",
             "Score": 410,
             "Shots": 7
+        },
+        {
+            "Hits": 5,
+            "Initials": "",
+            "Score": 410,
+            "Shots": 14
+        },
+        {
+            "Hits": 2,
+            "Initials": "hhh",
+            "Score": 200,
+            "Shots": 6
+        },
+        {
+            "Hits": 5,
+            "Initials": "ben",
+            "Score": 410,
+            "Shots": 8
         }
     ]
 }

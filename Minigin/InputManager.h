@@ -78,6 +78,8 @@ namespace dae
 
 		inline int GetNumGamepads() const { return static_cast<int>(m_Gamepads.size()); };
 
+		inline char GetLatestTyped() const { return m_LastTyped; };
+
 	private:
 		std::vector<dae::CommandData> m_Commands; 
 		std::vector<dae::Gamepad> m_Gamepads;
@@ -90,6 +92,7 @@ namespace dae
 		void HandleKeyboardInput(dae::InputState state, SDL_Event& e);
 
 		bool m_NeedToQuit;
+		char m_LastTyped{};
 	};
 }
 
