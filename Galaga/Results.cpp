@@ -29,8 +29,18 @@ dae::ResultsComponent::ResultsComponent(GameObject* pParent, dae::ScoreTrackerCo
 	auto pScene = m_pParent->GetContainingScene();
 	m_pResultsTextObj = pScene->AddGameObject();
 	m_pResultsTextObj->SetLocalTranslation({ windowSize.x / 2, windowSize.y / 3 });
-	m_pResultsTextComp = m_pResultsTextObj->AddComponent<dae::TextComponent>("--- RESULTS ---", pFont, "Results_Main", true, SDL_Color{ 255, 0, 0, 255 });
-	
+	m_pResultsTextObj->AddComponent<dae::TextComponent>("--- RESULTS ---", pFont, "Results_Main", true, SDL_Color{ 255, 0, 0, 255 });
+
+	 auto pPlayerTextObj = pScene->AddGameObject();
+	 m_pResultsTextObj->AddChild(pPlayerTextObj);
+	 pPlayerTextObj->SetLocalTranslation({ 0, -100.0f });
+	 m_pPlayerTextComp = pPlayerTextObj->AddComponent<dae::TextComponent>("Enter Player 1 name", pFont, "Results_Player", true, SDL_Color{ 255, 255, 255, 255 });
+
+	 auto pNameTextObj = pScene->AddGameObject();
+	 m_pResultsTextObj->AddChild(pNameTextObj);
+	 pNameTextObj->SetLocalTranslation({ 0, -55.0f });
+	 m_pNameTextComp = pNameTextObj->AddComponent<dae::TextComponent>("___", pFont, "Results_Name", true, SDL_Color{ 255, 255, 255, 255 });
+
 	// SHOTS
 	auto pShotsObj = pScene->AddGameObject();
 	m_pResultsTextObj->AddChild(pShotsObj);
@@ -81,6 +91,8 @@ void dae::ResultsComponent::Update()
 			m_pShotsTextComp->SetText(std::to_string(m_Scores[m_CurrentPlayerIndex].numShots));
 			m_pHitsTextComp->SetText(std::to_string(m_Scores[m_CurrentPlayerIndex].numHits));
 			m_pHitMissTextComp->SetText(std::format("{:.1f}", m_Scores[m_CurrentPlayerIndex].GetHitMissRatio()) + "%");
+			m_pPlayerTextComp->SetText(std::format("Enter player {} name", (m_CurrentPlayerIndex + 1)));
+			m_pNameTextComp->SetText("___");
 			m_InitCurrent = true;
 		}
 
@@ -88,6 +100,14 @@ void dae::ResultsComponent::Update()
 
 		if (charTyped != '\0') {
 			m_Scores[m_CurrentPlayerIndex].initials = m_Scores[m_CurrentPlayerIndex].initials + charTyped;
+
+			std::string initialsStr{ m_pNameTextComp->GetText() };
+
+			for (size_t index{}; index < m_Scores[m_CurrentPlayerIndex].initials.size(); ++index) {
+				initialsStr[index] = m_Scores[m_CurrentPlayerIndex].initials[index];
+			}
+
+			m_pNameTextComp->SetText(initialsStr);
 			true;
 		}
 

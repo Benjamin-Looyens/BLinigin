@@ -37,6 +37,7 @@ namespace dae {
 		void Update() override;
 		void Render() const override;
 
+		inline std::string GetText() const { return m_Text; };
 		void SetText(const std::string& text);
 		void SetCentered(bool setCentered) { m_Centered = setCentered; };
 

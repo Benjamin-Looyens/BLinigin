@@ -53,6 +53,12 @@
             "Initials": "yea",
             "Score": 410,
             "Shots": 16
+        },
+        {
+            "Hits": 3,
+            "Initials": "ben",
+            "Score": 310,
+            "Shots": 8
         }
     ]
 }

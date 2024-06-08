@@ -42,6 +42,8 @@ namespace dae {
 
 		bool m_InitCurrent = false;
 		dae::GameObject* m_pResultsTextObj = nullptr;
+		dae::TextComponent* m_pPlayerTextComp = nullptr;
+		dae::TextComponent* m_pNameTextComp = nullptr;
 		dae::TextComponent* m_pResultsTextComp = nullptr;
 		dae::TextComponent* m_pShotsTextComp = nullptr;
 		dae::TextComponent* m_pHitsTextComp = nullptr;
