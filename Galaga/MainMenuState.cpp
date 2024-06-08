@@ -151,6 +151,8 @@ void dae::ModeSelectState::OnExit(MainMenuComponent&)
 #pragma endregion ModeSelectState
 
 #pragma region HighScoreViewState
+bool dae::HighScoreViewState::s_LoadedScores = false;
+
 void dae::HighScoreViewState::Update(MainMenuComponent& stateObject)
 {
 	if (stateObject.WasBackPressed()) {
@@ -168,8 +170,9 @@ void dae::HighScoreViewState::OnEnter(MainMenuComponent& stateObject)
 	stateObject.SetTopText("");
 	stateObject.SetBotText("");
 
-	if (!m_LoadedScores) {
+	if (!s_LoadedScores) {
 		stateObject.InitHighScore("HighScores.json");
+		s_LoadedScores = true;
 	}
 
 	stateObject.SetHighScoreVisible(true);

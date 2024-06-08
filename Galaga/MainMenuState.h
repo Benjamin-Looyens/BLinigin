@@ -73,6 +73,6 @@ namespace dae {
 		void OnExit(MainMenuComponent& stateObject) override;
 
 	private:
-		bool m_LoadedScores = false;
+		static bool s_LoadedScores;
 	};
 }

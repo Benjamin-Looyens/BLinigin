@@ -14,13 +14,15 @@ namespace dae {
 		int numHits;
 
 		friend std::ostream& operator<<(std::ostream& os, const ScoreData& score);
+
+		inline float GetHitMissRatio() const { return (static_cast<float>(numHits) / static_cast<float>(numShots)) * 100; }
 	};
 
-	class HighScoreDisplayComponent final : public Component
+	class HighScoreComponent final : public Component
 	{
 	public:
-		HighScoreDisplayComponent(GameObject* pParent);
-		HighScoreDisplayComponent(GameObject* pParent, const std::string& scoresFile);
+		HighScoreComponent(GameObject* pParent);
+		HighScoreComponent(GameObject* pParent, const std::string& scoresFile);
 
 		void LoadScores(const std::string& scoresFile);
 		void PrintScores() const;

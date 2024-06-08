@@ -4,17 +4,17 @@
 #include "ResourceManager.h"
 #include <json.hpp>
 
-dae::HighScoreDisplayComponent::HighScoreDisplayComponent(dae::GameObject* pParent)
+dae::HighScoreComponent::HighScoreComponent(dae::GameObject* pParent)
 	: Component(pParent)
 {}
 
-dae::HighScoreDisplayComponent::HighScoreDisplayComponent(GameObject * pParent, const std::string & scoresFile)
+dae::HighScoreComponent::HighScoreComponent(GameObject * pParent, const std::string & scoresFile)
 	: Component(pParent)
 {
 	LoadScores(scoresFile);
 }
 
-void dae::HighScoreDisplayComponent::LoadScores(const std::string& scoresFile)
+void dae::HighScoreComponent::LoadScores(const std::string& scoresFile)
 {
 	auto pJson = BL_RESOURCE.LoadJSON(scoresFile);
 
@@ -73,7 +73,7 @@ void dae::HighScoreDisplayComponent::LoadScores(const std::string& scoresFile)
 #endif
 }
 
-void dae::HighScoreDisplayComponent::PrintScores() const
+void dae::HighScoreComponent::PrintScores() const
 {
 	if (m_pLoadedScores.size() > 0) {
 		std::cout << "*** HighScores ***\n";
@@ -84,14 +84,14 @@ void dae::HighScoreDisplayComponent::PrintScores() const
 	}
 }
 
-std::vector<dae::ScoreData*> dae::HighScoreDisplayComponent::Get5HighestScores() const
+std::vector<dae::ScoreData*> dae::HighScoreComponent::Get5HighestScores() const
 {
 	if (m_pLoadedScores.size() == 0) {
 		return std::vector<dae::ScoreData*>{ nullptr, nullptr, nullptr, nullptr, nullptr }; // return nullptr filled vector as no scores are currently loaded
 	}
 
 	std::vector<dae::ScoreData*> pHighestScores;
-	pHighestScores.reserve(m_pLoadedScores.size());
+	pHighestScores.resize(m_pLoadedScores.size());
 
 	// Copy over scores
 	std::transform(m_pLoadedScores.begin(), m_pLoadedScores.end(), pHighestScores.begin(),
@@ -106,7 +106,7 @@ std::vector<dae::ScoreData*> dae::HighScoreDisplayComponent::Get5HighestScores()
 	return pHighestScores;
 }
 
-void dae::HighScoreDisplayComponent::SetVisible(bool newVisible)
+void dae::HighScoreComponent::SetVisible(bool newVisible)
 {
 	m_pParent->SetVisible(newVisible);
 };
@@ -116,8 +116,7 @@ std::ostream& dae::operator<<(std::ostream& os, const ScoreData& score)
 	os << "Initials: " << score.initials << "\n";
 	os << "Score: " << score.score << "\n";
 	os << "Number shots: " << score.numShots << "\n";
-	float hitMiss = (static_cast<float>(score.numHits) / static_cast<float>(score.numShots));
-	os << "Hit/Miss ratio: " << std::fixed << std::setprecision(1) << (hitMiss * 100) << "%\n";
+	os << "Hit/Miss ratio: " << std::fixed << std::setprecision(1) << score.GetHitMissRatio() << "%\n";
 	
 	return os;
 }

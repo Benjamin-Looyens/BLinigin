@@ -6,7 +6,8 @@
 namespace dae {
 	class GameObject;
 	class TextComponent;
-	class HighScoreDisplayComponent;
+	class HighScoreComponent;
+	class Font;
 
 	class MainMenuComponent final : public Component
 	{
@@ -15,7 +16,6 @@ namespace dae {
 	public:
 		void Update() override;
 		void LateUpdate() override;
-		void Render() const override;
 
 		void ChangeState(std::unique_ptr<MainMenuState> pNewState);
 
@@ -34,6 +34,7 @@ namespace dae {
 
 		void InitHighScore(const std::string& scoreFile);
 		void SetHighScoreVisible(bool newVisible);
+		inline HighScoreComponent* GetHighScoreComp() const { return m_pHighScoreComp; };
 
 		MainMenuComponent(GameObject* pParent);
 
@@ -60,13 +61,15 @@ namespace dae {
 		static constexpr float s_TOP_ELEVATION{ 500.0f };
 		static constexpr float s_BOT_ELEVATION{ 550.0f };
 
+		Font* m_pUsedMenuFont;
+
 		GameObject* m_pSelectionObj;
 
 		TextComponent* m_pTopOptionComp;
 		TextComponent* m_pBottomOptionComp;
 
 		GameObject* m_pHighScoreObj;
-		HighScoreDisplayComponent* m_pHighScoreComp;
+		HighScoreComponent* m_pHighScoreComp;
 	};
 }
 

@@ -51,6 +51,7 @@ void dae::GameObject::LateUpdate()
 void dae::GameObject::Render() const
 {
 	if (!m_Visible) return;
+	if (m_pParentObject && !m_pParentObject->IsVisible()) return;
 
 	for (auto& pComponent : m_pComponents)
 		if (pComponent != nullptr) pComponent->Render(); // if component has a rendering section, it will render using game object transform
@@ -210,6 +211,16 @@ void dae::GameObject::DestroyWithChildren()
 	}
 	
 	m_Destroyed = true;
+}
+
+bool dae::GameObject::IsVisible() const
+{
+	if (m_pParentObject) {
+		if (m_pParentObject->IsVisible()) return m_Visible;
+		else return false;
+	}
+	
+	return m_Visible;
 }
 
 void dae::GameObject::AddChild(GameObject* pNewChild)

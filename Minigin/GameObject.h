@@ -51,7 +51,8 @@ namespace dae
 
 		inline bool IsEnabled() const { return m_Enabled; };
 		inline void SetEnabled(bool newEnabled) { m_Enabled = newEnabled; };
-		inline bool IsVisible() const { return m_Visible; };
+
+		bool IsVisible() const;
 		inline void SetVisible(bool newVisible) { m_Visible = newVisible; };
 
 		// Makes the GameObject use the parent as the origin where it moves from; If it has no parent, this value will be ignored
