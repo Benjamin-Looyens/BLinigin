@@ -47,7 +47,7 @@ void load()
 	auto& versus	= BL_SCENE_MANAGER.CreateScene("VersusGalaga");
 	auto& coop		= BL_SCENE_MANAGER.CreateScene("CoopGalaga");
 	auto& results	= BL_SCENE_MANAGER.CreateScene("Results");
-	
+
 	InitSound();
 	InitTitle(title, windowSize);
 	InitSolo(solo, windowSize);
@@ -123,6 +123,8 @@ void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize)
 
 void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize)
 {
+	BL_INPUT.AddGamepad();
+
 	versusScene;
 	windowSize;
 }
@@ -130,6 +132,8 @@ void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize)
 void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 {
 	AddAllModeSharedObj(coopScene, windowSize);
+
+	BL_INPUT.AddGamepad();
 
 	// Prefabs
 	dae::GameObject* pPlayerOneObject = nullptr;

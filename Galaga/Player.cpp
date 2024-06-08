@@ -88,7 +88,8 @@ void dae::Player::AddGamepadInput(GameObject* pPlayerObj) const
 {
 	auto& input = BL_INPUT;
 
-	auto index = input.AddGamepad();
+	dae::input_index index = static_cast<dae::input_index>(m_PlayerIndex + 1);
+
 	input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_LEFT, index, pPlayerObj, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
 	input.AddCommand<dae::MoveCommand>(BL_GAMEPAD_DPAD_RIGHT, index, pPlayerObj, glm::vec2{ 1.0f,  0.0f }, m_SpawnMovSpeed);
 

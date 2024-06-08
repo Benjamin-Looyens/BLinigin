@@ -76,6 +76,8 @@ namespace dae
 			);
 		};
 
+		inline int GetNumGamepads() const { return static_cast<int>(m_Gamepads.size()); };
+
 	private:
 		std::vector<dae::CommandData> m_Commands; 
 		std::vector<dae::Gamepad> m_Gamepads;

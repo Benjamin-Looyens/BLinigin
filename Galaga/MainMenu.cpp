@@ -11,10 +11,19 @@ dae::MainMenuComponent::MainMenuComponent(GameObject* pParent)
 {
 	ChangeState(std::make_unique<dae::TitleState>());
 
+	// Keyboard
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_W, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::UP);
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_S, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::DOWN);
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_LSHIFT, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::BACK);
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_SPACE, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::CONFIRM);
+
+	// Gamepad 1
+	auto index = BL_INPUT.AddGamepad();
+	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_GAMEPAD_DPAD_UP, index, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::UP);
+	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_GAMEPAD_DPAD_DOWN, index, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::DOWN);
+	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_GAMEPAD_B, index, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::BACK);
+	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_GAMEPAD_A, index, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::CONFIRM);
+
 
 	auto pScene = m_pParent->GetContainingScene();
 	auto pFont = BL_RESOURCE.LoadFont("Emulogic.ttf", 20);
