@@ -35,6 +35,18 @@
             "Initials": "",
             "Score": 80,
             "Shots": 3
+        },
+        {
+            "Hits": 12,
+            "Initials": "",
+            "Score": 1010,
+            "Shots": 19
+        },
+        {
+            "Hits": 0,
+            "Initials": "",
+            "Score": 0,
+            "Shots": 0
         }
     ]
 }
