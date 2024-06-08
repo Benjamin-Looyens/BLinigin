@@ -19,6 +19,7 @@ dae::PlayerLogic::PlayerLogic(GameObject* pParent)
 
 void dae::PlayerLogic::Update()
 {
+	if (m_FireCooldown >= 0) m_FireCooldown -= BL_TIMER.GetDeltaTime();
 }
 
 void dae::PlayerLogic::LateUpdate()
@@ -28,31 +29,34 @@ void dae::PlayerLogic::LateUpdate()
 
 void dae::PlayerLogic::Fire()
 {
-	dae::Dart dart{ 500.0f, m_pParent->GetWorldPosition(), { 0.0f, -1.0f }, "PlayerDart.png" };
-	
-	auto pDart = dart.AddToScene(m_pParent->GetContainingScene());
-	auto parentPos = m_pParent->GetWorldPosition();
-	auto parentSize = m_pParent->GetComponent<dae::TextureComponent>()->GetTextureSize() * m_pParent->GetWorldScale();
-	auto dartSize = pDart->GetComponent<dae::TextureComponent>()->GetTextureSize() * pDart->GetWorldScale();
+	if (m_FireCooldown <= 0) {
+		dae::Dart dart{ 500.0f, m_pParent->GetWorldPosition(), { 0.0f, -1.0f }, "PlayerDart.png" };
+		
+		auto pDart = dart.AddToScene(m_pParent->GetContainingScene());
+		auto parentPos = m_pParent->GetWorldPosition();
+		auto parentSize = m_pParent->GetComponent<dae::TextureComponent>()->GetTextureSize() * m_pParent->GetWorldScale();
+		auto dartSize = pDart->GetComponent<dae::TextureComponent>()->GetTextureSize() * pDart->GetWorldScale();
 
-	glm::vec2 dartPos{ (parentPos.x + ((parentSize.x - dartSize.x) / 2)),
-					   (parentPos.y) };
-	pDart->SetLocalTranslation(dartPos);
+		glm::vec2 dartPos{ (parentPos.x + ((parentSize.x - dartSize.x) / 2)),
+						   (parentPos.y) };
+		pDart->SetLocalTranslation(dartPos);
 
-	// TODO : rework the observer assignment here to be less coupled
-	auto pDartLogic = pDart->GetComponent<dae::DartLogic>();
-	if (pDartLogic) {
-		auto pScore = m_pParent->GetComponent<dae::ScoreComponent>();
-		if (pScore) {
-			pDartLogic->AddObserver(pScore);
+		// TODO : rework the observer assignment here to be less coupled
+		auto pDartLogic = pDart->GetComponent<dae::DartLogic>();
+		if (pDartLogic) {
+			auto pScore = m_pParent->GetComponent<dae::ScoreComponent>();
+			if (pScore) {
+				pDartLogic->AddObserver(pScore);
+			}
 		}
+
+		NotifyObservers(Event::PLAYER_SHOOT);
+
+		BL_SOUND.PlaySound(13, 0.3f);
+
+		m_DartsFired++;
+		m_FireCooldown = s_MAX_FIRE_COOLDOWN;
 	}
-
-	NotifyObservers(Event::PLAYER_SHOOT);
-
-	BL_SOUND.PlaySound(13, 0.3f);
-
-	m_DartsFired++;
 }
 
 void dae::PlayerLogic::Die()
