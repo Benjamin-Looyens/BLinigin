@@ -71,6 +71,18 @@
             "Initials": "hel",
             "Score": 0,
             "Shots": 0
+        },
+        {
+            "Hits": 0,
+            "Initials": "aaa",
+            "Score": 0,
+            "Shots": 0
+        },
+        {
+            "Hits": 0,
+            "Initials": "ddd",
+            "Score": 0,
+            "Shots": 0
         }
     ]
 }
