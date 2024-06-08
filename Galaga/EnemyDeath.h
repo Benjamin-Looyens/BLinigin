@@ -2,7 +2,7 @@
 #include "Prefab.h"
 
 namespace dae {
-	class EnemyDeath final : public Prefab
+	class Death final : public Prefab
 	{
 	public:
 		// TODO : probably customize with parameters & reuse for player

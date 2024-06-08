@@ -7,6 +7,7 @@
 #include <SDL.h>
 #include "ServiceLocator.h"
 #include "TextureComponents.h"
+#include "PlayerComponents.h"
 
 #include "TEMP_PlayerGlobal.h"
 
@@ -20,6 +21,20 @@ dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolS
 void dae::EnemyLogic::Update()
 {
 	if (m_pState.get())	m_pState->Update(*this);
+	if (!m_pCollision) m_pCollision = m_pParent->GetComponent<dae::CollisionComponent>();
+	else {
+		auto pOverlaps = m_pCollision->GetAllOverlappingObjects();
+		if (pOverlaps.size() > 0) {
+			for (auto pOverlap : pOverlaps) {
+				auto pPlayer = pOverlap->GetComponent<dae::PlayerLogic>(); 
+
+				if (pPlayer) {
+					pPlayer->Die();
+					break;
+				}
+			}
+		}
+	}
 }
 
 void dae::EnemyLogic::LateUpdate()

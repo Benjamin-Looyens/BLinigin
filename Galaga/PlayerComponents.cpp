@@ -20,6 +20,7 @@ dae::PlayerLogic::PlayerLogic(GameObject* pParent)
 void dae::PlayerLogic::Update()
 {
 	if (m_FireCooldown >= 0) m_FireCooldown -= BL_TIMER.GetDeltaTime();
+	if (m_InvulFrames >= 0)	 m_InvulFrames -= BL_TIMER.GetDeltaTime();
 }
 
 void dae::PlayerLogic::LateUpdate()
@@ -61,11 +62,14 @@ void dae::PlayerLogic::Fire()
 
 void dae::PlayerLogic::Die()
 {
-	NotifyObservers(Event::PLAYER_DIED);
+	if (m_InvulFrames <= 0) {
+		NotifyObservers(Event::PLAYER_DIED);
+		m_InvulFrames = s_MAX_INVUL_FRAMES;
 
 #ifndef NDEBUG
-	std::cout << "Player lost life!\n";
+		std::cout << "Player lost life!\n";
 #endif
+	}
 }
 
 #pragma region LivesComponent
@@ -113,11 +117,11 @@ void dae::LivesComponent::OnNotify(const ISubject*, Event event)
 	switch (event) {
 	case Event::PLAYER_DIED:
 		LoseLife();
-		// TODO : Play sound
+		BL_SOUND.PlaySound(9, 0.4f);
 		break;
 	case Event::ONE_UP:
 		GainLife();
-		// TODO : Play sound
+		BL_SOUND.PlaySound(8, 0.4f);
 	}
 }
 

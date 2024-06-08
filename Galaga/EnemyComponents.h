@@ -9,6 +9,7 @@
 
 namespace dae {
 	class GameObject;
+	class CollisionComponent;
 
 	class EnemyLogic final : public SubjectComponent
 	{
@@ -48,9 +49,8 @@ namespace dae {
 
 		int m_Health;
 
-		EnemyDeath m_DeathAnim{ };
+		dae::Death m_DeathAnim{ };
 
-		// TODO : Implement these through constructor
 		dae::Event m_NormalDeath;
 		dae::Event m_KamikazeDeath;
 		dae::Event m_ReturnDeath = dae::Event::NULL_EVENT;
@@ -59,5 +59,7 @@ namespace dae {
 		sound_id m_DeathSound;
 
 		GameObject* m_pFormationLocationRoot;
+
+		dae::CollisionComponent* m_pCollision;
 	};
 }

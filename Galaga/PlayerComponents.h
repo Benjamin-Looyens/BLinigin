@@ -25,8 +25,12 @@ namespace dae {
 
 	private:
 		int m_DartsFired{ };
+
 		float m_FireCooldown{ };
 		static constexpr float s_MAX_FIRE_COOLDOWN{ 0.35f };
+
+		float m_InvulFrames{ };
+		static constexpr float s_MAX_INVUL_FRAMES{ 0.6f };
 	};
 
 	class LivesComponent final : public ObservingSubjectComponent

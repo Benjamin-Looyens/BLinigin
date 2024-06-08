@@ -4,7 +4,7 @@
 #include "DerivedComponents.h"
 #include "TextureComponents.h"
 
-dae::GameObject* dae::EnemyDeath::AddToScene(Scene* pSceneToAddTo)
+dae::GameObject* dae::Death::AddToScene(Scene* pSceneToAddTo)
 {
 	auto pDeathObject = pSceneToAddTo->AddGameObject();
 
