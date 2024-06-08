@@ -78,6 +78,10 @@
 #define BL_KEYBOARD_8			0x0134
 #define BL_KEYBOARD_9			0x0135
 #define BL_KEYBOARD_0			0x0136
+#define BL_KEYBOARD_LEFT		0x0140
+#define BL_KEYBOARD_RIGHT		0x0141
+#define BL_KEYBOARD_UP			0x0142
+#define BL_KEYBOARD_DOWN		0x0143
 
 // Define Mouse Macros
 #define BL_MOUSE_INPUT			0x2000

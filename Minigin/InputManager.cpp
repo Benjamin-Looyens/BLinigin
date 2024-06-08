@@ -287,6 +287,18 @@ int dae::InputManager::TranslateCode(const int& code, bool& inputIsController_OU
         case BL_KEYBOARD_0:
             return SDL_SCANCODE_0;
             break;
+        case BL_KEYBOARD_LEFT:
+            return SDL_SCANCODE_LEFT;
+            break;
+        case BL_KEYBOARD_RIGHT:
+            return SDL_SCANCODE_RIGHT;
+            break;
+        case BL_KEYBOARD_UP:
+            return SDL_SCANCODE_UP;
+            break;
+        case BL_KEYBOARD_DOWN:
+            return SDL_SCANCODE_DOWN;
+            break;
         }
     }
     else if (code & BL_GAMEPAD_INPUT) {

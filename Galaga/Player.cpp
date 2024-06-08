@@ -76,6 +76,8 @@ void dae::Player::AddKeyboardInput(GameObject* pPlayerObj) const
 
 	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_A, 0, pPlayerObj, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
 	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_D, 0, pPlayerObj, glm::vec2{ 1.0f,  0.0f }, m_SpawnMovSpeed);
+	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_LEFT, 0, pPlayerObj, glm::vec2{ -1.0f,  0.0f }, m_SpawnMovSpeed);
+	input.AddCommand<dae::MoveCommand>(BL_KEYBOARD_RIGHT, 0, pPlayerObj, glm::vec2{ 1.0f,  0.0f }, m_SpawnMovSpeed);
 
 	input.AddCommand<dae::FireCommand>(BL_KEYBOARD_SPACE, 0, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
 

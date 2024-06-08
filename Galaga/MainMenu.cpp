@@ -16,6 +16,8 @@ dae::MainMenuComponent::MainMenuComponent(GameObject* pParent)
 	// Keyboard
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_W, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::UP);
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_S, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::DOWN);
+	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_UP, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::UP);
+	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_DOWN, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::DOWN);
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_LSHIFT, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::BACK);
 	BL_INPUT.AddCommand<dae::MainMenuCommand>(BL_KEYBOARD_SPACE, 0, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::MainMenuCommand::MainMenuInput::CONFIRM);
 
