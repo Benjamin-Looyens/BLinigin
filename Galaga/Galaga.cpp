@@ -112,10 +112,7 @@ void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize)
 	std::vector<dae::GameObject*> players{ pPlayerOneObject };
 
 	auto pScoreTrackerObject = soloScene.AddGameObject();
-	auto pScoreTrackerComp = pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
-
-	pPlayerOneObject->GetComponent<dae::PlayerLogic>()->AddObserver(pScoreTrackerComp);
-	pPlayerOneObject->GetComponent<dae::LivesComponent>()->AddObserver(pScoreTrackerComp);
+	pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
 
 	// TEMP
 	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);
@@ -165,12 +162,7 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize)
 	std::vector<dae::GameObject*> players{ pPlayerOneObject, pPlayerTwoObject };
 
 	auto pScoreTrackerObject = coopScene.AddGameObject();
-	auto pScoreTrackerComp = pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
-	
-	pPlayerOneObject->GetComponent<dae::PlayerLogic>()->AddObserver(pScoreTrackerComp);
-	pPlayerTwoObject->GetComponent<dae::PlayerLogic>()->AddObserver(pScoreTrackerComp);
-	pPlayerOneObject->GetComponent<dae::LivesComponent>()->AddObserver(pScoreTrackerComp);
-	pPlayerTwoObject->GetComponent<dae::LivesComponent>()->AddObserver(pScoreTrackerComp);
+	pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
 
 	// TEMP
 	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);

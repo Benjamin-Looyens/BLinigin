@@ -171,6 +171,8 @@ void dae::ScoreComponent::AddPoints(int pointsToAdd)
 			m_NumTimesOneUp++;
 		}
 	}
+
+	NotifyObservers(dae::Event::PLAYER_SHOT_ENEMY);
 }
 
 void dae::ScoreComponent::Update()

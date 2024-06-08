@@ -95,11 +95,11 @@ std::vector<dae::ScoreData*> dae::HighScoreComponent::Get5HighestScores() const
 
 	// Copy over scores
 	std::transform(m_pLoadedScores.begin(), m_pLoadedScores.end(), pHighestScores.begin(),
-					[](const std::unique_ptr<ScoreData>& uniquePtr) { return uniquePtr.get(); });
+					[](const std::unique_ptr<ScoreData>& pUniqueScore) { return pUniqueScore.get(); });
 
 	// Sort raw pointers
 	std::sort(pHighestScores.begin(), pHighestScores.end(),
-				[](dae::ScoreData* a, dae::ScoreData* b) { return a->score > b->score; });
+				[](dae::ScoreData* pFirst, dae::ScoreData* pSecond) { return pFirst->score > pSecond->score; });
 
 	pHighestScores.resize(5);
 

@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "ObserverComponents.h"
 #include <vector>
+#include "HighScore.h"
 
 namespace dae {
 	class GameObject;
@@ -14,7 +15,7 @@ namespace dae {
 		void OnNotify(const dae::ISubject* pSubject, dae::Event event) override;
 
 	private:
-		std::vector<GameObject*> m_pPlayers;
+		std::vector<std::pair<GameObject*, dae::ScoreData>> m_Players;
 
 		int m_NumAlivePlayers;
 	};
