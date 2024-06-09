@@ -12,6 +12,8 @@
 #include "DerivedCommands.h"
 #include "InputManager.h"
 #include "Defines.h"
+#include <algorithm>
+#include <random>
 
 // TODO : Fix Math Defines
 #define _USE_MATH_DEFINES
@@ -44,6 +46,20 @@ void dae::StageManagerLogic::Update()
 			m_StageActive = true;
 			m_ElapsedTime = 0;
 			NextStage();
+		}
+	}
+
+	if (m_pEnemies.size() > 0) {
+		if (m_SpawnEnemyTimer < s_MAX_SPAWN_TIMER) m_SpawnEnemyTimer += BL_TIMER.GetDeltaTime(); 
+		else {
+			if (m_CurSpawnIndex < m_pEnemies.size()) {
+
+				m_pEnemies[m_CurSpawnIndex]->SetEnabled(true);
+				m_pEnemies[m_CurSpawnIndex]->SetVisible(true);
+
+				m_CurSpawnIndex++;
+				m_SpawnEnemyTimer = 0;
+			}
 		}
 	}
 
@@ -122,9 +138,11 @@ void dae::StageManagerLogic::ParseEnemies()
 				pBee->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pBeeFormation);
 				m_pFormationPositions.push_back(pBeeFormation);
 
+				pBee->SetEnabled(false);
+				pBee->SetVisible(false);
+
 				m_pEnemies.push_back(pBee);
 			}
-			
 		}
 	}
 
@@ -149,6 +167,9 @@ void dae::StageManagerLogic::ParseEnemies()
 				pButterflyFormation->SetLocalTranslation({ x, y });
 				pButterfly->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pButterflyFormation);
 				m_pFormationPositions.push_back(pButterflyFormation);
+				
+				pButterfly->SetEnabled(false);
+				pButterfly->SetVisible(false);
 
 				m_pEnemies.push_back(pButterfly);
 			}
@@ -177,10 +198,17 @@ void dae::StageManagerLogic::ParseEnemies()
 				pBoss->GetComponent<dae::EnemyLogic>()->SetFormationRoot(pBossFormation);
 				m_pFormationPositions.push_back(pBossFormation);
 
+				pBoss->SetEnabled(false);
+				pBoss->SetVisible(false);
+
 				m_pEnemies.push_back(pBoss);
 			}
 		}
 	}
+
+	//std::shuffle(begin(m_pEnemies), end(m_pEnemies), std::default_random_engine(rand()));
+
+	m_CurSpawnIndex = 0;
 }
 
 void dae::StageManagerLogic::NextStage()

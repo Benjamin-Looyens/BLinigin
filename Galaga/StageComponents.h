@@ -38,6 +38,10 @@ namespace dae {
 
 		bool m_StageActive = false; // TODO : Implement state pattern here
 
+		size_t m_CurSpawnIndex;
+		float m_SpawnEnemyTimer{};
+		static constexpr float s_MAX_SPAWN_TIMER{ 0.2f };
+
 		std::vector<GameObject*> m_pFormationPositions;
 		std::vector<GameObject*> m_pEnemies;
 
