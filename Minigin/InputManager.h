@@ -84,14 +84,14 @@ namespace dae
 		std::vector<dae::CommandData> m_Commands; 
 		std::vector<dae::Gamepad> m_Gamepads;
 		
-		glm::ivec2 m_MousePos;
-		glm::ivec2 m_RelMousePos;
+		glm::ivec2 m_MousePos{};
+		glm::ivec2 m_RelMousePos{};
 
 		int TranslateCode(const int& code, bool& inputIsController_OUT);
 		void HandleMouseInput(dae::InputState state, SDL_Event& e);
 		void HandleKeyboardInput(dae::InputState state, SDL_Event& e);
 
-		bool m_NeedToQuit;
+		bool m_NeedToQuit = false;
 		char m_LastTyped{};
 	};
 }

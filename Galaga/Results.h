@@ -30,11 +30,11 @@ namespace dae {
 		dae::ScoreTrackerComponent* m_pScoreTracker;
 		dae::HighScoreComponent* m_pHighScoreComp;
 
-		bool m_DisplayingScores;
+		bool m_DisplayingScores = false;
 		bool m_ReceivedScores = false;
 
 		std::vector<dae::ScoreData> m_Scores;
-		size_t m_CurrentPlayerIndex;
+		size_t m_CurrentPlayerIndex{};
 
 		static const std::string s_SCORE_FILE;
 

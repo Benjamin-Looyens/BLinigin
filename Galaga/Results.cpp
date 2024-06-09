@@ -11,6 +11,7 @@
 #include <SDL.h>
 #include <format>
 #include "Timer.h"
+#include "ServiceLocator.h"
 
 const std::string dae::ResultsComponent::s_SCORE_FILE = std::string("HighScores.json");
 
@@ -87,6 +88,7 @@ void dae::ResultsComponent::Update()
 	switch (m_State) {
 	case ResultsSimpleState::RECEIVING_SCORES:
 		m_Scores = m_pScoreTracker->GetScores();
+		BL_SOUND.PlaySound(11, 0.3f);
 		m_State = ResultsSimpleState::RECEIVING_NAMES;
 		break;
 	case ResultsSimpleState::RECEIVING_NAMES: {

@@ -14,6 +14,7 @@
 #include "Defines.h"
 #include <algorithm>
 #include <random>
+#include "ServiceLocator.h"
 
 // TODO : Fix Math Defines
 #define _USE_MATH_DEFINES
@@ -94,6 +95,8 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 
 				m_pFormationPositions.clear();
 				m_pEnemies.clear();
+
+				if (m_CurrentStage == 2) BL_SOUND.PlaySound(5, 0.4f);
 			}
 
 		}
@@ -223,6 +226,8 @@ void dae::StageManagerLogic::NextStage()
 	m_NumberEnemies = static_cast<int>(m_pFormationPositions.size());
 	
 	m_CurrentStage = (m_CurrentStage + 1) % m_NumFormations;
+
+	BL_SOUND.PlaySound(1, 0.3f);
 }
 
 void dae::StageManagerLogic::SkipStage()
