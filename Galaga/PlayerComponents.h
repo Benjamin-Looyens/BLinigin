@@ -63,7 +63,7 @@ namespace dae {
 		glm::vec2 m_DisplayPos;
 		glm::vec2 m_LivesStackDir;
 
-		Texture2D* m_pLifeTexture;
+		Texture2D* m_pLifeTexture = nullptr;
 
 		static constexpr float s_SPACER_BETWEEN_LIVES{ 5.0f };
 	};
@@ -90,7 +90,7 @@ namespace dae {
 		Font* m_pFont;		
 
 		// Score texture itself:
-		Texture2D* m_pTextTexture;
+		Texture2D* m_pTextTexture = nullptr;
 		const std::string m_ResourceFileStr;
 
 		// 1 UP flashing above:
@@ -117,11 +117,15 @@ namespace dae {
 
 		void Update() override;
 		void Fire();
+		void Kamikaze();
 
 	private:
 		dae::StageManagerLogic* m_pStageManager;
 
 		float m_FireDelay{};
-		static constexpr float s_MAX_FIRE_DELAY{ 1.0f };
+		static constexpr float s_MAX_FIRE_DELAY{ 0.75f };
+
+		float m_KamikazeDelay{};
+		static constexpr float s_MAX_KAMIKAZE_DELAY{ 1.0f };
 	};
 }

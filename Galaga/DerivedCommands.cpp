@@ -122,16 +122,29 @@ void dae::MainMenuCommand::Execute()
 	}
 }
 
-dae::EnemyControlFireCommand::EnemyControlFireCommand(GameObject* pEnemyControlObj)
-	: GameObjectCommand(pEnemyControlObj)
+dae::EnemyControlCommand::EnemyControlCommand(GameObject* pEnemyControlObj, EnemyControlInput input)
+	: GameObjectCommand(pEnemyControlObj), m_Input{ input }
 {}
 
-void dae::EnemyControlFireCommand::Execute()
+void dae::EnemyControlCommand::Execute()
 {
 	auto pScene = GetGameObject()->GetContainingScene();
 
 	if (BL_SCENE_MANAGER.IsActiveScene(pScene)) {
 		auto pEnemyControl = GetGameObject()->GetComponent<dae::PlayerEnemyControlComponent>();
-		pEnemyControl->Fire();
+		switch (m_Input) {
+		case EnemyControlInput::FIRE:
+			if (pEnemyControl) pEnemyControl->Fire();
+#ifndef NDEBUG
+			std::cout << "Player 2 attempted to call fire on an enemy!\n";
+#endif
+			break;
+		case EnemyControlInput::KAMIKAZE:
+			if (pEnemyControl) pEnemyControl->Kamikaze();
+#ifndef NDEBUG
+			std::cout << "Player 2 attempted to kamikaze an enemy!\n";
+#endif
+			break;
+		}
 	}
 }

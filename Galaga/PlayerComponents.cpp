@@ -276,7 +276,8 @@ void dae::ScoreComponent::OnNotify(const ISubject*, Event event)
 dae::PlayerEnemyControlComponent::PlayerEnemyControlComponent(GameObject* pParent, dae::StageManagerLogic* pStageManager) 
 	: Component(pParent), m_pStageManager{ pStageManager }
 {
-	BL_INPUT.AddCommand<dae::EnemyControlFireCommand>(BL_GAMEPAD_R_BUMPER, 2, dae::InputState::PRESSED_THIS_FRAME, m_pParent);
+	BL_INPUT.AddCommand<dae::EnemyControlCommand>(BL_GAMEPAD_R_BUMPER, 2, dae::InputState::PRESSED_THIS_FRAME, m_pParent);
+	BL_INPUT.AddCommand<dae::EnemyControlCommand>(BL_GAMEPAD_A, 2, dae::InputState::PRESSED_THIS_FRAME, m_pParent, dae::EnemyControlCommand::EnemyControlInput::KAMIKAZE);
 
 	//input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, index, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
 }
@@ -285,6 +286,17 @@ void dae::PlayerEnemyControlComponent::Update()
 {
 	if (m_FireDelay > 0) {
 		m_FireDelay -= BL_TIMER.GetDeltaTime();
+
+		if (m_FireDelay <= 0) {
+			std::cout << "Player 2 can fire again!\n";
+		}
+	}
+	if (m_KamikazeDelay > 0) {
+		m_KamikazeDelay -= BL_TIMER.GetDeltaTime();
+		
+		if (m_KamikazeDelay <= 0) {
+			std::cout << "Player 2 can kamikaze again!\n";
+		}
 	}
 }
 
@@ -303,4 +315,21 @@ void dae::PlayerEnemyControlComponent::Fire()
 	}
 
 	m_FireDelay = s_MAX_FIRE_DELAY;
+}
+
+void dae::PlayerEnemyControlComponent::Kamikaze()
+{
+	if (m_KamikazeDelay > 0) return;
+
+	if (m_pStageManager) {
+		auto pEnemyObj = m_pStageManager->GetRandomEnemy();
+		if (pEnemyObj) {
+			auto pEnemyLogic = pEnemyObj->GetComponent<dae::EnemyLogic>();
+			if (pEnemyLogic) {
+				pEnemyLogic->Kamikaze();
+			}
+		}
+	}
+
+	m_KamikazeDelay = s_MAX_KAMIKAZE_DELAY;
 }

@@ -34,6 +34,7 @@ namespace dae {
 		float GetXDirToClosestPlayer();
 
 		void Fire();
+		void Kamikaze();
 
 		float GetSpawnSpeed() const { return m_SpawnSpeed; };
 		float GetPatrolSpeed() const { return m_PatrolSpeed; };

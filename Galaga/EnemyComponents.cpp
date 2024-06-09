@@ -158,3 +158,10 @@ void dae::EnemyLogic::Fire()
 	pDart->SetLocalTranslation(dartPos);
 
 }
+
+void dae::EnemyLogic::Kamikaze()
+{
+	if (dynamic_cast<dae::EnemyPatrolState*>(m_pState.get())) {
+		SetState(std::make_unique<dae::EnemyKamikazeState>());
+	}
+}
