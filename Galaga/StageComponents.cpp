@@ -81,6 +81,7 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 			std::cout << "Enemy died!\n";
 
 			m_pEnemies.erase(std::remove(begin(m_pEnemies), end(m_pEnemies), pCasted->GetParent()));
+			m_CurSpawnIndex--;
 			
 			if (--m_NumberEnemies <= 0) {
 				m_StageActive = false;
