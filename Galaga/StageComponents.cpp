@@ -84,7 +84,9 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 
 dae::GameObject* dae::StageManagerLogic::GetRandomEnemy() const
 {
-	return m_pEnemies[rand() % m_pEnemies.size()];
+	if (m_pEnemies.size() > 0) return m_pEnemies[rand() % m_pEnemies.size()];
+	
+	return nullptr;
 }
 
 void dae::StageManagerLogic::ParseEnemies()

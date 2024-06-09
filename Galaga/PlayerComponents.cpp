@@ -281,8 +281,17 @@ dae::PlayerEnemyControlComponent::PlayerEnemyControlComponent(GameObject* pParen
 	//input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, index, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
 }
 
+void dae::PlayerEnemyControlComponent::Update()
+{
+	if (m_FireDelay > 0) {
+		m_FireDelay -= BL_TIMER.GetDeltaTime();
+	}
+}
+
 void dae::PlayerEnemyControlComponent::Fire()
 {
+	if (m_FireDelay > 0) return;
+
 	if (m_pStageManager) {
 		auto pEnemyObj = m_pStageManager->GetRandomEnemy();
 		if (pEnemyObj) {
@@ -292,4 +301,6 @@ void dae::PlayerEnemyControlComponent::Fire()
 			}
 		}
 	}
+
+	m_FireDelay = s_MAX_FIRE_DELAY;
 }

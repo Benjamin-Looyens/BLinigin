@@ -115,9 +115,13 @@ namespace dae {
 	public:
 		PlayerEnemyControlComponent(GameObject* pParent, dae::StageManagerLogic* pStageManager);
 
+		void Update() override;
 		void Fire();
 
 	private:
 		dae::StageManagerLogic* m_pStageManager;
+
+		float m_FireDelay{};
+		static constexpr float s_MAX_FIRE_DELAY{ 1.0f };
 	};
 }
