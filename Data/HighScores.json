@@ -1,28 +1,10 @@
 {
     "RegisteredScores": [
         {
-            "Hits": 5,
-            "Initials": "TST",
-            "Score": 410,
-            "Shots": 7
-        },
-        {
             "Hits": 106,
             "Initials": "ben",
             "Score": 8620,
             "Shots": 152
-        },
-        {
-            "Hits": 0,
-            "Initials": "ddd",
-            "Score": 0,
-            "Shots": 0
-        },
-        {
-            "Hits": 85,
-            "Initials": "bll",
-            "Score": 6940,
-            "Shots": 110
         }
     ]
 }

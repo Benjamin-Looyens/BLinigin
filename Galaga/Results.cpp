@@ -151,8 +151,6 @@ void dae::ResultsComponent::SaveScores()
 	jsonScores.reserve(pAllScores.size());
 
 	for (auto pScore : pAllScores) {
-		std::cout << pScore->initials << "\n";
-
 		nlohmann::json curScoreJson{
 			{ "Initials", pScore->initials },
 			{ "Score", pScore->score },

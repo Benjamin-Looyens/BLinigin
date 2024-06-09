@@ -78,7 +78,9 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 		auto pCasted = dynamic_cast<const dae::EnemyLogic*>(pSubject);
 
 		if (pCasted) {
+#ifndef NDEBUG
 			std::cout << "Enemy died!\n";
+#endif 
 
 			m_pEnemies.erase(std::remove(begin(m_pEnemies), end(m_pEnemies), pCasted->GetParent()));
 			m_CurSpawnIndex--;

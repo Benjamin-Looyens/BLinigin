@@ -32,8 +32,8 @@ namespace dae {
 		static constexpr float s_MAX_FIRE_COOLDOWN{ 0.35f };
 
 		float m_InvulFrames{ };
-		static constexpr float s_MAX_INVUL_FRAMES{ 0.6f };
-
+		static constexpr float s_MAX_INVUL_FRAMES{ 1.5f };
+		
 		bool m_RanOutOfLives{ };
 	};
 
