@@ -208,7 +208,7 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Gamepad.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="Minigin.h" />
+    <ClInclude Include="BLinigin.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="ObserverComponents.h" />
     <ClInclude Include="Prefab.h" />
@@ -239,7 +239,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Gamepad.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Minigin.cpp" />
+    <ClCompile Include="BLinigin.cpp" />
     <ClCompile Include="ObserverComponents.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

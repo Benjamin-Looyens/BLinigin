@@ -101,9 +101,6 @@
     <ClInclude Include="Font.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Minigin.h">
-      <Filter>Core Engine Files</Filter>
-    </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Classes To Derive From</Filter>
     </ClInclude>
@@ -143,11 +140,9 @@
     <ClInclude Include="State.h">
       <Filter>Classes To Derive From</Filter>
     </ClInclude>
+    <ClInclude Include="BLinigin.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Minigin.cpp">
-      <Filter>Core Engine Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
       <Filter>External Includes\imgui</Filter>
     </ClCompile>
@@ -216,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="TextureComponents.cpp">
       <Filter>Engine Included Derived Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="BLinigin.cpp">
+      <Filter>Core Engine Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

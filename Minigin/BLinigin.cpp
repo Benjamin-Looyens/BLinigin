@@ -5,7 +5,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
-#include "Minigin.h"
+#include "BLinigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
@@ -55,7 +55,7 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const std::string &dataPath)
+dae::BLinigin::BLinigin(const std::string &dataPath)
 {
 	PrintSDLVersion();
 	
@@ -93,7 +93,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	BL_SOUND.SetDataPath(dataPath.c_str());
 }
 
-dae::Minigin::~Minigin()
+dae::BLinigin::~BLinigin()
 {
 	BL_RENDERER.Destroy();
 	SDL_DestroyWindow(g_window);
@@ -102,7 +102,7 @@ dae::Minigin::~Minigin()
 	SDL_Quit();
 }
 
-void dae::Minigin::Run(const std::function<void()>& load)
+void dae::BLinigin::Run(const std::function<void()>& load)
 {
 	load();
 

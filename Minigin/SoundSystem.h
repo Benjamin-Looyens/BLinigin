@@ -6,7 +6,7 @@ namespace dae {
 
 	class ISoundSystem
 	{
-		friend class Minigin; // So that it can initialize queue and quit
+		friend class BLinigin; // So that it can initialize queue and quit
 
 	public:
 		virtual ~ISoundSystem() = default;

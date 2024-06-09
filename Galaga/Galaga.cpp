@@ -7,7 +7,7 @@
 #endif
 #endif
 
-#include "Minigin.h"
+#include "BLinigin.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
@@ -80,7 +80,7 @@ void load()
 // TODO : Look at kill player command and ensure it is in the active scene
 
 int main(int, char* []) {
-	dae::Minigin engine("../Data/");
+	dae::BLinigin engine("../Data/");
 	engine.Run(load);
 	return 0;
 }
