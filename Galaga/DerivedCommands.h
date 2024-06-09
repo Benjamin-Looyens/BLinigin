@@ -91,4 +91,12 @@ namespace dae
 	private:
 		dae::MainMenuCommand::MainMenuInput m_InputToSignal;
 	};
+
+	class EnemyControlFireCommand final : public GameObjectCommand
+	{
+	public:
+		EnemyControlFireCommand(GameObject* pEnemyControlObj);
+
+		void Execute() override;
+	};
 }

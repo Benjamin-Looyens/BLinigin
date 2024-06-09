@@ -121,3 +121,17 @@ void dae::MainMenuCommand::Execute()
 		break;
 	}
 }
+
+dae::EnemyControlFireCommand::EnemyControlFireCommand(GameObject* pEnemyControlObj)
+	: GameObjectCommand(pEnemyControlObj)
+{}
+
+void dae::EnemyControlFireCommand::Execute()
+{
+	auto pScene = GetGameObject()->GetContainingScene();
+
+	if (BL_SCENE_MANAGER.IsActiveScene(pScene)) {
+		auto pEnemyControl = GetGameObject()->GetComponent<dae::PlayerEnemyControlComponent>();
+		pEnemyControl->Fire();
+	}
+}

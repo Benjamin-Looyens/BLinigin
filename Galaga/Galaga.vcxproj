@@ -170,8 +170,6 @@
     <ClCompile Include="ScoreTracker.cpp" />
     <ClCompile Include="StageComponents.cpp" />
     <ClCompile Include="StageManager.cpp" />
-    <ClCompile Include="TEMP_PlayerGlobal.cpp" />
-    <ClCompile Include="TEMP_PlayerGlobal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dart.h" />

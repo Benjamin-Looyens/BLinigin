@@ -6,6 +6,7 @@
 
 namespace dae {
 	class Font;
+	class StageManagerLogic;
 
 	class PlayerLogic final : public SubjectComponent
 	{
@@ -109,4 +110,14 @@ namespace dae {
 		static constexpr int s_NUM_POINTS_FOR_1UP = 20000;
 	};
 
+	class PlayerEnemyControlComponent final : public Component
+	{
+	public:
+		PlayerEnemyControlComponent(GameObject* pParent, dae::StageManagerLogic* pStageManager);
+
+		void Fire();
+
+	private:
+		dae::StageManagerLogic* m_pStageManager;
+	};
 }

@@ -113,21 +113,7 @@ void dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
         
         m_ShootTimer += deltaTime;
         if (m_ShootTimer > s_TIME_TO_SHOOT) {
-            dae::Dart dart{ 750.0f, enemy.GetLocation(), { enemy.GetXDirToClosestPlayer(), 1.0f }, "EnemyDart.png", false };
-            
-            // TODO : Make dart shooting system part of the dart prefab
-            auto pDart = dart.AddToScene(enemy.GetParent()->GetContainingScene());
-            auto parentPos = enemy.GetLocation();
-            auto parentSize = enemy.GetParent()->GetComponent<dae::AnimatedTextureComponent>()->GetAppliedTextureSize() * enemy.GetScale();
-            auto dartSize = pDart->GetComponent<dae::TextureComponent>()->GetTextureSize() * pDart->GetWorldScale();
-
-            glm::vec2 dartPos{ (parentPos.x + ((parentSize.x - dartSize.x) / 2)),
-                               (parentPos.y) };
-            pDart->SetLocalTranslation(dartPos);
-
-            // TODO : rework the observer assignment here to be less coupled
-            auto pDartLogic = pDart->GetComponent<dae::DartLogic>();
-            if (pDartLogic) {}
+            enemy.Fire();
 
             m_ShootTimer = 0;
         }

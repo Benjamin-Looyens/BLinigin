@@ -9,8 +9,6 @@
 #include "TextureComponents.h"
 #include "PlayerComponents.h"
 
-#include "TEMP_PlayerGlobal.h"
-
 dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolSpeed, int health, sound_id damageSoundID, sound_id deathSoundID, dae::Event normalDeath, dae::Event kamikazeDeath)
 	: SubjectComponent(pParent), m_SpawnSpeed{ spawnSpeed }, m_PatrolSpeed{ patrolSpeed }, m_Health{ health }, m_DamageSound{ damageSoundID }, m_DeathSound{ deathSoundID },
 	  m_NormalDeath{ normalDeath }, m_KamikazeDeath{ kamikazeDeath }
@@ -143,4 +141,20 @@ float dae::EnemyLogic::GetXDirToClosestPlayer()
 {
 	// TODO : Implement x direction to player for slight edge of dart shooting towards players
 	return 0.0f;
+}
+
+void dae::EnemyLogic::Fire()
+{
+	dae::Dart dart{ 750.0f, GetLocation(), { GetXDirToClosestPlayer(), 1.0f }, "EnemyDart.png", false };
+
+	// TODO : Make dart shooting system part of the dart prefab
+	auto pDart = dart.AddToScene(GetParent()->GetContainingScene());
+	auto parentPos = GetLocation();
+	auto parentSize = GetParent()->GetComponent<dae::AnimatedTextureComponent>()->GetAppliedTextureSize() * GetScale();
+	auto dartSize = pDart->GetComponent<dae::TextureComponent>()->GetTextureSize() * pDart->GetWorldScale();
+
+	glm::vec2 dartPos{ (parentPos.x + ((parentSize.x - dartSize.x) / 2)),
+					   (parentPos.y) };
+	pDart->SetLocalTranslation(dartPos);
+
 }

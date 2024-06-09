@@ -12,6 +12,10 @@
 #include "DartLogic.h"
 #include "TextureComponents.h"
 #include "Timer.h"
+#include "InputManager.h"
+#include "StageComponents.h"
+#include "DerivedCommands.h"
+#include "EnemyComponents.h"
 
 dae::PlayerLogic::PlayerLogic(GameObject* pParent)
 	: SubjectComponent(pParent)
@@ -268,3 +272,24 @@ void dae::ScoreComponent::OnNotify(const ISubject*, Event event)
 	}
 }
 #pragma endregion ScoreComponent
+
+dae::PlayerEnemyControlComponent::PlayerEnemyControlComponent(GameObject* pParent, dae::StageManagerLogic* pStageManager) 
+	: Component(pParent), m_pStageManager{ pStageManager }
+{
+	BL_INPUT.AddCommand<dae::EnemyControlFireCommand>(BL_GAMEPAD_R_BUMPER, 2, dae::InputState::PRESSED_THIS_FRAME, m_pParent);
+
+	//input.AddCommand<dae::FireCommand>(BL_GAMEPAD_R_BUMPER, index, dae::InputState::PRESSED_THIS_FRAME, pPlayerObj);
+}
+
+void dae::PlayerEnemyControlComponent::Fire()
+{
+	if (m_pStageManager) {
+		auto pEnemyObj = m_pStageManager->GetRandomEnemy();
+		if (pEnemyObj) {
+			auto pEnemyLogic = pEnemyObj->GetComponent<dae::EnemyLogic>(); 
+			if (pEnemyLogic) {
+				pEnemyLogic->Fire();
+			}
+		}
+	}
+}

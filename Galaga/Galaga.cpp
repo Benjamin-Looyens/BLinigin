@@ -28,8 +28,7 @@
 #include "ScoreTracker.h"
 #include "MainMenu.h"
 #include "Results.h"
-
-#include "TEMP_PlayerGlobal.h"
+#include "StageComponents.h"
 
 void InitTitle	(dae::Scene& titleScene,	glm::ivec2& windowSize);
 void InitSolo	(dae::Scene& soloScene,		glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT);
@@ -57,6 +56,8 @@ void load()
 	dae::ScoreTrackerComponent* pSoloScoreTracker = nullptr;
 	dae::ScoreTrackerComponent* pCoopScoreTracker = nullptr;
 	dae::ScoreTrackerComponent* pVersusScoreTracker = nullptr;
+
+	BL_INPUT.AddGamepad();
 	
 	InitSolo(solo, windowSize, pSoloScoreTracker);
 	InitCoop(coop, windowSize, pCoopScoreTracker);
@@ -67,11 +68,9 @@ void load()
 	InitResults(versusResults, windowSize, pVersusScoreTracker);
 
 	BL_SCENE_MANAGER.SetActiveScene("Title");
-	//BL_SCENE_MANAGER.SetActiveScene("CoopGalaga");
 }
 
 // GENERAL TODOS
-// TODO : Improve Player/Controller Setup
 // TODO : Check every class to make sure if applies rule of 5 correctly
 // TODO : (Maybe) Add layering options which guarantees that some Objects/Components are rendered above others
 // TODO : Reduce auto usage
@@ -106,6 +105,41 @@ void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize, dae::ScoreTrackerCo
 {
 	AddAllModeSharedObj(soloScene, windowSize);
 
+	std::vector<dae::IObserver*> enemyObservers;
+
+	dae::StageManager stageManager{ enemyObservers };
+	stageManager.AddToScene(&soloScene);
+
+	// Prefabs
+	dae::GameObject* pPlayerOneObject = nullptr;
+
+	float playerElevation{ static_cast<float>(windowSize.y - 100) };
+	float midScreen{ static_cast<float>(windowSize.x / 2) };
+	constexpr glm::vec2 scoreInset{ 100, 35 };
+
+	dae::Player playerOne{	glm::vec2{ midScreen - 16, playerElevation },			// Player pos
+							glm::vec2{ 10, windowSize.y - 26 },						// Lives counter pos
+							glm::vec2{ scoreInset.x, scoreInset.y },				// Score counter pos
+							"GalagaP1.tga",											// Sprite
+							0, 100.0f, 3, dae::InputType::KEYBOARD_AND_GAMEPAD };	// Index, speed, lives, input type
+
+	pPlayerOneObject = playerOne.AddToScene(&soloScene);
+
+	std::vector<dae::GameObject*> players{ pPlayerOneObject };
+
+	auto pScoreTrackerObject = soloScene.AddGameObject();
+	pScoreTracker_OUT = pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
+}
+
+void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT)
+{
+	AddAllModeSharedObj(versusScene, windowSize);
+
+	std::vector<dae::IObserver*> enemyObservers;
+
+	dae::StageManager stageManager{ enemyObservers };
+	auto pStageManagerObj = stageManager.AddToScene(&versusScene);
+	
 	// Prefabs
 	dae::GameObject* pPlayerOneObject = nullptr;
 
@@ -119,31 +153,27 @@ void InitSolo(dae::Scene& soloScene, glm::ivec2& windowSize, dae::ScoreTrackerCo
 							"GalagaP1.tga",											// Sprite
 							0, 100.0f, 3, dae::InputType::KEYBOARD_AND_GAMEPAD };	// Index, speed, lives, input type
 
-	pPlayerOneObject = playerOne.AddToScene(&soloScene);
+	pPlayerOneObject = playerOne.AddToScene(&versusScene);
 
 	std::vector<dae::GameObject*> players{ pPlayerOneObject };
 
-	auto pScoreTrackerObject = soloScene.AddGameObject();
+	auto pScoreTrackerObject = versusScene.AddGameObject();
 	pScoreTracker_OUT = pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
 
-	// TEMP
-	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);
-}
+	auto pStageLogic = pStageManagerObj->GetComponent<dae::StageManagerLogic>();
 
-void InitVersus(dae::Scene& versusScene, glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT)
-{
-	BL_INPUT.AddGamepad();
-
-	versusScene;
-	windowSize;
-	pScoreTracker_OUT;
+	auto pEnemyControlObj = versusScene.AddGameObject();
+	pEnemyControlObj->AddComponent<dae::PlayerEnemyControlComponent>(pStageLogic);
 }
 
 void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize, dae::ScoreTrackerComponent*& pScoreTracker_OUT)
 {
 	AddAllModeSharedObj(coopScene, windowSize);
 
-	BL_INPUT.AddGamepad();
+	std::vector<dae::IObserver*> enemyObservers;
+
+	dae::StageManager stageManager{ enemyObservers };
+	stageManager.AddToScene(&coopScene);
 
 	// Prefabs
 	dae::GameObject* pPlayerOneObject = nullptr;
@@ -176,10 +206,6 @@ void InitCoop(dae::Scene& coopScene, glm::ivec2& windowSize, dae::ScoreTrackerCo
 
 	auto pScoreTrackerObject = coopScene.AddGameObject();
 	pScoreTracker_OUT = pScoreTrackerObject->AddComponent<dae::ScoreTrackerComponent>(players);
-
-	// TEMP
-	dae::PlayerLocator::RegisterPlayer(pPlayerOneObject);
-	dae::PlayerLocator::RegisterPlayer(pPlayerTwoObject);
 }
 
 void InitResults(dae::Scene& resultsScene, glm::ivec2& windowSize, dae::ScoreTrackerComponent* pScoreTracker)
@@ -236,9 +262,4 @@ void AddAllModeSharedObj(dae::Scene& scene, glm::ivec2&)
 	pBackgroundObject->AddChild(pBackgroundTileR);
 	pBackgroundObject->AddChild(pBackgroundTileB);
 	pBackgroundObject->AddChild(pBackgroundTileBR);
-
-	std::vector<dae::IObserver*> enemyObservers;
-
-	dae::StageManager stageManager{ enemyObservers };
-	stageManager.AddToScene(&scene);
 }

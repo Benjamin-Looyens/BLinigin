@@ -18,6 +18,8 @@ namespace dae {
 		
 		void OnNotify(const ISubject* pSubject, Event event) override;
 
+		GameObject* GetRandomEnemy() const;
+
 	private:
 		dae::Enemy m_BossEnemy;
 		dae::Enemy m_BeeEnemy;

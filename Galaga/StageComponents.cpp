@@ -82,6 +82,11 @@ void dae::StageManagerLogic::OnNotify(const ISubject* pSubject, Event event)
 	}
 }
 
+dae::GameObject* dae::StageManagerLogic::GetRandomEnemy() const
+{
+	return m_pEnemies[rand() % m_pEnemies.size()];
+}
+
 void dae::StageManagerLogic::ParseEnemies()
 {
 	std::string formationString{ "Formations/Formation" + std::to_string((m_CurrentStage) % (m_NumFormations) + 1) + ".json" };
