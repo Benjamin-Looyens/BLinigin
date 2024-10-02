@@ -17,7 +17,6 @@ namespace dae {
 		void Update() override;
 		void LateUpdate() override;
 
-		void ChangeState(std::unique_ptr<MainMenuState> pNewState);
 
 		inline bool WasUpPressed() const { return m_UpPressedThisFrame; };
 		inline bool WasDownPressed() const { return m_DownPressedThisFrame; };
@@ -39,6 +38,7 @@ namespace dae {
 		MainMenuComponent(GameObject* pParent);
 
 	private:
+		void ChangeState(std::unique_ptr<MainMenuState> pNewState);
 		//static constexpr glm::vec2 t = { 5, 5 };
 
 		void UpPressed() { m_UpPressedThisFrame = true; };

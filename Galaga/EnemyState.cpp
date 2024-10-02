@@ -41,7 +41,7 @@ dae::EnemySpawnInState::EnemySpawnInState(std::vector<glm::vec2> path, glm::vec2
     : m_Path{ path }, m_StartLocation{ startLocation }
 {}
 
-void dae::EnemySpawnInState::Update(EnemyLogic& enemy)
+std::unique_ptr<dae::EnemyState> dae::EnemySpawnInState::Update(EnemyLogic& enemy)
 {
     float deltaTime = BL_TIMER.GetDeltaTime();
     glm::vec2 curLocation = enemy.GetLocation();
@@ -52,7 +52,9 @@ void dae::EnemySpawnInState::Update(EnemyLogic& enemy)
     if (lenSqr < EPSILON) m_CurrentWayPoint++;
 
     if (static_cast<size_t>(m_CurrentWayPoint) < m_Path.size()) enemy.SetLocation({ curLocation + (glm::normalize(dir) * deltaTime * enemy.GetSpawnSpeed()) });
-    else enemy.SetState(std::make_unique<EnemyReturnToPatrolState>());
+    else return std::make_unique<EnemyReturnToPatrolState>();
+
+    return nullptr;
 }
 
 void dae::EnemySpawnInState::OnEnter(EnemyLogic& enemy)
@@ -71,17 +73,19 @@ void dae::EnemySpawnInState::OnExit(EnemyLogic&)
 #endif
 }
 
-void dae::EnemyPatrolState::Update(EnemyLogic& enemy)
+std::unique_ptr<dae::EnemyState> dae::EnemyPatrolState::Update(EnemyLogic&)
 {
     if (m_ElapsedTime >= m_MaxTime) {
-        if ((rand() % 100) < s_PERCENT_CHANCE_TO_KAMIKAZE) enemy.SetState(std::make_unique<EnemyKamikazeState>());
         m_ElapsedTime = 0;
+        if ((rand() % 100) < s_PERCENT_CHANCE_TO_KAMIKAZE) return std::make_unique<EnemyKamikazeState>();
     }
     else {
         m_ElapsedTime += BL_TIMER.GetDeltaTime();
     }
     
     //std::cout << "[Enemy] X: " << enemy.GetLocation().x << ", Y: " << enemy.GetLocation().y << "\n";
+
+    return nullptr;
 }
 
 void dae::EnemyPatrolState::OnEnter(EnemyLogic&)
@@ -99,7 +103,7 @@ void dae::EnemyPatrolState::OnExit(EnemyLogic&)
 }
 
 // TODO : Probably split Kamikaze state into 2 different states: dive & rise
-void dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
+std::unique_ptr<dae::EnemyState> dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
 {
     float deltaTime = BL_TIMER.GetDeltaTime();
     glm::vec2 curLocation = enemy.GetLocation();
@@ -121,7 +125,7 @@ void dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
     else {
         if (m_DoneTimer < m_MaxDoneTimer) {
             m_DoneTimer += deltaTime;
-            return;
+            return nullptr;
         }
 
         dir = { m_StartPosition - curLocation };
@@ -141,9 +145,11 @@ void dae::EnemyKamikazeState::Update(EnemyLogic& enemy)
             enemy.SetLocation({ m_StartPosition.x, newPos.y });
         }
         else {
-            enemy.SetState(std::make_unique<EnemyReturnToPatrolState>());
+            return std::make_unique<EnemyReturnToPatrolState>();
         }
     }
+
+    return nullptr;
 }
 
 void dae::EnemyKamikazeState::OnEnter(EnemyLogic& enemy)
@@ -170,13 +176,15 @@ void dae::EnemyKamikazeState::OnExit(EnemyLogic&)
 #endif
 }
 
-void dae::EnemyDeathState::Update(EnemyLogic& enemy)
+std::unique_ptr<dae::EnemyState> dae::EnemyDeathState::Update(EnemyLogic& enemy)
 {
     m_ElapsedTime += BL_TIMER.GetDeltaTime();
 
     if (m_ElapsedTime > DEATH_TIMER) {
         enemy.Die();
     }
+
+    return nullptr;
 }
 
 void dae::EnemyDeathState::OnEnter(EnemyLogic&)
@@ -193,10 +201,9 @@ void dae::EnemyDeathState::OnExit(EnemyLogic&)
 #endif
 }
 
-void dae::EnemyReturnToPatrolState::Update(EnemyLogic& enemy)
+std::unique_ptr<dae::EnemyState> dae::EnemyReturnToPatrolState::Update(EnemyLogic&)
 {
-    enemy;
-    enemy.SetState(std::make_unique<EnemyPatrolState>());
+    return std::make_unique<EnemyPatrolState>();
 }
 
 void dae::EnemyReturnToPatrolState::OnEnter(EnemyLogic& enemy)

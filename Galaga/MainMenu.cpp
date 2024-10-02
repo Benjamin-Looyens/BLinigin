@@ -47,7 +47,7 @@ dae::MainMenuComponent::MainMenuComponent(GameObject* pParent)
 
 void dae::MainMenuComponent::Update()
 {
-	if (m_pState.get())	m_pState->Update(*this);
+	if (m_pState.get())	m_pSwitchState = std::move(m_pState->Update(*this));
 
 	// Reset input refs for state
 	m_UpPressedThisFrame = false;

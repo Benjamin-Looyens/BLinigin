@@ -5,12 +5,12 @@
 #include "InputManager.h"
 
 #pragma region TitleState
-void dae::TitleState::Update(MainMenuComponent& stateObject)
+std::unique_ptr<dae::MainMenuState> dae::TitleState::Update(MainMenuComponent& stateObject)
 {
 	switch (m_CurrentPos) {
 	case TitlePos::PLAY:
 		if (stateObject.WasConfirmPressed()) {
-			stateObject.ChangeState(std::make_unique<dae::PlayerSelectState>());
+			return std::make_unique<dae::PlayerSelectState>();
 		}
 		if (stateObject.WasDownPressed()) {
 			stateObject.SetSelectorElevation(stateObject.GetBotElevation());
@@ -19,7 +19,7 @@ void dae::TitleState::Update(MainMenuComponent& stateObject)
 		break;
 	case TitlePos::HIGHSCORE:
 		if (stateObject.WasConfirmPressed()) {
-			stateObject.ChangeState(std::make_unique<dae::HighScoreViewState>());
+			return std::make_unique<dae::HighScoreViewState>();
 		}
 		if (stateObject.WasUpPressed()) {
 			stateObject.SetSelectorElevation(stateObject.GetTopElevation());
@@ -31,6 +31,8 @@ void dae::TitleState::Update(MainMenuComponent& stateObject)
 	if (stateObject.WasBackPressed()) {
 		BL_INPUT.QuitGame();
 	}
+
+	return nullptr;
 }
 
 void dae::TitleState::OnEnter(MainMenuComponent& stateObject)
@@ -53,7 +55,7 @@ void dae::TitleState::OnExit(MainMenuComponent&)
 #pragma endregion TitleState
 
 #pragma region PlayerSelectState
-void dae::PlayerSelectState::Update(MainMenuComponent& stateObject)
+std::unique_ptr<dae::MainMenuState> dae::PlayerSelectState::Update(MainMenuComponent& stateObject)
 {
 	switch (m_CurrentPos) {
 	case PlayerSelectPos::ONE:
@@ -68,7 +70,7 @@ void dae::PlayerSelectState::Update(MainMenuComponent& stateObject)
 		break;
 	case PlayerSelectPos::TWO:
 		if (stateObject.WasConfirmPressed()) {
-			stateObject.ChangeState(std::make_unique<dae::ModeSelectState>());
+			return std::make_unique<dae::ModeSelectState>();
 		}
 		if (stateObject.WasUpPressed()) {
 			stateObject.SetSelectorElevation(stateObject.GetTopElevation());
@@ -78,8 +80,10 @@ void dae::PlayerSelectState::Update(MainMenuComponent& stateObject)
 	}
 
 	if (stateObject.WasBackPressed()) {
-		stateObject.ChangeState(std::make_unique<dae::TitleState>());
+		return std::make_unique<dae::TitleState>();
 	}
+
+	return nullptr;
 }
 
 void dae::PlayerSelectState::OnEnter(MainMenuComponent& stateObject)
@@ -102,7 +106,7 @@ void dae::PlayerSelectState::OnExit(MainMenuComponent&)
 #pragma endregion PlayerSelectState
 
 #pragma region ModeSelectState
-void dae::ModeSelectState::Update(MainMenuComponent& stateObject)
+std::unique_ptr<dae::MainMenuState> dae::ModeSelectState::Update(MainMenuComponent& stateObject)
 {
 	switch (m_CurrentPos) {
 	case ModeSelectPos::COOP:
@@ -110,7 +114,7 @@ void dae::ModeSelectState::Update(MainMenuComponent& stateObject)
 			stateObject.SetSelectorElevation(stateObject.GetBotElevation());
 			m_CurrentPos = ModeSelectPos::VERSUS;
 		}
-		
+
 		if (stateObject.WasConfirmPressed()) {
 			BL_SCENE_MANAGER.SetActiveScene("CoopGalaga");
 		}
@@ -127,8 +131,10 @@ void dae::ModeSelectState::Update(MainMenuComponent& stateObject)
 	}
 
 	if (stateObject.WasBackPressed()) {
-		stateObject.ChangeState(std::make_unique<dae::PlayerSelectState>());
+		return std::make_unique<dae::PlayerSelectState>();
 	}
+
+	return nullptr;
 }
 
 void dae::ModeSelectState::OnEnter(MainMenuComponent& stateObject)
@@ -153,11 +159,13 @@ void dae::ModeSelectState::OnExit(MainMenuComponent&)
 #pragma region HighScoreViewState
 bool dae::HighScoreViewState::s_LoadedScores = false;
 
-void dae::HighScoreViewState::Update(MainMenuComponent& stateObject)
+std::unique_ptr<dae::MainMenuState> dae::HighScoreViewState::Update(MainMenuComponent& stateObject)
 {
 	if (stateObject.WasBackPressed()) {
-		stateObject.ChangeState(std::make_unique<dae::TitleState>());
+		return std::make_unique<dae::TitleState>();
 	}
+
+	return nullptr;
 }
 
 void dae::HighScoreViewState::OnEnter(MainMenuComponent& stateObject)

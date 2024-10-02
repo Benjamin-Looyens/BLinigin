@@ -18,7 +18,6 @@ namespace dae {
 		void Update() override;
 		void LateUpdate() override;
 		
-		void SetState(std::unique_ptr<EnemyState> pNewState);
 		void SetLocation(glm::vec2 pos);
 		void AddLocation(glm::vec2 movement);
 		bool GetHit(); // Returns boolean for if it died or not
@@ -42,6 +41,8 @@ namespace dae {
 		dae::Event GetDeathEvent() const { return m_ReturnDeath; };
 
 	private:
+		void SetState(std::unique_ptr<EnemyState> pNewState);
+		
 		std::unique_ptr<EnemyState> m_pState;
 		std::unique_ptr<EnemyState> m_pSwitchState;
 

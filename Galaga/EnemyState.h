@@ -62,7 +62,7 @@ namespace dae {
 		EnemySpawnInState(std::vector<glm::vec2> path, glm::vec2 startLocation);
 		~EnemySpawnInState() override = default;
 
-		void Update(EnemyLogic& enemy) override;
+		std::unique_ptr<dae::EnemyState> Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
 
@@ -79,7 +79,7 @@ namespace dae {
 	public:
 		~EnemyPatrolState() override = default;
 
-		void Update(EnemyLogic& enemy) override;
+		std::unique_ptr<dae::EnemyState> Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
 
@@ -94,7 +94,7 @@ namespace dae {
 	public:
 		~EnemyKamikazeState() override = default;
 
-		void Update(EnemyLogic& enemy) override;
+		std::unique_ptr<dae::EnemyState> Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
 
@@ -114,10 +114,10 @@ namespace dae {
 
 	class EnemyReturnToPatrolState final : public EnemyState
 	{
-	public: 
+	public:
 		~EnemyReturnToPatrolState() override = default;
 
-		void Update(EnemyLogic& enemy) override;
+		std::unique_ptr<dae::EnemyState> Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
 
@@ -130,7 +130,7 @@ namespace dae {
 	public:
 		~EnemyDeathState() override = default;
 
-		void Update(EnemyLogic& enemy) override;
+		std::unique_ptr<dae::EnemyState> Update(EnemyLogic& enemy) override;
 		void OnEnter(EnemyLogic& enemy) override;
 		void OnExit(EnemyLogic& enemy) override;
 

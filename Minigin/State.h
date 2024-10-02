@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 namespace dae {
 	template<typename StateClass>
@@ -7,7 +8,7 @@ namespace dae {
 	public:
 		virtual ~State() {};
 
-		virtual void Update(StateClass& stateObject) = 0;
+		virtual std::unique_ptr<State> Update(StateClass& stateObject) = 0;
 		virtual void OnEnter(StateClass& stateObject) = 0;
 		virtual void OnExit(StateClass& stateObject) = 0;
 	};

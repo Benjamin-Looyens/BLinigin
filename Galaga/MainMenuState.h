@@ -17,7 +17,7 @@ namespace dae {
 	public:
 		~TitleState() override = default;
 
-		void Update(MainMenuComponent& stateObject) override;
+		std::unique_ptr<dae::MainMenuState> Update(MainMenuComponent& stateObject) override;
 		void OnEnter(MainMenuComponent& stateObject) override;
 		void OnExit(MainMenuComponent& stateObject) override;
 
@@ -36,7 +36,7 @@ namespace dae {
 	public:
 		~PlayerSelectState() override = default;
 
-		void Update(MainMenuComponent& stateObject) override;
+		std::unique_ptr<MainMenuState> Update(MainMenuComponent& stateObject) override;
 		void OnEnter(MainMenuComponent& stateObject) override;
 		void OnExit(MainMenuComponent& stateObject) override;
 
@@ -55,7 +55,7 @@ namespace dae {
 	public:
 		~ModeSelectState() override = default;
 
-		void Update(MainMenuComponent& stateObject) override;
+		std::unique_ptr<MainMenuState> Update(MainMenuComponent& stateObject) override;
 		void OnEnter(MainMenuComponent& stateObject) override;
 		void OnExit(MainMenuComponent& stateObject) override;
 
@@ -68,7 +68,7 @@ namespace dae {
 	public:
 		~HighScoreViewState() override = default;
 
-		void Update(MainMenuComponent& stateObject) override;
+		std::unique_ptr<MainMenuState> Update(MainMenuComponent& stateObject) override;
 		void OnEnter(MainMenuComponent& stateObject) override;
 		void OnExit(MainMenuComponent& stateObject) override;
 

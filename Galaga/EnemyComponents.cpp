@@ -18,7 +18,8 @@ dae::EnemyLogic::EnemyLogic(GameObject* pParent, float spawnSpeed, float patrolS
 
 void dae::EnemyLogic::Update()
 {
-	if (m_pState.get())	m_pState->Update(*this);
+	if (m_pState.get())	m_pSwitchState = std::move(m_pState->Update(*this));
+
 	if (!m_pCollision) m_pCollision = m_pParent->GetComponent<dae::CollisionComponent>();
 	else {
 		auto pOverlaps = m_pCollision->GetAllOverlappingObjects();
