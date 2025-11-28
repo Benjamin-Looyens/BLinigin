@@ -23,7 +23,7 @@ namespace dae {
 		void NotifyObservers(dae::Event&& eventToNotify) override;
 
 	private:
-		std::vector<dae::IObserver*> m_pObservers;
+		std::vector<dae::IObserver*> m_pObservers{};
 	};
 
 	class ObservingComponent : public Component, public IObserver
@@ -55,6 +55,6 @@ namespace dae {
 		void NotifyObservers(dae::Event&& eventToNotify) override;
 
 	private:
-		std::vector<dae::IObserver*> m_pObservers;
+		std::vector<dae::IObserver*> m_pObservers{};
 	};
 }

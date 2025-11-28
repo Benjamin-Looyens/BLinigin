@@ -20,7 +20,7 @@ namespace dae
 		GameObject* GetGameObject() const { return m_pGameObject; };
 	
 	private:
-		GameObject* m_pGameObject;
+		GameObject* m_pGameObject{};
 	};
 
 	class PrintStringCommand final : public Command

@@ -15,7 +15,7 @@ namespace dae {
 		DartLogic& operator=(const DartLogic&& other) = delete;
 
 	private:
-		CollisionComponent* m_pParentCollision;
+		CollisionComponent* m_pParentCollision{};
 
 		bool m_IsPlayerDart;
 		float m_ElapsedTime{};

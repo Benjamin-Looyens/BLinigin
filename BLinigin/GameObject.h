@@ -4,11 +4,11 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include "Component.h"
 
 namespace dae
 {
 	class Texture2D;
-	class Component;
 	class Scene;
 
 	template<typename ComponentType>
@@ -126,10 +126,10 @@ namespace dae
 		bool m_PositionDirty{ true };
 		bool m_ScaleDirty{ true };
 
-		dae::GameObject* m_pParentObject;
+		dae::GameObject* m_pParentObject{};
 
-		std::vector<std::unique_ptr<dae::Component>> m_pComponents;
-		std::vector<dae::GameObject*> m_pChildObjects;
+		std::vector<std::unique_ptr<dae::Component>> m_pComponents{};
+		std::vector<dae::GameObject*> m_pChildObjects{};
 
 		bool m_ParentAsOrigin{ true };
 		bool m_ApplyParentScale{ true };
@@ -139,6 +139,6 @@ namespace dae
 		bool m_Enabled{ true };
 		bool m_Visible{ true };
 
-		dae::Scene* m_pContainingScene;
+		dae::Scene* m_pContainingScene{};
 	};
 }

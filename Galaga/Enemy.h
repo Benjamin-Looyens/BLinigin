@@ -37,7 +37,7 @@ namespace dae {
 		std::string m_SpriteLocation;
 		float m_SpawnMovSpeed;
 		float m_PatrolMovSpeed;
-		std::vector<IObserver*> m_Observers; 
+		std::vector<IObserver*> m_Observers{};
 
 		float m_AnimFPS;
 		int m_AnimFrames;

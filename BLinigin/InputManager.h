@@ -25,7 +25,7 @@ namespace dae
 
 	struct CommandData
 	{
-		std::unique_ptr<dae::Command> pCommand;
+		std::unique_ptr<dae::Command> pCommand{};
 		int commandCode;
 		//bool isController; // HACK : Can probably get rid of this and use custom Macro parser that has controller and keyboard both
 		input_index index; // Index 0 -> KBM, Index 1-4 -> Controllers 1-4
@@ -81,8 +81,8 @@ namespace dae
 		inline char GetLatestTyped() const { return m_LastTyped; };
 
 	private:
-		std::vector<dae::CommandData> m_Commands; 
-		std::vector<dae::Gamepad> m_Gamepads;
+		std::vector<dae::CommandData> m_Commands{}; 
+		std::vector<dae::Gamepad> m_Gamepads{};
 		
 		glm::ivec2 m_MousePos{};
 		glm::ivec2 m_RelMousePos{};

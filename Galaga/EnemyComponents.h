@@ -43,8 +43,8 @@ namespace dae {
 	private:
 		void SetState(std::unique_ptr<EnemyState> pNewState);
 		
-		std::unique_ptr<EnemyState> m_pState;
-		std::unique_ptr<EnemyState> m_pSwitchState;
+		std::unique_ptr<EnemyState> m_pState{};
+		std::unique_ptr<EnemyState> m_pSwitchState{};
 
 		float m_SpawnSpeed;
 		float m_PatrolSpeed;
@@ -62,8 +62,8 @@ namespace dae {
 		sound_id m_DamageSound;
 		sound_id m_DeathSound;
 
-		GameObject* m_pFormationLocationRoot;
+		GameObject* m_pFormationLocationRoot{};
 
-		dae::CollisionComponent* m_pCollision;
+		dae::CollisionComponent* m_pCollision{};
 	};
 }

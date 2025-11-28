@@ -27,7 +27,7 @@ namespace dae
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
-		std::vector<std::unique_ptr<dae::Scene>> m_pScenes;
+		std::vector<std::unique_ptr<dae::Scene>> m_pScenes{};
 		//std::vector<std::pair<std::unique_ptr<dae::Scene>, std::function<void(dae::Scene&, glm::vec2&)>>> m_Scenes;
 
 		size_t m_ActiveSceneIndex{};

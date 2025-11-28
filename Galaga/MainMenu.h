@@ -51,8 +51,8 @@ namespace dae {
 		bool m_BackPressedThisFrame{};
 		bool m_ConfirmPressedThisFrame{};
 
-		std::unique_ptr<MainMenuState> m_pState;
-		std::unique_ptr<MainMenuState> m_pSwitchState;
+		std::unique_ptr<MainMenuState> m_pState{};
+		std::unique_ptr<MainMenuState> m_pSwitchState{};
 
 		float m_SelectionElevation{};
 		static constexpr float s_SELECTION_X{ 200.0f };
@@ -61,15 +61,15 @@ namespace dae {
 		static constexpr float s_TOP_ELEVATION{ 500.0f };
 		static constexpr float s_BOT_ELEVATION{ 550.0f };
 
-		Font* m_pUsedMenuFont;
+		Font* m_pUsedMenuFont{};
 
-		GameObject* m_pSelectionObj;
+		GameObject* m_pSelectionObj{};
 
-		TextComponent* m_pTopOptionComp;
-		TextComponent* m_pBottomOptionComp;
+		TextComponent* m_pTopOptionComp{};
+		TextComponent* m_pBottomOptionComp{};
 
-		GameObject* m_pHighScoreObj;
-		HighScoreComponent* m_pHighScoreComp;
+		GameObject* m_pHighScoreObj{};
+		HighScoreComponent* m_pHighScoreComp{};
 	};
 }
 

@@ -36,7 +36,7 @@ namespace dae {
 		void AddHighScoreListAsChildren(dae::Font* pFontToUse, dae::Scene* pSceneToAddTo = nullptr);
 
 	private:
-		std::vector<std::unique_ptr<dae::ScoreData>> m_pLoadedScores;
+		std::vector<std::unique_ptr<dae::ScoreData>> m_pLoadedScores{};
 		
 		bool m_HasAddedChildren = false;
 	};

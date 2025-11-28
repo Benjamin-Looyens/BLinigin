@@ -37,7 +37,7 @@ namespace dae {
 		bool m_Removed{ false };
 
 		// NOTE : Potentially change the pParent to a private getter rather than protected so that derived components cannot remove their parent for example
-		GameObject* m_pParent;
+		GameObject* m_pParent{};
 	};
 
 	inline Component::~Component() {};

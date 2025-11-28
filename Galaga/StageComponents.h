@@ -42,8 +42,8 @@ namespace dae {
 		float m_SpawnEnemyTimer{};
 		static constexpr float s_MAX_SPAWN_TIMER{ 0.2f };
 
-		std::vector<GameObject*> m_pFormationPositions;
-		std::vector<GameObject*> m_pEnemies;
+		std::vector<GameObject*> m_pFormationPositions{};
+		std::vector<GameObject*> m_pEnemies{};
 
 		void ParseEnemies();
 

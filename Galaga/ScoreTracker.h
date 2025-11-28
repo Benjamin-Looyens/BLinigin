@@ -16,7 +16,7 @@ namespace dae {
 		std::vector<dae::ScoreData> GetScores();
 
 	private:
-		std::vector<std::pair<GameObject*, dae::ScoreData>> m_Players;
+		std::vector<std::pair<GameObject*, dae::ScoreData>> m_Players{};
 
 		int m_NumAlivePlayers;
 	};

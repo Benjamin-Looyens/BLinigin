@@ -53,8 +53,8 @@ namespace dae {
 			}
 
 		private:
-			std::vector<Bezier> m_Curves;
-			std::vector<int> m_Samples;
+			std::vector<Bezier> m_Curves{};
+			std::vector<int> m_Samples{};
 		};
 
 	public:

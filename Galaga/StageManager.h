@@ -14,6 +14,6 @@ namespace dae {
 		dae::GameObject* AddToScene(dae::Scene* pSceneToAddTo) override;
 
 	private:
-		std::vector<IObserver*> m_EnemyObservers;
+		std::vector<IObserver*> m_EnemyObservers{};
 	};
 }

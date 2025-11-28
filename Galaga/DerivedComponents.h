@@ -31,7 +31,7 @@ namespace dae {
 		FPSComponent& operator=(FPSComponent&& other) = delete;
 
 	private:
-		dae::TextComponent* m_pTextLocation; // non-owning reference to parent's text component (if it has one)
+		dae::TextComponent* m_pTextLocation{}; // non-owning reference to parent's text component (if it has one)
 
 		float m_CounterInterval;
 		float m_Counter{};
@@ -71,7 +71,7 @@ namespace dae {
 		DisplayDataComponent& operator=(const DisplayDataComponent&& other) = delete;
 
 	private:
-		dae::TextComponent* m_pTextLocation; // non-owning reference to parent's text component (if it has one)
+		dae::TextComponent* m_pTextLocation{}; // non-owning reference to parent's text component (if it has one)
 		std::string m_DataPrefix;
 	};
 

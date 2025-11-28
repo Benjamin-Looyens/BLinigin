@@ -60,10 +60,10 @@ namespace dae {
 	private:
 		int m_NumLives;
 
-		glm::vec2 m_DisplayPos;
-		glm::vec2 m_LivesStackDir;
+		glm::vec2 m_DisplayPos{};
+		glm::vec2 m_LivesStackDir{};
 
-		Texture2D* m_pLifeTexture = nullptr;
+		Texture2D* m_pLifeTexture{};
 
 		static constexpr float s_SPACER_BETWEEN_LIVES{ 5.0f };
 	};
@@ -87,10 +87,10 @@ namespace dae {
 		ScoreComponent& operator=(const ScoreComponent&& other) = delete;
 
 	private:
-		Font* m_pFont;		
+		Font* m_pFont{};
 
 		// Score texture itself:
-		Texture2D* m_pTextTexture = nullptr;
+		Texture2D* m_pTextTexture{};
 		const std::string m_ResourceFileStr;
 
 		// 1 UP flashing above:
@@ -120,7 +120,7 @@ namespace dae {
 		void Kamikaze();
 
 	private:
-		dae::StageManagerLogic* m_pStageManager;
+		dae::StageManagerLogic* m_pStageManager{};
 
 		float m_FireDelay{};
 		static constexpr float s_MAX_FIRE_DELAY{ 0.75f };

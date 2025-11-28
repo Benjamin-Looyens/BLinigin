@@ -2,6 +2,7 @@
 #include "Component.h"
 #include <glm/vec2.hpp>
 #include <SDL.h>
+#include <string>
 
 namespace dae {
 	class Font;
@@ -28,7 +29,7 @@ namespace dae {
 		glm::vec2 GetTextureSize() const;
 
 	protected:
-		Texture2D* m_pTexture;
+		Texture2D* m_pTexture{};
 	};
 
 	class TextComponent final : public Component
@@ -53,8 +54,8 @@ namespace dae {
 		bool m_NeedsUpdate;
 		std::string m_Text;
 		const std::string m_ResourceFile;
-		Font* m_pFont;
-		Texture2D* m_pTextTexture;
+		Font* m_pFont{};
+		Texture2D* m_pTextTexture{};
 		SDL_Color m_Color;
 	};
 
