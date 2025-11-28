@@ -1,6 +1,6 @@
 #include <SDL.h>
 #include "InputManager.h"
-#include <backends/imgui_impl_sdl2.h>
+//#include <backends/imgui_impl_sdl2.h>
 #include <iostream>
 #include <algorithm>
 
@@ -86,7 +86,7 @@ bool dae::InputManager::ProcessInput()
 		}
 
 		// ImGUI
-		ImGui_ImplSDL2_ProcessEvent(&e);
+		//ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 
     if (!typed) {
