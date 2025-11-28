@@ -61,3 +61,16 @@ function(BLINIGIN_COPY_OUTPUT_DLLS target)
             "$<TARGET_FILE_DIR:${target}>"
     )
 endfunction()
+
+# Data (Textures, Fonts, Saves, etc) Copying Function (NEEDS TO BE CALLED WITHIN THE EXECUTABLE PROJECT)
+function(BLINIGIN_COPY_DATA target)
+    add_custom_command(TARGET ${target} POST_BUILD
+        # Create the output directory if necessary
+        COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${target}>/Data"
+
+        # Copy entire folder
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_SOURCE_DIR}/Data"
+            "$<TARGET_FILE_DIR:${target}>/../Data"
+    )
+endfunction()
