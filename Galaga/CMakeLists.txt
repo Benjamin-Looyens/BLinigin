@@ -31,3 +31,4 @@ add_executable(Galaga
 # Add the library (without exposing anything private)
 target_link_libraries(Galaga PRIVATE BLiniginLib) 
 install(TARGETS Galaga DESTINATION bin)
+BLINIGIN_COPY_OUTPUT_DLLS(Galaga)

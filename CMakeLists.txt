@@ -12,3 +12,10 @@ add_subdirectory("BLinigin")
 
 # Add project subdirectories
 add_subdirectory("Galaga")
+
+# Set up constants
+if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(TARGET_ARCHITECTURE x64 CACHE INTERNAL "Target architecture")
+else()
+    set(TARGET_ARCHITECTURE x86 CACHE INTERNAL "Target architecture")
+endif()
