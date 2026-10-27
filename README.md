@@ -1,6 +1,9 @@
 # BLinigin
 For the course "Programming 4" in Howest DAE Game Development. This is a C++ 2D game engine project. As the name suggests, it is built off the start project "[Minigin](https://github.com/avadae/minigin)". Simultaneously through development of the game engine, an implementation of Galaga was built within it to apply the '[Game Programming Patterns](https://gameprogrammingpatterns.com/)' learned in the course, and also test out engine implementation from design choices that were made by me. All in the meanwhile of trying to adhere to the C++ core guidelines as closely as possible.
 
+### Design Considerations
+Generally when developing this engine, I heavily based it on the core architecture of the Unity engine. I think the GameObject system of the Unity engine is a very intuitive way to think about objects in a virtual space, while maintaining raw control over each object as well through their script components. Additionally, I believe instantiating objects through prefabs is also an excellent feature that hearkens to OOP features.
+
 ### Galaga Implemention Instructions
 ##### Inputs:
 - WASD/ARROW keys for movement with keyboard
